@@ -134,5 +134,11 @@
   "analytics": {
     "cloudflareWebAnalyticsToken": "",
     "_note": "Optional. Prefer turning on Web Analytics in the Cloudflare Pages dashboard (no code needed). Only fill this if you use the manual JS snippet. Do NOT add Google Analytics, Meta Pixel or other trackers without a consent mechanism."
+  },
+  "pricing": {
+    "_note": "Confirmed by the owner on 2026-10-06. Do not add figures until prices are decided.",
+    "quoteFree": "Initial quotes are free.",
+    "maybeCharged": "Site visits, diagnostics and emergency call-outs may be chargeable.",
+    "explain": "We will explain any charge before we start."
   }
 }

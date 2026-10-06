@@ -11,9 +11,10 @@
   "waText": "URGENT – Hello Amiri Building Services, I have an electrical emergency. The problem is:   My postcode is: ",
   "service": { "name": "Emergency electrician", "serviceType": "Emergency electrical repair", "description": "Emergency electrical call-outs for loss of power, tripping circuits, damaged sockets, faulty lighting and signs of overheating in West Drayton and West London, subject to availability." },
   "faq": [
-    { "q": "Are you available 24 hours a day?", "a": "Emergency call-outs are available, but availability changes, so please call to confirm whether we can attend and how soon. If we cannot help, we will tell you straight away so you can contact someone else." },
-    { "q": "Should I reset a breaker that keeps tripping?", "a": "If a breaker or RCD trips again straight after resetting, leave it off. Repeated tripping means there is a fault that needs finding. Never tape, hold or otherwise bypass a breaker." },
-    { "q": "What information should I have ready when I call?", "a": "Your postcode, what has happened, which parts of the property are affected, whether anything is damaged, hot or smelling of burning, and the best number to reach you. A photo on WhatsApp helps." }
+    {"q": "Are you available 24 hours a day?", "a": "Emergency call-outs are available, but availability changes, so please call to confirm whether we can attend and how soon. If we cannot help, we will tell you straight away so you can contact someone else."},
+    {"q": "Should I reset a breaker that keeps tripping?", "a": "If a breaker or RCD trips again straight after resetting, leave it off. Repeated tripping means there is a fault that needs finding. Never tape, hold or otherwise bypass a breaker."},
+    {"q": "What information should I have ready when I call?", "a": "Your postcode, what has happened, which parts of the property are affected, whether anything is damaged, hot or smelling of burning, and the best number to reach you. A photo on WhatsApp helps."},
+    {"q": "Is there a charge for an emergency call-out?", "a": "Emergency call-outs may be chargeable, as may site visits and diagnostics. Initial quotes are free. Ask when you call and we will explain any charge before we start."}
   ]
 }
 -->
@@ -35,6 +36,7 @@
       <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
       <a class="btn btn--wa btn--lg" href="{{wa:URGENT – Hello Amiri Building Services, I am sending photos of an electrical problem. My postcode is: }}" rel="noopener">{{icon camera}}Send photos on WhatsApp</a>
       <p class="callcard__note">{{icon clock}}<span>Can't get through? Send a WhatsApp with your postcode and we will reply as soon as we can.</span></p>
+      <p class="callcard__note">{{icon receipt}}<span>Emergency call-outs may be chargeable. Ask when you call and we will explain any charge before we start.</span></p>
     </aside>
   </div>
 </section>
@@ -101,6 +103,7 @@
       <h2 id="enquiry-title">Not an emergency?</h2>
       <p class="lead">For planned electrical work, send us the details and we will get back to you.</p>
       <p><a class="link-arrow" href="/electrical/">All electrical services {{icon arrow}}</a></p>
+      {{> pricing-note}}
     </div>
     {{> enquiry-form}}
   </div>

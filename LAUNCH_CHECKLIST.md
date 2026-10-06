@@ -15,7 +15,8 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Confirm qualifications. Add to `credentials` only what you can evidence
 - [ ] Confirm insurance wording (insurer, cover level). Only add if the policy is in force
 - [ ] **"Fully Insured" badge (homepage):** hidden for now (insurance not yet active). Once public liability insurance is in force, set the `insurance` credential in site.config.json to `verified: true` (and fill in `value`) and the badge replaces "Professional & Reliable"
-- [ ] **"Get a Free Quote":** the site promises free quotes. Make sure that is true for every job, or change the wording
+- [x] **"Get a Free Quote":** confirmed 6 Oct 2026: initial quotes are free; site visits, diagnostics and emergency call-outs may be chargeable (wording in `pricing` in site.config.json)
+- [ ] Decide the amounts for site visits, diagnostics and emergency call-outs (Terms 5.1); add figures to the site only once decided
 - [ ] Confirm years of experience / ECS card / accreditations, or leave unverified
 - [ ] Confirm call-out pricing and complete or remove Terms section 5
 - [ ] Remove all placeholder reviews (they disappear automatically when `showPlaceholders` is `false`; add only genuine reviews)

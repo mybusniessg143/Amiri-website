@@ -13,7 +13,7 @@
     { "q": "Do you do gas or boiler work?", "a": "No. Our plumbing work is non-gas only: leaks, taps, toilets, valves, wastes, sinks and appliance connections. For boilers, gas appliances or gas pipework you will need a Gas Safe registered engineer." },
     { "q": "Can I send photos of the problem first?", "a": "Yes, and it helps. Send photos or a short video on WhatsApp with your postcode and a description. It helps us understand the job and bring the right parts." },
     { "q": "Do you work for landlords and letting agents?", "a": "Yes. We carry out repairs and maintenance for landlords, letting agents and property managers, including tenant-reported faults. We can liaise with tenants for access and send photos of completed work with the invoice." },
-    { "q": "How much will my job cost?", "a": "Every job is different, so we ask a few questions first, and photos help. We will explain how the work will be charged before we start." },
+    { "q": "Are quotes free?", "a": "Yes, initial quotes are free. Every job is different, so we ask a few questions first, and photos help. Site visits, diagnostics and emergency call-outs may be chargeable. We will explain any charge before we start." },
     { "q": "Do you work on commercial premises?", "a": "Yes. We work in shops, offices and small commercial premises, including lighting, emergency lighting, sockets, fault finding and general maintenance." }
   ]
 }
@@ -135,6 +135,7 @@
       <a class="emergency__number" href="tel:{{phone.tel}}">{{phone.display}}</a>
       <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call Now</a>
       <a class="btn btn--wa btn--lg" href="{{wa:Hello Amiri Building Services, I have an urgent problem. My postcode is: }}" rel="noopener">{{icon whatsapp}}WhatsApp a photo</a>
+      <p class="emergency__note">{{icon receipt}}<span>Emergency call-outs may be chargeable. Ask when you call and we will explain any charge before we start.</span></p>
       <p class="emergency__note">{{icon alert}}<span>If there is fire, smoke, sparking or someone has had an electric shock, call 999. If you smell gas, leave the property and call the National Gas Emergency Service on 0800 111 999.</span></p>
     </div>
   </div>
@@ -160,7 +161,7 @@
         <li class="why-item">{{icon building}}<div><h3>Domestic &amp; commercial</h3><p>Houses and flats, shops, offices and small commercial premises.</p></div></li>
         <li class="why-item">{{icon key}}<div><h3>Landlords welcome</h3><p>Tenant repairs, access arranged and photos for your records.</p></div></li>
         <li class="why-item">{{icon whatsapp}}<div><h3>WhatsApp communication</h3><p>Send photos and updates in the app you already use.</p></div></li>
-        <li class="why-item">{{icon receipt}}<div><h3>Transparent quoting</h3><p>We explain how the work will be charged before we start.</p></div></li>
+        <li class="why-item">{{icon receipt}}<div><h3>Transparent quoting</h3><p>Initial quotes are free, and we explain any charge before we start.</p></div></li>
       </ul>
     </div>
   </div>
@@ -231,7 +232,7 @@
     <ol class="process reveal-stagger">
       <li>{{icon phone}}<h3>Contact us</h3><p>Call, WhatsApp or email. Tell us the problem and your postcode.</p></li>
       <li>{{icon camera}}<h3>Send photos or details</h3><p>A few photos or a short video help us understand the job and bring the right parts.</p></li>
-      <li>{{icon receipt}}<h3>Receive a clear quote</h3><p>We explain what is needed and how it will be charged before we start.</p></li>
+      <li>{{icon receipt}}<h3>Receive a clear quote</h3><p>Your initial quote is free. We explain what is needed and how it will be charged before we start.</p></li>
       <li>{{icon check}}<h3>We attend and complete</h3><p>We do the work, tidy up and send photos and an invoice where needed.</p></li>
     </ol>
   </div>
@@ -260,6 +261,7 @@
       <p class="eyebrow"><span class="eyebrow__num">08</span>Request a quote</p>
       <h2 id="enquiry-title">Get a free quote</h2>
       <p class="lead">Fill in the short form and it opens WhatsApp with your details ready to send. Prefer to talk? Call us.</p>
+      {{> pricing-note}}
       <ul class="quote__methods">
         <li><a href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call</small><strong>{{phone.display}}</strong></span></a></li>
         <li><a href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}<span><small>WhatsApp, photos welcome</small><strong>Message us</strong></span></a></li>
