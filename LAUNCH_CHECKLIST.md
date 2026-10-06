@@ -5,6 +5,7 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 ## Content you must supply or confirm
 - [ ] Upload the final logo and replace favicons and the social share image (README §6)
 - [ ] Replace placeholder photos with real photos of your own work (`src/photos.json`, README §5)
+- [ ] Check every stock picture in IMAGE_CREDITS.md looks right, or swap it for your own (`src/images.json`)
 - [ ] Verify legal company details: AMIRI BUILDING SERVICES LTD, company no. 17472711, registered office (check against Companies House)
 - [ ] **Verify registered jurisdiction (England and Wales)**, then set `jurisdictionVerified: true` in site.config.json
 - [ ] Verify service areas (`areas` in site.config.json) and the local text on /areas/

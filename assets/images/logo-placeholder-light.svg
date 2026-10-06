@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48" role="img" aria-labelledby="t">
+  <title id="t">Amiri Building Services (placeholder logo – replace with the real logo)</title>
+  <rect x="0" y="4" width="40" height="40" rx="10" fill="#f7f3ec"/>
+  <path d="M11 35 20 13l9 22h-5l-1.8-4.6h-4.4L16 35z M19.2 26.7h1.6L20 24.2z" fill="#16191e"/>
+  <path d="M25 9l-4 9h4l-2 7 7-10h-4l2-6z" fill="#b8913f"/>
+  <text x="50" y="23" font-family="'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="18" font-weight="800" fill="#f7f3ec" letter-spacing="-.3">Amiri</text>
+  <text x="50" y="39" font-family="system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#d9bd7f" letter-spacing="1.6">BUILDING SERVICES</text>
+</svg>

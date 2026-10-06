@@ -8,7 +8,8 @@
  *   node build.js --serve   build, then preview at http://localhost:8080
  *
  * What it does:
- *   1. Reads site.config.json (business details) and src/photos.json (work photos).
+ *   1. Reads site.config.json (business details), src/photos.json (your own work
+ *      photos) and src/images.json (website images, swappable stock placeholders).
  *   2. Wraps every page in src/pages/ with the shared layout (header, footer,
  *      mobile contact bar) from src/layout.html and src/partials/.
  *   3. Replaces {{tokens}} with values from the config, so phone numbers, emails,
@@ -32,6 +33,7 @@ const OUT = path.join(ROOT, 'dist');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cfg = JSON.parse(read('site.config.json'));
 const photos = JSON.parse(read('src/photos.json'));
+const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
@@ -107,13 +109,43 @@ function renderPhoto(key) {
 </figure>`;
 }
 
+/* ------------------------------------------------------------ site images */
+
+// Website images live in src/images.json. Unsplash addresses get a responsive
+// srcset automatically; a local file (/assets/images/...) is used as it is.
+const IMG_WIDTHS = [480, 800, 1200, 1600, 2000];
+const IMG_SIZES = {
+  full: '100vw',
+  half: '(min-width: 960px) 50vw, 100vw',
+  card: '(min-width: 1180px) 300px, (min-width: 600px) 50vw, 100vw'
+};
+
+function renderImg(key, eager, sizeName) {
+  const im = images[key];
+  if (!im || key.startsWith('_')) throw new Error(`Unknown image key "${key}" – add it to src/images.json`);
+  const sizes = IMG_SIZES[sizeName || 'half'];
+  if (!sizes) throw new Error(`Unknown image size "${sizeName}" for image "${key}"`);
+  const pos = im.position && im.position !== 'center' ? ` img--${esc(im.position)}` : '';
+  const load = eager ? ' fetchpriority="high"' : ' loading="lazy"';
+  let src = im.src;
+  let srcset = '';
+  if (/^https:\/\/images\.unsplash\.com\//.test(im.src)) {
+    const base = im.src.split('?')[0];
+    const url = (w) => `${base}?w=${w}&q=72&auto=format&fit=crop`;
+    src = url(1200);
+    srcset = ` srcset="${esc(IMG_WIDTHS.map((w) => `${url(w)} ${w}w`).join(', '))}" sizes="${sizes}"`;
+  }
+  return `<img class="media${pos}" src="${esc(src)}"${srcset} width="${im.width || 1600}" height="${im.height || 1067}" alt="${esc(im.alt || '')}"${load} decoding="async">`;
+}
+
 /* ------------------------------------------------------- computed HTML bits */
 
 const NAV = [
+  { href: '/', label: 'Home' },
   { href: '/electrical/', label: 'Electrical' },
   { href: '/plumbing/', label: 'Plumbing' },
-  { href: '/property-maintenance/', label: 'Maintenance' },
-  { href: '/landlords-commercial/', label: 'Landlords &amp; commercial' },
+  { href: '/property-maintenance/', label: 'Property Maintenance' },
+  { href: '/landlords-commercial/', label: 'Landlords &amp; Commercial' },
   { href: '/areas/', label: 'Areas' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' }
@@ -148,16 +180,18 @@ function reviewsHtml() {
     const cards = cfg.reviews
       .map((r) => {
         const stars = r.rating ? `<p class="review__stars" aria-label="${r.rating} out of 5 stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>` : '';
-        return `<li class="review card">${stars}<blockquote><p>${esc(r.text)}</p></blockquote><p class="review__meta">${esc(r.author)}${r.source ? ` · ${esc(r.source)}` : ''}${r.date ? ` · <time datetime="${esc(r.date)}">${esc(new Date(r.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }))}</time>` : ''}</p></li>`;
+        const date = r.date ? ` · <time datetime="${esc(r.date)}">${esc(new Date(r.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }))}</time>` : '';
+        return `<li class="t-card">${stars}<blockquote><p>${esc(r.text)}</p></blockquote><div class="t-card__who"><span class="t-card__avatar" aria-hidden="true">${esc(String(r.author).charAt(0))}</span><p><strong>${esc(r.author)}</strong>${r.source ? esc(r.source) : ''}${date}</p></div></li>`;
       })
       .join('\n');
-    return `<ul class="reviews grid grid--3">${cards}</ul>`;
+    return `<ul class="t-grid">${cards}</ul>`;
   }
   if (!cfg.showPlaceholders) return '<p class="muted">We are a new company and will show genuine customer reviews here as they come in.</p>';
-  return `<ul class="reviews grid grid--3">
+  // Clearly labelled placeholders: no invented names, quotes, star ratings or counts.
+  return `<ul class="t-grid">
 ${[1, 2, 3]
   .map(
-    (n) => `<li class="review card card--placeholder"><span class="photo__tag">Review placeholder ${n}</span><p>A genuine Google review will appear here once customers have left one. No reviews have been invented.</p></li>`
+    (n) => `<li class="t-card t-card--placeholder"><span class="photo__tag">Placeholder ${n} – not a real review</span><blockquote><p>A genuine customer review will appear here once customers have left one on Google.</p></blockquote><div class="t-card__who"><span class="t-card__avatar" aria-hidden="true">?</span><p><strong>Customer name</strong>Area · Google review</p></div></li>`
   )
   .join('\n')}
 </ul>`;
@@ -326,6 +360,7 @@ function render(tpl, ctx, file) {
   out = out
     .replace(/\{\{#placeholders\}\}([\s\S]*?)\{\{\/placeholders\}\}/g, (_, inner) => (cfg.showPlaceholders ? inner : ''))
     .replace(/\{\{photo\s+([\w-]+)\s*\}\}/g, (_, k) => renderPhoto(k))
+    .replace(/\{\{img(!?)\s+([\w-]+)(?:\s+(\w+))?\s*\}\}/g, (_, eager, k, size) => renderImg(k, Boolean(eager), size))
     .replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, k) => icon(k))
     .replace(/\{\{wa:([^}]*)\}\}/g, (_, t) => esc(waUrl(t.trim())))
     .replace(/\{\{mail:([^|}]*)(?:\|([^}]*))?\}\}/g, (_, s, b) => esc(mailtoUrl(s.trim(), (b || '').trim())));
@@ -405,7 +440,10 @@ function build() {
     analytics: cfg.analytics.cloudflareWebAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(cfg.analytics.cloudflareWebAnalyticsToken)}"}'></script>`
       : '',
-    year: String(new Date().getFullYear())
+    year: String(new Date().getFullYear()),
+    preconnect: Object.values(images).some((im) => im && /^https:\/\/images\.unsplash\.com\//.test(im.src || ''))
+      ? '<link rel="preconnect" href="https://images.unsplash.com">'
+      : ''
   };
 
   for (const f of pageFiles) {
@@ -420,6 +458,8 @@ function build() {
     };
     page.canonical = DOMAIN + (page.path === '/404.html' ? '/404.html' : page.path);
     page.waUrl = waUrl(page.waText);
+    // 'Get a quote' goes to the form on this page, or to the contact page if there isn't one.
+    page.quoteUrl = body.includes('{{> enquiry-form}}') ? '#enquiry' : '/contact/#enquiry';
     page.ogImage = DOMAIN + cfg.ogImage;
 
     const ctx = {
@@ -462,8 +502,8 @@ function build() {
         description: `${cfg.tagline} – ${cfg.regionLabel}`,
         start_url: '/',
         display: 'browser',
-        background_color: '#ffffff',
-        theme_color: '#0b1b33',
+        background_color: '#faf7f2',
+        theme_color: '#16191e',
         icons: [
           { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -482,7 +522,7 @@ function build() {
 
 function serve(port = 8080) {
   const http = require('http');
-  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
+  const types = { '.woff2': 'font/woff2', '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
   http
     .createServer((req, res) => {
       let p = decodeURIComponent(req.url.split('?')[0]);

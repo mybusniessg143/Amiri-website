@@ -1,14 +1,17 @@
-<section class="section cta-final" aria-labelledby="cta-final-title">
-  <div class="container cta-final__inner">
-    <div>
-      <h2 id="cta-final-title">Tell us what needs doing</h2>
-      <p>Call, send a WhatsApp message with a photo, or email us. We will tell you honestly whether it is a job for us and when we can come out.</p>
-      <p class="cta-final__avail">{{icon clock}}{{availability.emergencyText}}</p>
-    </div>
-    <div class="cta-group cta-group--stack">
-      <a class="btn btn--primary btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
-      <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
-      <a class="btn btn--light btn--lg" href="mailto:{{email.public}}">{{icon mail}}Email us</a>
+<section class="cta-final" aria-labelledby="cta-final-title">
+  <div class="container">
+    <div class="cta-final__panel reveal">
+      <div class="cta-final__copy">
+        <p class="eyebrow">Get in touch</p>
+        <h2 id="cta-final-title">Need help with your property?</h2>
+        <p>Call, send a WhatsApp message with a photo, or ask for a quote. We will tell you honestly whether it is a job for us and when we can come out.</p>
+        <p class="cta-final__avail"><span class="pulse" aria-hidden="true"></span>{{availability.emergencyText}}</p>
+      </div>
+      <div class="cta-final__actions">
+        <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call now</a>
+        <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
+        <a class="btn btn--ghost btn--lg" href="{{page.quoteUrl}}">{{icon file}}Request a quote</a>
+      </div>
     </div>
   </div>
 </section>

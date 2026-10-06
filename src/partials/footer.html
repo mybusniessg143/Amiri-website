@@ -1,50 +1,66 @@
 <footer class="site-footer">
   <div class="container">
+    <div class="footer-top">
+      <div class="footer-top__brand">
+        <a class="footer-logo" href="/" aria-label="{{tradingName}} – home"><img src="{{logo.srcOnDark}}" width="{{logo.width}}" height="{{logo.height}}" alt="{{logo.alt}}" loading="lazy"></a>
+        <p>Electrical, non-gas plumbing and property maintenance for homes, landlords, letting agents and businesses across {{regionLabel}}.</p>
+      </div>
+      <div class="footer-top__cta">
+        <a class="btn btn--gold" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+        <a class="btn btn--wa" href="{{wa:Hello Amiri Building Services, I would like to ask about a job.}}" rel="noopener">{{icon whatsapp}}WhatsApp</a>
+      </div>
+    </div>
     <div class="footer-grid">
-      <section class="footer-col footer-col--brand" aria-labelledby="ft-contact">
-        <h2 id="ft-contact" class="footer-title">{{tradingName}}</h2>
-        <p>{{tagline}}<br>Based in {{baseTown}}, serving {{regionLabel}}.</p>
-        <ul class="footer-contact">
-          <li><a href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a></li>
-          <li><a href="{{wa:Hello Amiri Building Services, I would like to ask about a job.}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a></li>
-          <li><a href="mailto:{{email.public}}">{{icon mail}}{{email.public}}</a></li>
-        </ul>
-        <p class="footer-small">{{html.hours}}</p>
-      </section>
       <nav class="footer-col" aria-labelledby="ft-services">
         <h2 id="ft-services" class="footer-title">Services</h2>
         <ul>
           <li><a href="/electrical/">Electrical services</a></li>
-          <li><a href="/emergency-electrician/">Emergency electrician</a></li>
           <li><a href="/plumbing/">Plumbing (non-gas)</a></li>
-          <li><a href="/emergency-plumbing/">Emergency plumbing</a></li>
           <li><a href="/property-maintenance/">Property maintenance</a></li>
-          <li><a href="/landlords-commercial/">Landlords, letting agents &amp; commercial</a></li>
+          <li><a href="/landlords-commercial/">Landlords &amp; letting agents</a></li>
+          <li><a href="/landlords-commercial/">Commercial premises</a></li>
         </ul>
       </nav>
-      <nav class="footer-col" aria-labelledby="ft-company">
-        <h2 id="ft-company" class="footer-title">Company</h2>
+      <nav class="footer-col" aria-labelledby="ft-emergency">
+        <h2 id="ft-emergency" class="footer-title">Emergency</h2>
         <ul>
+          <li><a href="/emergency-electrician/">Emergency electrician</a></li>
+          <li><a href="/emergency-plumbing/">Emergency plumbing</a></li>
+          <li><a href="tel:{{phone.tel}}">Call {{phone.display}}</a></li>
+        </ul>
+        <p class="footer-small">{{availability.emergencyText}}</p>
+      </nav>
+      <nav class="footer-col" aria-labelledby="ft-company">
+        <h2 id="ft-company" class="footer-title">Quick links</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
           <li><a href="/about/">About us</a></li>
           <li><a href="/areas/">Areas we cover</a></li>
           <li><a href="/contact/">Contact</a></li>
+          <li><a href="/contact/#enquiry">Request a quote</a></li>
           <li><a href="/privacy/">Privacy notice</a></li>
           <li><a href="/terms/">Terms &amp; conditions</a></li>
         </ul>
         {{html.social}}
         <p class="footer-small">{{html.gbp}}</p>
       </nav>
-      <section class="footer-col" aria-labelledby="ft-areas">
-        <h2 id="ft-areas" class="footer-title">Areas we cover</h2>
-        <p>{{html.areasInline}}, plus {{html.secondaryInline}} {{areas.secondaryNote}}.</p>
-        <p><a href="/areas/">See all areas</a></p>
+      <section class="footer-col" aria-labelledby="ft-contact">
+        <h2 id="ft-contact" class="footer-title">Contact</h2>
+        <ul class="footer-contact">
+          <li><a href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a></li>
+          <li><a href="{{wa:Hello Amiri Building Services, I would like to ask about a job.}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a></li>
+          <li><a href="mailto:{{email.public}}">{{icon mail}}{{email.public}}</a></li>
+        </ul>
+        <p class="footer-small">{{html.hours}}</p>
+        <h2 class="footer-title footer-title--sub">Areas</h2>
+        <p class="footer-small">{{html.areasInline}}, plus {{html.secondaryInline}} {{areas.secondaryNote}}. <a href="/areas/">All areas</a></p>
       </section>
     </div>
     <section class="legal" aria-labelledby="ft-legal">
       <h2 id="ft-legal" class="visually-hidden">Company information</h2>
       <p><strong>{{legalName}}</strong> · Company No. {{companyNumber}} · Registered in {{jurisdiction}}.{{html.jurisdictionFlag}}</p>
       <p>Registered office: {{registeredOffice.lines.0}}, {{registeredOffice.lines.1}}, {{registeredOffice.lines.2}}, {{registeredOffice.lines.3}}, {{registeredOffice.lines.4}}. <em>{{registeredOffice.notice}}</em> We visit customers at their properties.</p>
-      <p>© {{html.year}} {{tradingName}}. Electrical, non-gas plumbing and property maintenance services.</p>
+      <p>© {{html.year}} {{tradingName}}. All rights reserved. Website images are illustrative stock photos unless labelled as our work.</p>
     </section>
   </div>
 </footer>

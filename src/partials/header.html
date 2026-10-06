@@ -1,7 +1,7 @@
 <div class="topbar">
   <div class="container topbar__inner">
-    <p class="topbar__msg">{{icon clock}}<span>{{availability.emergencyText}}</span></p>
-    <p class="topbar__links"><a href="/emergency-electrician/">Emergency electrician</a><a href="/emergency-plumbing/">Emergency plumbing</a></p>
+    <p class="topbar__msg"><span class="pulse" aria-hidden="true"></span><span>{{availability.emergencyText}}</span></p>
+    <p class="topbar__links"><a href="/emergency-electrician/">Emergency electrician</a><a href="/emergency-plumbing/">Emergency plumbing</a><a href="mailto:{{email.public}}">{{email.public}}</a></p>
   </div>
 </div>
 <header class="site-header">
@@ -13,10 +13,14 @@
       <ul>
 {{html.nav}}
       </ul>
+      <div class="site-nav__cta">
+        <a class="btn btn--gold" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
+        <a class="btn btn--wa" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
+      </div>
     </nav>
     <div class="site-header__cta">
       <a class="header-phone" href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call us</small>{{phone.display}}</span></a>
-      <a class="btn btn--wa btn--sm header-wa" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp</a>
+      <a class="btn btn--gold btn--sm header-quote" href="{{page.quoteUrl}}">Get a quote</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">{{icon menu}}<span class="visually-hidden">Open menu</span></button>
     </div>
   </div>

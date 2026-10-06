@@ -1,8 +1,8 @@
 <!--page
 {
   "path": "/",
-  "title": "Electrician & Plumbing Repairs West Drayton | Amiri Building Services",
-  "description": "Electrical work, non-gas plumbing repairs and property maintenance in West Drayton, Hayes, Uxbridge and West London. Call or WhatsApp 07438 635942.",
+  "title": "Electrician & Plumber West Drayton | Amiri Building Services",
+  "description": "Electrician, non-gas plumbing and property maintenance in West Drayton, Hayes, Uxbridge and West London. Homes, landlords and businesses. Call 07438 635942.",
   "priority": 1.0,
   "changefreq": "weekly",
   "bodyClass": "page-home",
@@ -18,236 +18,267 @@
   ]
 }
 -->
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero hero--home" aria-labelledby="hero-title">
   <div class="container hero__grid">
-    <div>
-      <p class="eyebrow">Amiri Building Services · West Drayton</p>
-      <h1 id="hero-title">Electrical, Plumbing &amp; Property Maintenance<span class="hero__sub">Serving West London: {{html.areasInline}}</span></h1>
-      <p class="hero__lead">Local, dependable help for homes, landlords, letting agents and businesses. Whether it is a tripping circuit, a leaking pipe or a list of repairs, tell us what is wrong and we will tell you clearly how we can help.</p>
-      {{> contact-strip}}
-      <ul class="hero__points">
-        <li>{{icon check}}Domestic and commercial work</li>
-        <li>{{icon check}}Landlords and letting agents welcome</li>
-        <li>{{icon check}}Send photos of the job on WhatsApp</li>
-        <li>{{icon check}}Non-gas plumbing repairs</li>
-      </ul>
+    <div class="hero__copy">
+      <p class="hero__badge"><span class="pulse" aria-hidden="true"></span>Local to West Drayton, Hayes, Uxbridge &amp; Heathrow</p>
+      <h1 id="hero-title">Electrical, Plumbing &amp; Property Maintenance <em>Across West London</em></h1>
+      <p class="hero__lead">A trusted local service for homes and businesses. Domestic and commercial work, support for landlords and letting agents, and emergency call-outs, with quick, clear replies by phone and WhatsApp.</p>
+      <div class="hero__actions">
+        <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Emergency? Call now</a>
+        <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
+        <a class="btn btn--ghost btn--lg" href="#enquiry">{{icon file}}Request a quote</a>
+      </div>
+      <div class="hero__contact">
+        <p><a class="hero__tel" href="tel:{{phone.tel}}">{{phone.display}}</a></p>
+        <p><span class="pulse" aria-hidden="true"></span>{{availability.emergencyText}}</p>
+      </div>
     </div>
-    <aside class="callcard" aria-labelledby="callcard-title">
-      <h2 id="callcard-title">Need help now?</h2>
-      <p class="muted mb-0">{{availability.emergencyText}}</p>
-      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
-      <a class="btn btn--primary btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call now</a>
-      <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
-      <p class="callcard__note">{{icon alert}}<span>If there is immediate danger, such as fire, smoke or someone injured, call 999 first.</span></p>
-    </aside>
+    <div class="hero__media">
+      <figure class="frame">{{img! hero half}}</figure>
+      <p class="hero__chip">{{icon check}}Domestic &amp; commercial</p>
+      <div class="hero__float">
+        <span class="hero__float-icon">{{icon camera}}</span>
+        <p><strong>Send us a photo</strong>WhatsApp a picture of the problem and your postcode.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trust-strip" aria-label="Why people choose us">
+  <div class="container">
+    <ul class="trust-strip__list">
+      <li class="trust-item">{{icon pin}}Local West London service</li>
+      <li class="trust-item">{{icon building}}Domestic &amp; commercial</li>
+      <li class="trust-item">{{icon key}}Landlords &amp; letting agents</li>
+      <li class="trust-item">{{icon alert}}Emergency call-outs</li>
+      <li class="trust-item">{{icon check}}Professional &amp; reliable</li>
+    </ul>
   </div>
 </section>
 
 <section class="section" id="services" aria-labelledby="services-title">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">What we do</p>
-      <h2 id="services-title">Three trades, one local contact</h2>
-      <p>Electrical, plumbing and general maintenance from one company, so you are not chasing three different tradespeople.</p>
+    <div class="section-head section-head--split reveal">
+      <div>
+        <p class="eyebrow">Our services</p>
+        <h2 id="services-title">One local team for the jobs that keep a property running</h2>
+      </div>
+      <p>Electrical work, non-gas plumbing and general maintenance from one contact, so you are not chasing three different tradespeople.</p>
     </div>
-    <ul class="grid grid--3">
-      <li class="card service-card">
-        <span class="icon-chip icon-chip--blue">{{icon bolt}}</span>
-        <h3>Electrical services</h3>
-        <p class="muted">Domestic and commercial electrical work, from fault finding to new installations.</p>
-        <ul>
-          <li>{{icon check}}Fault finding and power faults</li>
-          <li>{{icon check}}Tripping circuits</li>
-          <li>{{icon check}}Sockets, switches and lighting</li>
-          <li>{{icon check}}Consumer unit work</li>
-          <li>{{icon check}}First and second fix</li>
-        </ul>
-        <a class="link-arrow" href="/electrical/">Electrical services {{icon arrow}}</a>
+    <ul class="svc-grid reveal-stagger">
+      <li>
+        <article class="svc-card">
+          <figure class="frame svc-card__media">{{img svc-electrical card}}</figure>
+          <div class="svc-card__body">
+            <span class="svc-card__icon">{{icon bolt}}</span>
+            <h3>Electrical</h3>
+            <p>Fault finding, tripping circuits, sockets, lighting, consumer units and first and second fix, for homes and commercial premises.</p>
+            <a class="link-arrow svc-card__link" href="/electrical/">Electrical services {{icon arrow}}</a>
+          </div>
+        </article>
       </li>
-      <li class="card service-card">
-        <span class="icon-chip">{{icon drop}}</span>
-        <h3>Plumbing repairs (non-gas)</h3>
-        <p class="muted">Everyday plumbing problems sorted. We do not carry out gas or boiler work.</p>
-        <ul>
-          <li>{{icon check}}Leaks and accessible pipework</li>
-          <li>{{icon check}}Taps, toilets and cisterns</li>
-          <li>{{icon check}}Isolation valves, traps and wastes</li>
-          <li>{{icon check}}Washing machine and dishwasher connections</li>
-          <li>{{icon check}}Sink plumbing</li>
-        </ul>
-        <a class="link-arrow" href="/plumbing/">Plumbing services {{icon arrow}}</a>
+      <li>
+        <article class="svc-card">
+          <figure class="frame svc-card__media">{{img svc-plumbing card}}</figure>
+          <div class="svc-card__body">
+            <span class="svc-card__icon">{{icon drop}}</span>
+            <h3>Plumbing</h3>
+            <p>Leaks, taps, toilets, cisterns, valves, wastes and appliance connections. Our plumbing is non-gas only.</p>
+            <a class="link-arrow svc-card__link" href="/plumbing/">Plumbing services {{icon arrow}}</a>
+          </div>
+        </article>
       </li>
-      <li class="card service-card">
-        <span class="icon-chip icon-chip--blue">{{icon wrench}}</span>
-        <h3>Property maintenance</h3>
-        <p class="muted">General repairs and small installations for homes, rentals and commercial premises.</p>
-        <ul>
-          <li>{{icon check}}General property repairs</li>
-          <li>{{icon check}}Handyman and minor installation work</li>
-          <li>{{icon check}}Repairs between tenancies</li>
-          <li>{{icon check}}Commercial property maintenance</li>
-        </ul>
-        <a class="link-arrow" href="/property-maintenance/">Property maintenance {{icon arrow}}</a>
+      <li>
+        <article class="svc-card">
+          <figure class="frame svc-card__media">{{img svc-maintenance card}}</figure>
+          <div class="svc-card__body">
+            <span class="svc-card__icon">{{icon wrench}}</span>
+            <h3>Property maintenance</h3>
+            <p>General repairs, minor installations and work between tenancies for homes, rentals, shops and offices.</p>
+            <a class="link-arrow svc-card__link" href="/property-maintenance/">Property maintenance {{icon arrow}}</a>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="svc-card svc-card--emergency">
+          <figure class="frame svc-card__media">{{img svc-emergency card}}</figure>
+          <div class="svc-card__body">
+            <span class="svc-card__icon">{{icon alert}}</span>
+            <h3>Emergency call-outs</h3>
+            <p>Loss of power, a circuit that keeps tripping, or a leak that will not stop. Call to confirm current availability.</p>
+            <a class="link-arrow svc-card__link" href="#emergency">Emergency help {{icon arrow}}</a>
+          </div>
+        </article>
       </li>
     </ul>
   </div>
 </section>
 
-<section class="section section--dark" id="emergency" aria-labelledby="emergency-title">
-  <div class="container">
-    <div class="section-head">
+<section class="section emergency" id="emergency" aria-labelledby="emergency-title">
+  <figure class="frame emergency__bg" aria-hidden="true">{{img emergency full}}</figure>
+  <div class="container emergency__grid">
+    <div class="reveal">
       <p class="eyebrow">Emergency call-outs</p>
-      <h2 id="emergency-title">Lost power or got a leak?</h2>
-      <p>{{availability.emergencyText}} The quickest way to reach us is a phone call. If we cannot answer, send a WhatsApp message with your postcode and a photo.</p>
-    </div>
-    <div class="emergency-grid">
-      <div class="emergency-card">
-        <h3>{{icon bolt}}Electrical emergencies</h3>
-        <ul class="ticks">
-          <li>{{icon check}}Loss of power to all or part of the property</li>
-          <li>{{icon check}}A circuit that keeps tripping</li>
-          <li>{{icon check}}Damaged, scorched or hot sockets</li>
-          <li>{{icon check}}A burning smell from a socket, switch or fitting</li>
-        </ul>
-        <div class="cta-group">
-          <a class="btn btn--primary" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
-          <a class="btn btn--ghost" href="/emergency-electrician/">Emergency electrician</a>
+      <h2 id="emergency-title">Lost power or got a leak? Call us first.</h2>
+      <p class="emergency__lead">Emergency call-outs are available for electrical faults and non-gas plumbing problems. Availability changes day to day, so a phone call is the quickest way to find out when we can attend. If we cannot answer, send a WhatsApp message with your postcode and a photo.</p>
+      <div class="emergency__lists">
+        <div>
+          <h3>{{icon bolt}}Electrical</h3>
+          <ul>
+            <li>Loss of power to all or part of the property</li>
+            <li>A circuit that keeps tripping</li>
+            <li>Damaged, scorched or hot sockets</li>
+            <li>A burning smell from a fitting</li>
+          </ul>
+        </div>
+        <div>
+          <h3>{{icon drop}}Plumbing (non-gas)</h3>
+          <ul>
+            <li>Leaking or burst accessible pipework</li>
+            <li>An overflowing toilet or cistern</li>
+            <li>A failed isolation valve</li>
+            <li>Leaking wastes under sinks and appliances</li>
+          </ul>
         </div>
       </div>
-      <div class="emergency-card">
-        <h3>{{icon drop}}Plumbing emergencies</h3>
-        <ul class="ticks">
-          <li>{{icon check}}Leaking or burst accessible pipework</li>
-          <li>{{icon check}}An overflowing toilet or cistern</li>
-          <li>{{icon check}}A failed isolation valve</li>
-          <li>{{icon check}}Leaking wastes under sinks and appliances</li>
-        </ul>
-        <div class="cta-group">
-          <a class="btn btn--primary" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
-          <a class="btn btn--ghost" href="/emergency-plumbing/">Emergency plumbing</a>
-        </div>
-      </div>
+      <p class="emergency__more"><a href="/emergency-electrician/">Emergency electrician</a><a href="/emergency-plumbing/">Emergency plumbing</a></p>
     </div>
-    <div class="safety mt-2">
-      {{icon alert}}
-      <div>
-        <p><strong>Safety first.</strong> If there is fire, smoke, sparking or someone has had an electric shock, call 999. If you smell gas, leave the property and call the National Gas Emergency Service on 0800 111 999. Only make an area safe if you can do so without putting yourself at risk.</p>
-      </div>
+    <div class="emergency__panel reveal">
+      <p class="emergency__status"><span class="pulse" aria-hidden="true"></span>Emergency call-outs available</p>
+      <h3>Call to confirm current availability</h3>
+      <a class="emergency__number" href="tel:{{phone.tel}}">{{phone.display}}</a>
+      <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call now</a>
+      <a class="btn btn--wa btn--lg" href="{{wa:Hello Amiri Building Services, I have an urgent problem. My postcode is: }}" rel="noopener">{{icon whatsapp}}WhatsApp a photo</a>
+      <p class="emergency__note">{{icon alert}}<span>If there is fire, smoke, sparking or someone has had an electric shock, call 999. If you smell gas, leave the property and call the National Gas Emergency Service on 0800 111 999.</span></p>
     </div>
   </div>
 </section>
 
 <section class="section" id="why" aria-labelledby="why-title">
-  <div class="container">
-    <div class="split">
-      <div>
-        <p class="eyebrow">Why customers call us</p>
-        <h2 id="why-title">Straightforward, local and easy to reach</h2>
-        <p class="lead">We are a local building services company based in West Drayton. We keep things simple: answer the phone, explain things clearly, do the job properly and keep you informed.</p>
+  <div class="container why__grid">
+    <div class="why__media reveal">
+      <figure class="frame">{{img why half}}</figure>
+      <figure class="frame frame--small">{{img bathroom card}}</figure>
+      <p class="why__quote"><strong>Honest about what we do</strong>If a job needs a different specialist, we will tell you.</p>
+    </div>
+    <div>
+      <div class="reveal">
+        <p class="eyebrow">Why choose Amiri</p>
+        <h2 id="why-title">Straightforward, local and easy to deal with</h2>
+        <p class="lead">We keep things simple: answer the phone, explain things clearly, do the job properly and keep you informed from first message to finished work.</p>
       </div>
-      <ul class="ticks">
-        <li>{{icon check}}<span><strong>Local to you.</strong> Based in West Drayton and working mainly across Hayes, Uxbridge, Hillingdon and the Heathrow area.</span></li>
-        <li>{{icon check}}<span><strong>Easy to contact.</strong> Call, WhatsApp or email, whichever suits you. Photos on WhatsApp are welcome.</span></li>
-        <li>{{icon check}}<span><strong>More than one trade.</strong> Electrical, plumbing and maintenance from one contact.</span></li>
-        <li>{{icon check}}<span><strong>Clear communication.</strong> We explain what we have found and what we recommend before doing extra work.</span></li>
-        <li>{{icon check}}<span><strong>Honest about what we do.</strong> Our plumbing is non-gas only. If a job needs a different specialist, we will tell you.</span></li>
+      <ul class="why-list reveal-stagger">
+        <li class="why-item">{{icon pin}}<div><h3>Reliable local service</h3><p>Based in West Drayton, working across Hayes, Uxbridge, Hillingdon and Heathrow.</p></div></li>
+        <li class="why-item">{{icon chat}}<div><h3>Clear communication</h3><p>We explain what we found and what we recommend before doing extra work.</p></div></li>
+        <li class="why-item">{{icon wrench}}<div><h3>Professional workmanship</h3><p>Careful, tidy work, done properly and left clean.</p></div></li>
+        <li class="why-item">{{icon building}}<div><h3>Domestic &amp; commercial</h3><p>Houses and flats, shops, offices and small commercial premises.</p></div></li>
+        <li class="why-item">{{icon key}}<div><h3>Landlords welcome</h3><p>Tenant repairs, access arranged and photos for your records.</p></div></li>
+        <li class="why-item">{{icon whatsapp}}<div><h3>WhatsApp communication</h3><p>Send photos and updates in the app you already use.</p></div></li>
+        <li class="why-item">{{icon receipt}}<div><h3>Transparent quoting</h3><p>We explain how the work will be charged before we start.</p></div></li>
       </ul>
     </div>
   </div>
 </section>
 
-{{> trust}}
-
-<section class="section section--alt" id="landlords" aria-labelledby="landlords-title">
-  <div class="container split split--even">
-    <div>
-      <p class="eyebrow">Landlords, letting agents &amp; property managers</p>
-      <h2 id="landlords-title">A dependable contractor for your properties</h2>
-      <p>Tenant-reported faults need sorting quickly and properly, with clear records. We handle electrical faults, plumbing repairs and general maintenance across your portfolio in West London.</p>
-      <ul class="ticks">
-        <li>{{icon check}}Responsive repairs, including emergency call-outs</li>
-        <li>{{icon check}}Liaising with tenants to arrange access</li>
-        <li>{{icon check}}Photos of completed work for your records</li>
-        <li>{{icon check}}Clear invoices for each job</li>
+<section class="section b2b" id="landlords" aria-labelledby="landlords-title">
+  <div class="container b2b__grid">
+    <div class="b2b__intro reveal">
+      <p class="eyebrow">Landlords, letting agents &amp; commercial</p>
+      <h2 id="landlords-title">A dependable contractor for your properties and premises</h2>
+      <p class="b2b__lead">Tenant-reported faults need sorting properly, with clear records. We handle electrical, plumbing and maintenance work across your portfolio or premises, so you have one contact for all three.</p>
+      <ul class="audience" aria-label="Who we work with">
+        <li>Landlords</li>
+        <li>Letting agents</li>
+        <li>Property managers</li>
+        <li>Commercial clients</li>
       </ul>
-      <a class="btn btn--primary" href="/landlords-commercial/">Discuss contractor support</a>
+      <div class="cta-group">
+        <a class="btn btn--gold btn--lg" href="/landlords-commercial/">Discuss contractor support</a>
+        <a class="btn btn--ghost btn--lg" href="{{wa:Hello Amiri Building Services, I manage properties and would like to discuss contractor support. My company and area: }}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
+      </div>
     </div>
-    {{photo maintenance}}
-  </div>
-</section>
-
-<section class="section" id="commercial" aria-labelledby="commercial-title">
-  <div class="container split split--even">
-    {{photo commercial}}
     <div>
-      <p class="eyebrow">Commercial</p>
-      <h2 id="commercial-title">Shops, offices and small commercial premises</h2>
-      <p>Where possible, we plan work around your opening hours to keep disruption to a minimum. Typical commercial jobs include lighting upgrades, emergency lighting, extra sockets, fault finding, small fit-out work and ongoing maintenance.</p>
-      <p>We also support contractors who need subcontract electrical or maintenance help.</p>
-      <a class="link-arrow" href="/landlords-commercial/">Commercial and contractor work {{icon arrow}}</a>
+      <figure class="frame b2b__media reveal">{{img landlords half}}</figure>
+      <ul class="b2b-list reveal-stagger">
+      <li class="b2b-item">{{icon bolt}}<h3>Electrical</h3><p>Faults, sockets, lighting, emergency lighting and consumer unit work.</p></li>
+      <li class="b2b-item">{{icon drop}}<h3>Plumbing (non-gas)</h3><p>Leaks, taps, toilets, valves, wastes and appliance connections.</p></li>
+      <li class="b2b-item">{{icon wrench}}<h3>Maintenance</h3><p>General repairs, minor installations and work between tenancies.</p></li>
+      <li class="b2b-item">{{icon alert}}<h3>Emergency call-outs</h3><p>For leaks, loss of power and other urgent problems. Call to confirm availability.</p></li>
+      <li class="b2b-item">{{icon calendar}}<h3>Ongoing maintenance</h3><p>A regular contractor who gets to know your properties and preferences.</p></li>
+      <li class="b2b-item">{{icon users}}<h3>Tenant repairs</h3><p>We arrange access with tenants and send photos and an invoice per job.</p></li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<section class="section section--alt" id="process" aria-labelledby="process-title">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">How it works</p>
-      <h2 id="process-title">Four simple steps</h2>
-    </div>
-    <ol class="steps">
-      <li><h3>Get in touch</h3><p>Call, WhatsApp or email. Tell us the problem and your postcode. Photos help.</p></li>
-      <li><h3>We talk it through</h3><p>We ask a few questions, check availability and arrange a visit.</p></li>
-      <li><h3>Agree the work</h3><p>We explain what is needed and how it will be charged before we start.</p></li>
-      <li><h3>Job done</h3><p>We complete the work, tidy up and send photos and an invoice where needed.</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="section" id="work" aria-labelledby="work-title">
-  <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">Our work</p>
-      <h2 id="work-title">Recent jobs</h2>
-      <p>Photos of our own completed work will be shown here. We do not use stock photos to represent jobs we have done.</p>
-    </div>
-    <ul class="gallery">
-      <li>{{photo consumer-unit}}</li>
-      <li>{{photo lighting}}</li>
-      <li>{{photo sockets}}</li>
-      <li>{{photo electrical-install}}</li>
-      <li>{{photo plumbing-repair}}</li>
-      <li>{{photo taps-toilets}}</li>
-      <li>{{photo before-after}}</li>
-      <li>{{photo owner-on-site}}</li>
-    </ul>
   </div>
 </section>
 
 <section class="section section--alt" id="areas" aria-labelledby="areas-title">
-  <div class="container">
-    <div class="section-head">
+  <div class="container areas-home__grid">
+    <div class="reveal">
       <p class="eyebrow">Areas we cover</p>
       <h2 id="areas-title">Based in West Drayton, working across West London</h2>
-      <p>Our core areas are listed below. We also cover {{html.secondaryInline}} {{areas.secondaryNote}}.</p>
+      <p class="lead">Our core areas are below. We also cover {{html.secondaryInline}} {{areas.secondaryNote}}. Not sure? Send us your postcode.</p>
+      <ul class="area-list">{{html.areasCoreList}}<li>{{icon pin}}West London</li></ul>
+      <ul class="area-list area-list--secondary">{{html.areasSecondaryList}}</ul>
+      <a class="link-arrow" href="/areas/">More about the areas we cover {{icon arrow}}</a>
     </div>
-    <ul class="area-chips">{{html.areasCoreList}}</ul>
-    <a class="link-arrow" href="/areas/">More about the areas we cover {{icon arrow}}</a>
+    <div class="map-card reveal" aria-hidden="true">
+      <figure class="frame map-card__img">{{img areas half}}</figure>
+      <div class="map-card__rings"><span></span><span></span><span></span></div>
+      <span class="map-pin map-pin--uxbridge">{{icon pin}}Uxbridge</span>
+      <span class="map-pin map-pin--hillingdon">{{icon pin}}Hillingdon</span>
+      <span class="map-pin map-pin--hayes">{{icon pin}}Hayes</span>
+      <span class="map-pin map-pin--heathrow">{{icon pin}}Heathrow</span>
+      <span class="map-pin map-pin--west-london">West London</span>
+      <span class="map-pin map-pin--base map-pin--west-drayton">{{icon pin}}West Drayton</span>
+      <p class="map-card__caption">Illustrative map, not to scale</p>
+    </div>
   </div>
 </section>
 
-{{> reviews}}
+<section class="section" id="process" aria-labelledby="process-title">
+  <div class="container">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 id="process-title">From first message to finished job</h2>
+      <p>Four simple steps, with no surprises along the way.</p>
+    </div>
+    <ol class="process reveal-stagger">
+      <li>{{icon phone}}<h3>Contact us</h3><p>Call, WhatsApp or email. Tell us the problem and your postcode.</p></li>
+      <li>{{icon camera}}<h3>Send photos or details</h3><p>A few photos or a short video help us understand the job and bring the right parts.</p></li>
+      <li>{{icon receipt}}<h3>Receive a clear quote</h3><p>We explain what is needed and how it will be charged before we start.</p></li>
+      <li>{{icon check}}<h3>We attend and complete</h3><p>We do the work, tidy up and send photos and an invoice where needed.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section--alt" id="reviews" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="section-head section-head--split reveal">
+      <div>
+        <p class="eyebrow">Testimonials</p>
+        <h2 id="reviews-title">What our customers say</h2>
+      </div>
+      <p>We only publish genuine reviews from real customers. As reviews come in on our Google profile, they will appear here.</p>
+    </div>
+    {{html.reviews}}
+    <div class="review-cta">
+      <p><strong>Used Amiri Building Services? Leave an honest Google review.</strong> It helps local people find a tradesperson they can trust.</p>
+      {{html.reviewCta}}
+    </div>
+  </div>
+</section>
 
 <section class="section" id="enquiry" aria-labelledby="enquiry-title">
   <div class="container split">
-    <div>
+    <div class="quote__aside reveal">
       <p class="eyebrow">Request a quote</p>
       <h2 id="enquiry-title">Tell us about the job</h2>
-      <p class="lead">Fill in the short form and it will open WhatsApp with your details ready to send. Prefer to talk? Call us.</p>
-      <ul class="ticks">
-        <li>{{icon phone}}<span>Call <a href="tel:{{phone.tel}}">{{phone.display}}</a></span></li>
-        <li>{{icon whatsapp}}<span><a href="{{page.waUrl}}" rel="noopener">WhatsApp us</a>, photos welcome</span></li>
-        <li>{{icon mail}}<span>Email <a href="mailto:{{email.public}}">{{email.public}}</a></span></li>
+      <p class="lead">Fill in the short form and it opens WhatsApp with your details ready to send. Prefer to talk? Call us.</p>
+      <ul class="quote__methods">
+        <li><a href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call</small><strong>{{phone.display}}</strong></span></a></li>
+        <li><a href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}<span><small>WhatsApp, photos welcome</small><strong>Message us</strong></span></a></li>
+        <li><a href="mailto:{{email.public}}">{{icon mail}}<span><small>Email</small><strong>{{email.public}}</strong></span></a></li>
       </ul>
     </div>
     {{> enquiry-form}}
@@ -256,10 +287,11 @@
 
 <section class="section section--alt" id="faq" aria-labelledby="faq-title">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head section-head--center">
+      <p class="eyebrow">FAQ</p>
       <h2 id="faq-title">Frequently asked questions</h2>
     </div>
-    {{html.faq}}
+    <div class="faq--center">{{html.faq}}</div>
   </div>
 </section>
 
