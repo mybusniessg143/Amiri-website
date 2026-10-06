@@ -1,0 +1,89 @@
+<!--page
+{
+  "path": "/contact/",
+  "title": "Contact Us | Call, WhatsApp or Email | Amiri Building Services",
+  "description": "Call 07438 635942, WhatsApp or email info@amiribuildingservices.com for electrical, plumbing and maintenance work in West Drayton and West London.",
+  "breadcrumb": "Contact",
+  "priority": 0.8,
+  "ogType": "website"
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container">
+    <p class="eyebrow">Contact us</p>
+    <h1 id="page-title">Get in touch</h1>
+    <p class="hero__lead">Call, send a WhatsApp message or email. For anything urgent, calling is quickest. {{availability.emergencyText}}</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="methods-title">
+  <div class="container">
+    <h2 id="methods-title" class="visually-hidden">Ways to contact us</h2>
+    <ul class="contact-methods">
+      <li class="card contact-method">
+        <span class="icon-chip icon-chip--blue">{{icon phone}}</span>
+        <h3>Phone</h3>
+        <a class="big" href="tel:{{phone.tel}}">{{phone.display}}</a>
+        <p class="muted mb-0">Best for emergencies and urgent jobs. From abroad: {{phone.international}}.</p>
+      </li>
+      <li class="card contact-method">
+        <span class="icon-chip">{{icon whatsapp}}</span>
+        <h3>WhatsApp</h3>
+        <a class="big" href="{{page.waUrl}}" rel="noopener">Message us</a>
+        <p class="muted mb-0">Ideal for sending photos or videos of the problem. <a href="{{wa:Hello Amiri Building Services, I would like to send some photos of a job. My postcode is: }}" rel="noopener">Send photos</a>.</p>
+      </li>
+      <li class="card contact-method">
+        <span class="icon-chip icon-chip--blue">{{icon mail}}</span>
+        <h3>Email</h3>
+        <a class="big" href="mailto:{{email.public}}">{{email.public}}</a>
+        <p class="muted mb-0">Best for quotes, job lists and landlord or commercial enquiries.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="how-title">
+  <div class="container split split--even">
+    <div>
+      <h2 id="how-title">How enquiries work</h2>
+      <ol class="steps steps--compact">
+        <li><h3>Send the details</h3><p>Your name, postcode, the problem and how urgent it is. Photos help.</p></li>
+        <li><h3>We get back to you</h3><p>We reply by phone, WhatsApp or email, whichever you used.</p></li>
+        <li><h3>We arrange a visit</h3><p>We agree a time, or tell you honestly if we cannot help.</p></li>
+        <li><h3>We explain the cost</h3><p>Before any work starts, we explain how it will be charged.</p></li>
+      </ol>
+    </div>
+    <div>
+      <h2>Availability</h2>
+      <p>{{html.hours}}</p>
+      <p><strong>Emergencies:</strong> {{availability.emergencyText}}</p>
+      <div class="safety">
+        {{icon alert}}
+        <div><p><strong>Danger to life?</strong> If there is fire, smoke or someone has had an electric shock, call 999. If you smell gas, call the National Gas Emergency Service on <a href="tel:08001119999">0800 111 999</a>.</p></div>
+      </div>
+      <h2 class="mt-2">Where we work</h2>
+      <p>We visit customers at their properties in {{html.areasInline}}, and also cover {{html.secondaryInline}} {{areas.secondaryNote}}. <a href="/areas/">Areas we cover</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Send an enquiry</h2>
+      <p class="lead">Fill in the form and press send. It opens WhatsApp, or your email app, with the message written for you.</p>
+      <p class="muted">Nothing is stored on this website. See our <a href="/privacy/">privacy notice</a>.</p>
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section section--alt section--tight" aria-labelledby="company-title">
+  <div class="container">
+    <h2 id="company-title">Company information</h2>
+    <p><strong>{{legalName}}</strong> · Company No. {{companyNumber}} · Registered in {{jurisdiction}}{{html.jurisdictionFlag}}</p>
+    <p class="mb-0">Our registered office address is shown at the bottom of every page for legal purposes. <em>{{registeredOffice.notice}}</em> We are a mobile business and do not see customers there, so please call, WhatsApp or email instead.</p>
+  </div>
+</section>
+
+{{> cta-final}}

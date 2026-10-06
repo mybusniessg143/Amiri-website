@@ -1,0 +1,17 @@
+{
+  "_README": "Real work photos. To add one: put the file in /assets/images/work/ (WebP preferred, about 1200px wide), then fill in 'src', 'width', 'height' and a description in 'alt'. While 'src' is empty a clearly labelled placeholder is shown. Only use photos of your own work. Optional 'avif' gives an even smaller file for browsers that support it.",
+
+  "consumer-unit":     { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Consumer unit installed by Amiri Building Services", "label": "Consumer unit work" },
+  "lighting":          { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Lighting installation by Amiri Building Services", "label": "Lighting / downlights" },
+  "sockets":           { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "New sockets and switches fitted by Amiri Building Services", "label": "Sockets and switches" },
+  "electrical-install":{ "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Electrical installation work by Amiri Building Services", "label": "Electrical installation (first / second fix)" },
+  "plumbing-repair":   { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Plumbing repair by Amiri Building Services", "label": "Plumbing repair" },
+  "taps-toilets":      { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Tap and toilet repair by Amiri Building Services", "label": "Taps / toilets" },
+  "maintenance":       { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Completed property maintenance job by Amiri Building Services", "label": "Completed maintenance work" },
+  "commercial":        { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Commercial electrical work by Amiri Building Services", "label": "Commercial / shop work" },
+  "before-after":      { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Before and after photos of a repair by Amiri Building Services", "label": "Before / after" },
+  "owner-on-site":     { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Waris from Amiri Building Services working on site", "label": "Waris working on site" },
+  "vehicle-tools":     { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Amiri Building Services van and tools", "label": "Company vehicle / tools (future)" },
+  "emergency-lighting":{ "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Emergency lighting installed in a commercial property", "label": "Emergency lighting" },
+  "appliance":         { "src": "", "avif": "", "width": 1200, "height": 900, "alt": "Washing machine connection fitted by Amiri Building Services", "label": "Appliance connection" }
+}

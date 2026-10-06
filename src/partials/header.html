@@ -1,0 +1,23 @@
+<div class="topbar">
+  <div class="container topbar__inner">
+    <p class="topbar__msg">{{icon clock}}<span>{{availability.emergencyText}}</span></p>
+    <p class="topbar__links"><a href="/emergency-electrician/">Emergency electrician</a><a href="/emergency-plumbing/">Emergency plumbing</a></p>
+  </div>
+</div>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/" aria-label="{{tradingName}} – home">
+      <img src="{{logo.src}}" width="{{logo.width}}" height="{{logo.height}}" alt="{{logo.alt}}">
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+{{html.nav}}
+      </ul>
+    </nav>
+    <div class="site-header__cta">
+      <a class="header-phone" href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call us</small>{{phone.display}}</span></a>
+      <a class="btn btn--wa btn--sm header-wa" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">{{icon menu}}<span class="visually-hidden">Open menu</span></button>
+    </div>
+  </div>
+</header>

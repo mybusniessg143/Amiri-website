@@ -1,0 +1,24 @@
+# Cloudflare Pages response headers. See CLOUDFLARE_DEPLOYMENT.md (Security headers).
+# If you add a new external service (e.g. a chat back end on another domain, a map or video embed),
+# you must add its domain to the Content-Security-Policy below or it will be blocked.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; img-src 'self' data:; style-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# CSS and JS are linked with ?v=<hash>, so they can be cached for a year.
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images and icons: cache for a week (filenames are not versioned).
+/assets/images/*
+  Cache-Control: public, max-age=604800
+/assets/icons/*
+  Cache-Control: public, max-age=604800

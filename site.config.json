@@ -1,0 +1,97 @@
+{
+  "_README": "This is the ONE place to change business details. Edit, save, then run `node build.js` (Cloudflare Pages does this automatically on every push). Never put API keys or passwords in this file: it is public.",
+
+  "legalName": "AMIRI BUILDING SERVICES LTD",
+  "tradingName": "Amiri Building Services",
+  "companyNumber": "17472711",
+  "jurisdiction": "England and Wales",
+  "jurisdictionVerified": false,
+
+  "domain": "https://amiribuildingservices.com",
+  "tagline": "Electrical | Plumbing | Property Maintenance",
+  "regionLabel": "West London",
+  "baseTown": "West Drayton",
+
+  "phone": {
+    "display": "07438 635942",
+    "international": "+44 7438 635942",
+    "tel": "+447438635942"
+  },
+  "whatsapp": {
+    "number": "447438635942",
+    "_note": "Digits only, country code first, no + or spaces. Change this if you get a separate WhatsApp Business number."
+  },
+  "email": {
+    "public": "info@amiribuildingservices.com",
+    "owner": "waris@amiribuildingservices.com",
+    "_note": "Only the public address is shown on the website. The owner address is kept here for reference and for future back-end notifications."
+  },
+
+  "registeredOffice": {
+    "lines": ["25 Farringdon House", "29 Park Lodge Avenue", "West Drayton", "UB7 9FX", "United Kingdom"],
+    "notice": "Registered office — not a customer service location."
+  },
+
+  "areas": {
+    "core": ["West Drayton", "Hayes", "Uxbridge", "Hillingdon", "Heathrow"],
+    "secondary": ["Southall", "Ruislip", "Iver", "Langley", "Slough", "Ealing"],
+    "secondaryNote": "and surrounding West London areas"
+  },
+
+  "availability": {
+    "emergencyText": "Emergency call-outs available — call to confirm current availability.",
+    "generalText": "Call, WhatsApp or email and we will confirm availability for your job."
+  },
+
+  "hours": {
+    "confirmed": false,
+    "displayText": "",
+    "_note": "Leave confirmed=false until you have decided your hours. When confirmed, set displayText (e.g. 'Monday to Friday 8am–6pm, Saturday 9am–1pm') and fill openingHoursSpecification so search engines can read them.",
+    "openingHoursSpecification": [
+      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" }
+    ]
+  },
+
+  "showPlaceholders": true,
+  "_showPlaceholdersNote": "true = show clearly labelled 'owner to add' boxes for credentials, reviews and the review link. Set to false before launch if you have not filled them in; empty items will then be hidden instead.",
+
+  "credentials": [
+    { "key": "experience", "label": "Years of experience", "value": "", "verified": false },
+    { "key": "qualifications", "label": "Electrical qualifications", "value": "", "verified": false },
+    { "key": "ecs", "label": "ECS card", "value": "", "verified": false },
+    { "key": "insurance", "label": "Public liability insurance", "value": "", "verified": false },
+    { "key": "accreditations", "label": "Verified accreditations / scheme memberships", "value": "", "verified": false }
+  ],
+
+  "reviews": [],
+  "_reviewsNote": "Add ONLY genuine reviews, copied word for word with permission or from your Google Business Profile. Format: { \"author\": \"First name + initial\", \"text\": \"...\", \"rating\": 5, \"date\": \"2026-11-01\", \"source\": \"Google\" }",
+
+  "googleReviewUrl": "",
+  "googleBusinessProfileUrl": "",
+
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "tiktok": "",
+    "youtube": ""
+  },
+
+  "logo": {
+    "src": "/assets/images/logo-placeholder.svg",
+    "width": 220,
+    "height": 48,
+    "alt": "Amiri Building Services"
+  },
+  "ogImage": "/assets/images/og-image.png",
+
+  "aiChat": {
+    "enabled": false,
+    "endpoint": "/api/chat",
+    "_note": "AI_CHAT_ENABLED. Keep false until the secure back end in AI_RECEPTIONIST_PLAN.md is live and tested. When false, no chat code is loaded at all."
+  },
+
+  "analytics": {
+    "cloudflareWebAnalyticsToken": "",
+    "_note": "Optional. Prefer turning on Web Analytics in the Cloudflare Pages dashboard (no code needed). Only fill this if you use the manual JS snippet. Do NOT add Google Analytics, Meta Pixel or other trackers without a consent mechanism."
+  }
+}

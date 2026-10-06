@@ -1,0 +1,97 @@
+<!--page
+{
+  "path": "/areas/",
+  "title": "Areas We Cover: West Drayton, Hayes, Uxbridge | Amiri",
+  "description": "Electrical, plumbing and maintenance in West Drayton, Hayes, Uxbridge, Hillingdon and Heathrow, plus Southall, Ruislip, Slough and Ealing.",
+  "breadcrumb": "Areas we cover",
+  "priority": 0.8,
+  "waText": "Hello Amiri Building Services, do you cover my area? My postcode is: ",
+  "faq": [
+    { "q": "Do you cover my postcode?", "a": "If you are in or near West Drayton, Hayes, Uxbridge, Hillingdon or Heathrow, almost certainly. For Southall, Ruislip, Iver, Langley, Slough, Ealing and other parts of West London, send us your postcode and the job and we will confirm." },
+    { "q": "Do you work across London or the rest of the UK?", "a": "No. We are a local company and concentrate on West London and the nearby Buckinghamshire and Berkshire border areas so that we can get to customers reliably." },
+    { "q": "Do I need to come to you?", "a": "No. We visit customers at their properties. We do not have a shop or premises for customers to visit." }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container">
+    <p class="eyebrow">Areas we cover</p>
+    <h1 id="page-title">Local to West Drayton, working across West London</h1>
+    <p class="hero__lead">We are a local company. We visit customers at their properties within a practical travelling distance of {{baseTown}}, so we can get to you reliably, including for urgent jobs.</p>
+    {{> contact-strip}}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="core-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="core-title">Our core areas</h2>
+      <p>These are the areas we work in most and where we can usually attend most easily, including for emergency call-outs (subject to availability).</p>
+    </div>
+    <ul class="area-chips">{{html.areasCoreList}}</ul>
+
+    <div class="area-block" id="west-drayton">
+      <h3>{{icon pin}}West Drayton and Yiewsley</h3>
+      <p>West Drayton is our home base. Housing here ranges from older terraces and 1930s semi-detached homes to newer flats near the station, and each brings its own jobs: older wiring and consumer units in period properties, and leaks, valves and appliance connections in modern flats where a problem in one unit can quickly affect the one below.</p>
+      <p>Because we are local, West Drayton, Yiewsley and the surrounding streets are the easiest place for us to attend at short notice.</p>
+    </div>
+
+    <div class="area-block" id="hayes">
+      <h3>{{icon pin}}Hayes and Harlington</h3>
+      <p>Hayes has a large number of family homes, rented properties and flats, alongside shops and business units. We help homeowners with everyday electrical and plumbing faults, and landlords and letting agents with tenant-reported repairs and maintenance between tenancies.</p>
+      <p>For shops and small businesses in and around Hayes town centre we carry out lighting, socket and fault-finding work, planned where possible to avoid disrupting trade.</p>
+    </div>
+
+    <div class="area-block" id="uxbridge">
+      <h3>{{icon pin}}Uxbridge</h3>
+      <p>Uxbridge combines a busy town centre of shops and offices with residential streets and a large rental market, including shared and student housing. That means plenty of call-outs for tripping circuits, overloaded sockets, failed lighting, leaking wastes and worn-out taps and toilet mechanisms.</p>
+      <p>Landlords and agents in Uxbridge can use us as a contractor who keeps tenants informed and sends photos once a job is done.</p>
+    </div>
+
+    <div class="area-block" id="hillingdon">
+      <h3>{{icon pin}}Hillingdon</h3>
+      <p>Much of Hillingdon is established residential housing: semis, terraces and bungalows, many of which have had extensions and alterations over the years. Typical jobs include adding sockets and lighting, replacing old switches and fittings, finding faults on circuits that have been altered, and fixing leaks and toilet problems.</p>
+    </div>
+
+    <div class="area-block" id="heathrow">
+      <h3>{{icon pin}}Heathrow and surrounding villages</h3>
+      <p>Around Heathrow, including Harmondsworth, Sipson, Harlington and Longford, there is a mix of homes, rented accommodation and businesses that serve the airport. We help property owners and small businesses with electrical, plumbing and maintenance work, Many people here work shifts, so tell us what times suit you when you get in touch.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="secondary-title">
+  <div class="container split split--even">
+    <div>
+      <h2 id="secondary-title">Other areas we cover</h2>
+      <p>We also take on work in the following areas {{areas.secondaryNote}}. These are further from our base, so please send your postcode and a description of the job and we will confirm whether we can help and when.</p>
+      <ul class="area-chips area-chips--secondary">{{html.areasSecondaryList}}</ul>
+      <p>Outside these areas? For larger jobs and regular contract work, ask us anyway.</p>
+    </div>
+    <div class="note-box">
+      <h3>We come to you</h3>
+      <p>Amiri Building Services is a mobile, service-area business. We visit customers at their homes and business premises. We do not have a shop, showroom or office for customers to visit.</p>
+      <p class="mb-0">{{html.gbp}}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Check we cover your area</h2>
+      <p class="lead">Send us your postcode and the job. We will tell you straight away whether we can help.</p>
+      <p><a href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}} Send your postcode on WhatsApp</a></p>
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Questions about areas</h2></div>
+    {{html.faq}}
+  </div>
+</section>
+
+{{> cta-final}}

@@ -1,0 +1,81 @@
+<form class="enquiry card" id="enquiry-form" method="dialog" novalidate data-default-category="{{page.formCategory}}" aria-describedby="enquiry-intro">
+  <h3 class="enquiry__title">{{icon whatsapp}}Quick enquiry</h3>
+  <p id="enquiry-intro" class="muted">Fill this in and press send. It opens WhatsApp with your details already written, ready for you to send. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+  <div class="form-errors" id="enquiry-errors" role="alert" aria-live="assertive" hidden></div>
+
+  <div class="form-row form-row--2">
+    <div class="field">
+      <label for="eq-name">Your name <span aria-hidden="true">*</span></label>
+      <input id="eq-name" name="name" type="text" autocomplete="name" required maxlength="80">
+    </div>
+    <div class="field">
+      <label for="eq-postcode">Postcode <span aria-hidden="true">*</span></label>
+      <input id="eq-postcode" name="postcode" type="text" autocomplete="postal-code" required maxlength="10" aria-describedby="eq-postcode-hint" autocapitalize="characters">
+      <p class="hint" id="eq-postcode-hint">For example UB7 9AA</p>
+    </div>
+  </div>
+
+  <fieldset class="field">
+    <legend>Type of work <span aria-hidden="true">*</span></legend>
+    <div class="choice-group">
+      <label class="choice"><input type="radio" name="category" value="Electrical" required><span>Electrical</span></label>
+      <label class="choice"><input type="radio" name="category" value="Plumbing (non-gas)"><span>Plumbing (non-gas)</span></label>
+      <label class="choice"><input type="radio" name="category" value="Property maintenance"><span>Property maintenance</span></label>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <label for="eq-service">Service required</label>
+    <select id="eq-service" name="service">
+      <option value="">Choose one (optional)</option>
+      <optgroup label="Electrical" data-category="Electrical">
+        <option>Fault finding / power fault</option>
+        <option>Tripping circuit</option>
+        <option>Sockets or switches</option>
+        <option>Lighting / downlights</option>
+        <option>Emergency lighting</option>
+        <option>Consumer unit</option>
+        <option>First / second fix</option>
+        <option>Commercial electrical work</option>
+      </optgroup>
+      <optgroup label="Plumbing (non-gas)" data-category="Plumbing (non-gas)">
+        <option>Water leak</option>
+        <option>Tap repair or replacement</option>
+        <option>Toilet or cistern problem</option>
+        <option>Isolation valve</option>
+        <option>Waste pipe or trap</option>
+        <option>Washing machine / dishwasher connection</option>
+        <option>Sink plumbing</option>
+      </optgroup>
+      <optgroup label="Property maintenance" data-category="Property maintenance">
+        <option>General repair</option>
+        <option>Minor installation</option>
+        <option>Landlord / letting agent repair</option>
+        <option>Commercial maintenance</option>
+      </optgroup>
+      <option>Not sure / other</option>
+    </select>
+  </div>
+
+  <fieldset class="field">
+    <legend>How urgent is it? <span aria-hidden="true">*</span></legend>
+    <div class="choice-group">
+      <label class="choice"><input type="radio" name="urgency" value="Emergency – needs attention as soon as possible" required><span>Emergency</span></label>
+      <label class="choice"><input type="radio" name="urgency" value="Planned work – flexible on timing"><span>Planned work</span></label>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <label for="eq-desc">Short description of the problem <span aria-hidden="true">*</span></label>
+    <textarea id="eq-desc" name="description" rows="4" required maxlength="1000" aria-describedby="eq-desc-hint"></textarea>
+    <p class="hint" id="eq-desc-hint">What is happening, where in the property, and anything you have already tried.</p>
+  </div>
+
+  <div class="enquiry__actions">
+    <button class="btn btn--wa btn--lg" type="submit">{{icon whatsapp}}Send enquiry on WhatsApp</button>
+    <button class="btn btn--outline" type="button" data-send-email>{{icon mail}}Send by email instead</button>
+  </div>
+  <p class="enquiry__photos">{{icon camera}}<a href="{{wa:Hello Amiri Building Services, I would like to send some photos of a job. My name is:   My postcode is: }}" rel="noopener">Send photos on WhatsApp</a> <span class="muted">Photos help us understand the job before we visit.</span></p>
+  <p class="form-privacy">Nothing you type here is stored on this website. Your message only goes to us when you press send in WhatsApp or your email app. See our <a href="/privacy/">privacy notice</a>.</p>
+  <noscript><p class="form-privacy"><strong>This form needs JavaScript.</strong> Please call <a href="tel:{{phone.tel}}">{{phone.display}}</a>, <a href="{{wa:Hello Amiri Building Services}}">WhatsApp us</a> or email <a href="mailto:{{email.public}}">{{email.public}}</a>.</p></noscript>
+</form>

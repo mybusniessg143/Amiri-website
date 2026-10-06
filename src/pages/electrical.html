@@ -1,0 +1,154 @@
+<!--page
+{
+  "path": "/electrical/",
+  "title": "Electrician in West Drayton, Hayes & Uxbridge | Amiri",
+  "description": "Domestic and commercial electrician in West London: fault finding, tripping circuits, sockets, lighting, emergency lighting and consumer units.",
+  "breadcrumb": "Electrical services",
+  "priority": 0.9,
+  "formCategory": "Electrical",
+  "waText": "Hello Amiri Building Services, I need an electrician. The problem is:   My postcode is: ",
+  "service": { "name": "Electrical services", "serviceType": "Electrician", "description": "Domestic and commercial electrical fault finding, repairs, sockets, switches, lighting, emergency lighting, consumer unit work and first and second fix installations in West London." },
+  "faq": [
+    { "q": "My electrics keep tripping. What should I do?", "a": "A circuit that keeps tripping is a sign that something is wrong, so do not keep resetting it or try to bypass it. If you can, note which circuit trips and what was switched on at the time, then contact an electrician. We can find the cause and repair it." },
+    { "q": "Do you do commercial electrical work?", "a": "Yes. We work in shops, offices and small commercial premises, including lighting, emergency lighting, additional sockets, fault finding and small installations." },
+    { "q": "Can you replace my consumer unit?", "a": "Consumer unit work is one of our services. We will look at your existing installation first and explain what is needed before quoting. Ask us about the testing and paperwork that come with the job." },
+    { "q": "Can you work with my builder or another contractor?", "a": "Yes. We carry out first fix and second fix electrical work and support contractors who need subcontract electrical help." }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">Electrical services · {{regionLabel}}</p>
+      <h1 id="page-title">Electrician for homes, landlords and businesses in West London</h1>
+      <p class="hero__lead">From finding a fault that keeps tripping your power to installing new lighting or sockets, we carry out domestic and commercial electrical work across {{html.areasInline}}.</p>
+      {{> contact-strip}}
+    </div>
+    <aside class="callcard" aria-labelledby="callcard-title">
+      <h2 id="callcard-title">Electrical emergency?</h2>
+      <p class="muted mb-0">{{availability.emergencyText}}</p>
+      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+      <a class="btn btn--primary btn--lg" href="/emergency-electrician/">Emergency electrician</a>
+      <p class="callcard__note">{{icon alert}}<span>If there is fire, smoke or someone has had an electric shock, call 999 first.</span></p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="services-title">Electrical work we carry out</h2>
+      <p>Tell us what is happening or what you would like installed. If you are not sure what the problem is, that is fine: describing the symptoms is enough to get started.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon bolt}}</span>
+        <h3>Fault finding and repairs</h3>
+        <p>Power faults, circuits that trip, sockets or lights that have stopped working, and intermittent faults that are hard to pin down. We trace the cause and repair it rather than just resetting the problem.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon alert}}</span>
+        <h3>Emergency electrical call-outs</h3>
+        <p>Loss of power, a tripping circuit you cannot reset, damaged sockets or a burning smell. {{availability.emergencyText}} <a href="/emergency-electrician/">Emergency electrician</a>.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon home}}</span>
+        <h3>Sockets and switches</h3>
+        <p>Replacing damaged or old-fashioned sockets and switches, adding extra sockets where you need them, and fitting USB sockets and new switch plates.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon bolt}}</span>
+        <h3>Lighting and downlights</h3>
+        <p>New light fittings, downlights, outdoor lighting and replacing faulty fittings in homes, shops and offices.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon building}}</span>
+        <h3>Emergency lighting</h3>
+        <p>Emergency lighting for shops, offices and common areas, plus repairs to existing fittings that have failed.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon shield}}</span>
+        <h3>Consumer unit work</h3>
+        <p>Consumer unit (fuse box) work, including replacements and faults. We look at the existing installation first and explain what is needed before quoting.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon wrench}}</span>
+        <h3>First fix and second fix</h3>
+        <p>Electrical first fix and second fix for refurbishments, extensions and fit-outs, working alongside builders and other trades.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon home}}</span>
+        <h3>Domestic electrical work</h3>
+        <p>Everyday electrical jobs for homeowners and tenants, from a single faulty light to rewiring part of a room.</p>
+      </article>
+      <article class="card">
+        <span class="icon-chip icon-chip--blue">{{icon building}}</span>
+        <h3>Commercial and shop installations</h3>
+        <p>Small commercial installations and maintenance for shops, offices and units. <a href="/landlords-commercial/">Commercial work</a>.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="signs-title">
+  <div class="container split">
+    <div>
+      <h2 id="signs-title">Signs you need an electrician</h2>
+      <p>Some electrical problems are an inconvenience; others are a warning. Contact an electrician if you notice any of the following:</p>
+      <ul class="ticks">
+        <li>{{icon check}}A circuit breaker or RCD that trips repeatedly</li>
+        <li>{{icon check}}Sockets or switches that are scorched, cracked, loose or warm to the touch</li>
+        <li>{{icon check}}Lights that flicker or dim when appliances switch on</li>
+        <li>{{icon check}}A burning or fishy smell near sockets, switches or the consumer unit</li>
+        <li>{{icon check}}Buzzing or crackling from fittings</li>
+        <li>{{icon check}}Parts of the property with no power</li>
+      </ul>
+      <div class="safety">
+        {{icon alert}}
+        <div><p><strong>Do not attempt electrical repairs yourself.</strong> If you are worried something is unsafe, stop using it and contact a qualified electrician. If there is fire, smoke or someone has had an electric shock, call 999.</p></div>
+      </div>
+    </div>
+    <ul class="gallery gallery--3" aria-label="Electrical work photos">
+      <li>{{photo consumer-unit}}</li>
+      <li>{{photo sockets}}</li>
+      <li>{{photo lighting}}</li>
+      <li>{{photo emergency-lighting}}</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="who-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="who-title">Who we work for</h2>
+    </div>
+    <ul class="grid grid--3">
+      <li class="card"><h3>Homeowners and tenants</h3><p>Faults, repairs and improvements around the home, explained in plain English.</p></li>
+      <li class="card"><h3>Landlords and letting agents</h3><p>Tenant-reported faults, repairs between tenancies and photos of completed work. <a href="/landlords-commercial/">Contractor support</a>.</p></li>
+      <li class="card"><h3>Shops, offices and contractors</h3><p>Lighting, emergency lighting, sockets and small installations, plus subcontract support for other trades.</p></li>
+    </ul>
+  </div>
+</section>
+
+{{> trust}}
+
+<section class="section section--alt" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Get help with an electrical job</h2>
+      <p class="lead">Send us the details and, if you can, a photo of the problem or the area you want work done in.</p>
+      <p>{{icon camera}} <a href="{{wa:Hello Amiri Building Services, I would like to send photos of an electrical job. My postcode is: }}" rel="noopener">Send photos on WhatsApp</a></p>
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Electrical questions</h2></div>
+    {{html.faq}}
+    <p class="mt-2">Also see: <a href="/emergency-electrician/">Emergency electrician</a> · <a href="/plumbing/">Plumbing repairs</a> · <a href="/areas/">Areas we cover</a></p>
+  </div>
+</section>
+
+{{> cta-final}}

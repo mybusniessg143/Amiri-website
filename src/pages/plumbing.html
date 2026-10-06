@@ -1,0 +1,95 @@
+<!--page
+{
+  "path": "/plumbing/",
+  "title": "Plumbing Repairs West Drayton & Hayes (Non-Gas) | Amiri",
+  "description": "Non-gas plumbing repairs in West London: leaks, taps, toilets, cisterns, isolation valves, wastes, sinks and washing machine connections.",
+  "breadcrumb": "Plumbing services",
+  "priority": 0.9,
+  "formCategory": "Plumbing (non-gas)",
+  "waText": "Hello Amiri Building Services, I need a plumbing repair (non-gas). The problem is:   My postcode is: ",
+  "service": { "name": "Plumbing repairs (non-gas)", "serviceType": "Plumbing repair", "description": "Non-gas plumbing repairs including leaks, taps, toilets, cisterns, isolation valves, traps, waste pipes, sinks and appliance connections in West London." },
+  "faq": [
+    { "q": "Do you work on boilers or gas appliances?", "a": "No. We do not carry out any gas work, including boilers, gas hobs, gas fires or gas pipework. For those you need a Gas Safe registered engineer." },
+    { "q": "Can you fix a leak behind a wall or under the floor?", "a": "We repair leaks on pipework we can safely reach. If a leak is hidden, we will explain what access is needed before doing anything, so there are no surprises." },
+    { "q": "Can you connect my new washing machine or dishwasher?", "a": "Yes. We fit and replace appliance connections, valves and waste connections for washing machines and dishwashers." },
+    { "q": "Do you supply taps and toilet parts?", "a": "Tell us whether you already have the parts or would like us to source them, and we will discuss it when we confirm the job." }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">Plumbing services · non-gas only</p>
+      <h1 id="page-title">Plumbing repairs in West Drayton and West London</h1>
+      <p class="hero__lead">Leaking pipes, dripping taps, toilets that will not stop running, blocked or leaking wastes and appliance connections. Everyday plumbing problems, fixed properly.</p>
+      {{> contact-strip}}
+      <p class="badge badge--dark mt-2">{{icon drop}}Non-gas plumbing repairs only</p>
+    </div>
+    <aside class="callcard" aria-labelledby="callcard-title">
+      <h2 id="callcard-title">Water leaking now?</h2>
+      <p class="muted mb-0">{{availability.emergencyText}}</p>
+      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+      <a class="btn btn--primary btn--lg" href="/emergency-plumbing/">Emergency plumbing</a>
+      <p class="callcard__note">{{icon alert}}<span>If water is near electrics, keep away from them and switch off at the consumer unit only if it is safe to do so.</span></p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="services-title">Plumbing work we carry out</h2>
+      <p>We focus on the plumbing repairs and small installations that homes, rental properties and businesses need most often.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card"><span class="icon-chip">{{icon drop}}</span><h3>Leaks and pipe repairs</h3><p>Emergency water leaks and leaks on accessible pipework, joints and fittings, repaired and checked.</p></article>
+      <article class="card"><span class="icon-chip">{{icon wrench}}</span><h3>Taps</h3><p>Dripping, stiff or broken taps repaired or replaced, in kitchens, bathrooms and utility rooms.</p></article>
+      <article class="card"><span class="icon-chip">{{icon home}}</span><h3>Toilets and cisterns</h3><p>Running toilets, cisterns that will not fill or flush, leaking toilets and replacement fill and flush valves.</p></article>
+      <article class="card"><span class="icon-chip">{{icon wrench}}</span><h3>Isolation valves</h3><p>Failed, seized or leaking isolation valves replaced, so you can turn off water to a single tap or appliance.</p></article>
+      <article class="card"><span class="icon-chip">{{icon drop}}</span><h3>Traps and waste pipes</h3><p>Leaking traps and waste pipes under sinks, basins, baths and showers repaired or replaced.</p></article>
+      <article class="card"><span class="icon-chip">{{icon home}}</span><h3>Appliance connections</h3><p>Washing machine and dishwasher connections: supply, valve and waste, fitted or replaced.</p></article>
+      <article class="card"><span class="icon-chip">{{icon wrench}}</span><h3>Sink plumbing</h3><p>New and replacement kitchen sinks and basins plumbed in, including taps and wastes.</p></article>
+      <article class="card"><span class="icon-chip">{{icon building}}</span><h3>Landlord and commercial plumbing</h3><p>Repairs in rental properties, shops and offices. <a href="/landlords-commercial/">Contractor support</a>.</p></article>
+      <article class="card"><span class="icon-chip">{{icon check}}</span><h3>General plumbing repairs</h3><p>Not sure if it is a job for us? Send a photo on WhatsApp and we will tell you.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="notgas-title">
+  <div class="container split">
+    <div>
+      <h2 id="notgas-title">What we do not do</h2>
+      <div class="not-offered">
+        <p><strong>We do not carry out gas work of any kind.</strong> That includes boilers, central heating boilers, gas hobs, ovens, fires and gas pipework. By law, gas work must be done by a Gas Safe registered engineer.</p>
+        <p>If you smell gas, leave the property, do not use switches, and call the National Gas Emergency Service on <a href="tel:08001119999">0800 111 999</a>.</p>
+      </div>
+    </div>
+    <ul class="gallery gallery--3" aria-label="Plumbing work photos">
+      <li>{{photo plumbing-repair}}</li>
+      <li>{{photo taps-toilets}}</li>
+      <li>{{photo appliance}}</li>
+      <li>{{photo before-after}}</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Tell us about the plumbing problem</h2>
+      <p class="lead">A photo of the leak, tap or fitting helps us bring the right parts.</p>
+      <p>{{icon camera}} <a href="{{wa:Hello Amiri Building Services, I would like to send photos of a plumbing problem. My postcode is: }}" rel="noopener">Send photos on WhatsApp</a></p>
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Plumbing questions</h2></div>
+    {{html.faq}}
+    <p class="mt-2">Also see: <a href="/emergency-plumbing/">Emergency plumbing</a> · <a href="/property-maintenance/">Property maintenance</a> · <a href="/areas/">Areas we cover</a></p>
+  </div>
+</section>
+
+{{> cta-final}}

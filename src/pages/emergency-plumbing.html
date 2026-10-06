@@ -1,0 +1,115 @@
+<!--page
+{
+  "path": "/emergency-plumbing/",
+  "title": "Emergency Plumbing West Drayton – Leaks (Non-Gas) | Amiri",
+  "description": "Urgent leak, overflowing toilet or failed valve? Emergency non-gas plumbing in West Drayton, Hayes, Uxbridge and Hillingdon. Call to confirm availability.",
+  "breadcrumb": "Emergency plumbing",
+  "breadcrumbParent": { "name": "Plumbing services", "path": "/plumbing/" },
+  "priority": 0.9,
+  "formCategory": "Plumbing (non-gas)",
+  "bodyClass": "page-emergency",
+  "waText": "URGENT – Hello Amiri Building Services, I have a water leak / plumbing emergency. The problem is:   My postcode is: ",
+  "service": { "name": "Emergency plumbing (non-gas)", "serviceType": "Emergency plumbing repair", "description": "Emergency non-gas plumbing call-outs for urgent leaks, overflowing toilets, pipe leaks, failed isolation valves, leaking taps and waste leaks in West Drayton and West London, subject to availability." },
+  "faq": [
+    { "q": "How do I find my stop tap?", "a": "Stop taps (stopcocks) are often under the kitchen sink, but can also be in a downstairs toilet, utility room, airing cupboard, under the stairs or near the front door. In flats there may be one inside the flat and another in a communal area. It is worth finding yours before you need it." },
+    { "q": "Do you fix boilers or heating?", "a": "No. We do not carry out any gas or boiler work. For boiler breakdowns contact a Gas Safe registered engineer. If you smell gas, call the National Gas Emergency Service on 0800 111 999." },
+    { "q": "Can you come out straight away?", "a": "Emergency call-outs are available, but availability changes during the day. Call and we will tell you honestly whether and when we can attend." }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">{{icon clock}} {{availability.emergencyText}}</p>
+      <h1 id="page-title">Emergency plumbing for leaks and urgent repairs</h1>
+      <p class="hero__lead">Water coming through the ceiling? Toilet overflowing? Valve failed and will not turn off? Call now. Non-gas emergency plumbing across {{html.areasInline}}.</p>
+      <div class="cta-group">
+        <a class="btn btn--primary btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
+        <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp urgent job</a>
+      </div>
+      <p class="hero__lead mt-2"><strong>Smell gas?</strong> Leave the property and call the National Gas Emergency Service on <a class="hero-999" href="tel:08001119999">0800 111 999</a>. We do not carry out gas work.</p>
+    </div>
+    <aside class="callcard" aria-labelledby="callcard-title">
+      <h2 id="callcard-title">Call us now</h2>
+      <p class="muted mb-0">The fastest way to reach us in an emergency.</p>
+      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+      <a class="btn btn--wa btn--lg" href="{{wa:URGENT – Hello Amiri Building Services, I am sending photos of a leak. My postcode is: }}" rel="noopener">{{icon camera}}Send photos on WhatsApp</a>
+      <p class="callcard__note">{{icon clock}}<span>Can't get through? Send a WhatsApp with your postcode and a photo.</span></p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="problems-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="problems-title">Urgent plumbing problems we deal with</h2>
+      <p>All of these are non-gas plumbing jobs. If you are not sure, call and describe the problem.</p>
+    </div>
+    <ul class="problems">
+      <li>{{icon drop}}<div><strong>Urgent leaks</strong><span>Water leaking from pipes, joints or fittings, including leaks coming through ceilings from above.</span></div></li>
+      <li>{{icon alert}}<div><strong>Overflowing toilet</strong><span>A cistern that keeps filling and overflowing, or a toilet leaking at the base.</span></div></li>
+      <li>{{icon wrench}}<div><strong>Pipe leak</strong><span>Leaking or damaged accessible pipework under sinks, behind appliances or in cupboards.</span></div></li>
+      <li>{{icon wrench}}<div><strong>Failed isolation valve</strong><span>A valve that will not turn off, has seized or is leaking itself.</span></div></li>
+      <li>{{icon drop}}<div><strong>Leaking tap</strong><span>A tap that will not turn off or is leaking from the body or base.</span></div></li>
+      <li>{{icon home}}<div><strong>Waste leaks</strong><span>Leaking traps and waste pipes under sinks, basins, baths and appliances.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="safety-title">
+  <div class="container split">
+    <div>
+      <h2 id="safety-title">While you wait: limit the damage safely</h2>
+      <div class="safety">
+        {{icon alert}}
+        <div>
+          <ul>
+            <li><strong>Turn off the water</strong> at the stop tap (stopcock) if you can find it and reach it safely. If there is an isolation valve on the pipe to the leaking fitting, turning that off may be enough.</li>
+            <li><strong>Keep away from electrics.</strong> If water is near sockets, light fittings or the consumer unit, do not touch them. Only switch off at the consumer unit if you can reach it without touching water or wet surfaces.</li>
+            <li>If water is coming through a ceiling that is bulging, keep people out of the room underneath.</li>
+            <li>Move valuables away and use towels or buckets to contain water where it is safe to do so.</li>
+            <li>In a flat, let your neighbours or building manager know if water may be reaching them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>What happens when you call</h2>
+      <ol class="steps steps--compact">
+        <li><h3>Tell us the problem</h3><p>Where the water is coming from and your postcode.</p></li>
+        <li><h3>We confirm availability</h3><p>We tell you honestly whether and when we can attend.</p></li>
+        <li><h3>We stop the leak</h3><p>We make it safe and find the source.</p></li>
+        <li><h3>Repair or plan</h3><p>We repair it, or explain what is needed if parts or access are required.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="areas-title">
+  <div class="container">
+    <h2 id="areas-title">Emergency plumbing near you</h2>
+    <p>Based in {{baseTown}}, our core emergency area is:</p>
+    <ul class="area-chips">{{html.areasCoreList}}</ul>
+    <p class="muted">We may also be able to attend in {{html.secondaryInline}}. Call to check. <a href="/areas/">Areas we cover</a>.</p>
+  </div>
+</section>
+
+<section class="section section--alt" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Not an emergency?</h2>
+      <p class="lead">For a dripping tap or planned plumbing work, send us the details.</p>
+      <p><a class="link-arrow" href="/plumbing/">All plumbing services {{icon arrow}}</a></p>
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Emergency plumbing questions</h2></div>
+    {{html.faq}}
+  </div>
+</section>
+
+{{> cta-final}}

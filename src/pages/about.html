@@ -1,0 +1,77 @@
+<!--page
+{
+  "path": "/about/",
+  "title": "About Us | Amiri Building Services, West Drayton",
+  "description": "A local West Drayton company providing electrical work, non-gas plumbing repairs and property maintenance for homes and businesses in West London.",
+  "breadcrumb": "About",
+  "priority": 0.6,
+  "ogType": "website"
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container">
+    <p class="eyebrow">About us</p>
+    <h1 id="page-title">A local building services company you can talk to</h1>
+    <p class="hero__lead">Amiri Building Services is based in West Drayton and run by Waris. We carry out electrical work, non-gas plumbing repairs and property maintenance for homeowners, landlords, letting agents and businesses across West London.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="story-title">
+  <div class="container split">
+    <div class="prose">
+      <h2 id="story-title">Who we are</h2>
+      <p>We set up Amiri Building Services as a limited company to give local customers a straightforward way to get electrical, plumbing and maintenance work done properly, by people who answer the phone and explain things clearly.</p>
+      {{#placeholders}}<div class="owner-review"><strong>Owner to add:</strong> a few honest sentences in your own words: your background in the trade, how you got started, what kind of work you enjoy, and why you started the company. Please do not include qualifications or years of experience until they can be evidenced. (Remove this note in src/pages/about.html.)</div>{{/placeholders}}
+      <p>Being a small, local business means you deal directly with the people doing the work. When you call, you talk to someone who understands the job, not a call centre.</p>
+      <h2>How we work</h2>
+      <ul class="ticks">
+        <li>{{icon check}}<span><strong>Honest about what we do.</strong> We focus on electrical work, non-gas plumbing repairs and general maintenance. We do not do gas work, and if a job needs a different specialist we will say so.</span></li>
+        <li>{{icon check}}<span><strong>Clear before we start.</strong> We explain what we have found, what we recommend and how the work will be charged before carrying it out.</span></li>
+        <li>{{icon check}}<span><strong>Safety comes first.</strong> We will not cut corners on electrical or water safety, even when a quicker fix is requested.</span></li>
+        <li>{{icon check}}<span><strong>Respect for your property.</strong> We protect the work area, tidy up afterwards and keep you updated.</span></li>
+        <li>{{icon check}}<span><strong>Records you can keep.</strong> Photos of completed work and clear invoices, which landlords and agents especially value.</span></li>
+      </ul>
+    </div>
+    <div>
+      {{photo owner-on-site}}
+      <div class="note-box mt-2">
+        <h3>Company details</h3>
+        <p><strong>{{legalName}}</strong><br>Company number {{companyNumber}}<br>Registered in {{jurisdiction}}{{html.jurisdictionFlag}}</p>
+        <p class="mb-0"><a href="https://find-and-update.company-information.service.gov.uk/company/{{companyNumber}}" rel="noopener" target="_blank">View our record on Companies House<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{> trust}}
+
+<section class="section section--alt" aria-labelledby="work-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="work-title">Our work</h2>
+      <p>Photos of jobs we have completed ourselves. We do not use stock or computer-generated images to represent our work.</p>
+    </div>
+    <ul class="gallery">
+      <li>{{photo electrical-install}}</li>
+      <li>{{photo plumbing-repair}}</li>
+      <li>{{photo maintenance}}</li>
+      <li>{{photo vehicle-tools}}</li>
+    </ul>
+  </div>
+</section>
+
+{{> reviews}}
+
+<section class="section" aria-labelledby="next-title">
+  <div class="container">
+    <h2 id="next-title">See what we can help with</h2>
+    <ul class="grid grid--4">
+      <li class="card"><h3><a href="/electrical/">Electrical</a></h3><p>Faults, sockets, lighting, consumer units and installations.</p></li>
+      <li class="card"><h3><a href="/plumbing/">Plumbing</a></h3><p>Non-gas repairs: leaks, taps, toilets, valves and wastes.</p></li>
+      <li class="card"><h3><a href="/property-maintenance/">Maintenance</a></h3><p>General repairs and small installations.</p></li>
+      <li class="card"><h3><a href="/landlords-commercial/">Landlords &amp; commercial</a></h3><p>Contractor support for properties and premises.</p></li>
+    </ul>
+  </div>
+</section>
+
+{{> cta-final}}

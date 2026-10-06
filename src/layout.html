@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+{{> head}}
+</head>
+<body class="{{page.bodyClass}}">
+<a class="skip-link" href="#main">Skip to main content</a>
+{{> header}}
+<main id="main" tabindex="-1">
+{{html.breadcrumbs}}
+{{html.content}}
+</main>
+{{> footer}}
+{{> mobile-bar}}
+<script src="/assets/js/config.js?v={{v.cfg}}" defer></script>
+<script src="/assets/js/main.js?v={{v.js}}" defer></script>
+{{html.chat}}
+{{html.analytics}}
+</body>
+</html>
