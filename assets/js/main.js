@@ -48,9 +48,23 @@
       }
     });
     window.addEventListener('resize', function () {
-      if (window.innerWidth >= 1240) setOpen(false);
+      if (window.innerWidth >= 1100) setOpen(false);
     });
   }
+
+  /* ---------------- Services dropdown ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-drop'), function (drop) {
+    var btn = drop.querySelector('.nav-drop__btn');
+    var setDrop = function (open) {
+      drop.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', function () { setDrop(btn.getAttribute('aria-expanded') !== 'true'); });
+    document.addEventListener('click', function (e) { if (!drop.contains(e.target)) setDrop(false); });
+    drop.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drop.classList.contains('is-open')) { setDrop(false); btn.focus(); }
+    });
+  });
 
   /* ---------------- Enquiry form ---------------- */
   var form = document.getElementById('enquiry-form');

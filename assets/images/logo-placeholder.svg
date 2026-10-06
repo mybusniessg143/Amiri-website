@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48" role="img" aria-labelledby="t">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-labelledby="t">
   <title id="t">Amiri Building Services (placeholder logo – replace with the real logo)</title>
-  <rect x="0" y="4" width="40" height="40" rx="10" fill="#16191e"/>
-  <path d="M11 35 20 13l9 22h-5l-1.8-4.6h-4.4L16 35z M19.2 26.7h1.6L20 24.2z" fill="#f7f3ec"/>
-  <path d="M25 9l-4 9h4l-2 7 7-10h-4l2-6z" fill="#c9a45c"/>
-  <text x="50" y="23" font-family="'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="18" font-weight="800" fill="#16191e" letter-spacing="-.3">Amiri</text>
-  <text x="50" y="39" font-family="system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#8a6a2a" letter-spacing="1.6">BUILDING SERVICES</text>
+  <rect x="0" y="2" width="52" height="52" rx="12" fill="#121417"/>
+  <path d="M14 44 26 13l12 31h-6.4l-2.3-6.3h-6.6L20.4 44z M24.5 32.9h3l-1.5-4.4z" fill="#ffffff"/>
+  <path d="M34 7l-5.2 11.5h5l-2.6 9 9-12.6h-5l2.6-7.9z" fill="#c9a14f"/>
+  <text x="66" y="30" font-family="'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="27" font-weight="800" fill="#121417" letter-spacing="1.5">AMIRI</text>
+  <text x="67" y="48" font-family="'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="10.6" font-weight="700" fill="#8a6a26" letter-spacing="3.1">BUILDING SERVICES</text>
 </svg>

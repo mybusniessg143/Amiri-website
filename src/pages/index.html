@@ -18,41 +18,26 @@
   ]
 }
 -->
-<section class="hero hero--home" aria-labelledby="hero-title">
-  <div class="container hero__grid">
-    <div class="hero__copy">
-      <p class="hero__badge"><span class="pulse" aria-hidden="true"></span>Local to West Drayton, Hayes, Uxbridge &amp; Heathrow</p>
-      <h1 id="hero-title">Electrical, Plumbing &amp; Property Maintenance <em>Across West London</em></h1>
-      <p class="hero__lead">A trusted local service for homes and businesses. Domestic and commercial work, support for landlords and letting agents, and emergency call-outs, with quick, clear replies by phone and WhatsApp.</p>
-      <div class="hero__actions">
-        <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Emergency? Call now</a>
-        <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
-        <a class="btn btn--ghost btn--lg" href="#enquiry">{{icon file}}Request a quote</a>
+<section class="hero-home" aria-labelledby="hero-title">
+  <div class="hero-home__media">
+    {{img! hero half}}
+  </div>
+  <div class="container hero-home__inner">
+    <div class="hero-home__copy">
+      <p class="kicker">West Drayton · Hayes · Uxbridge · Hillingdon · Heathrow</p>
+      <h1 id="hero-title">Electrical, Plumbing &amp; Property Maintenance <span>Across West London</span></h1>
+      <p class="hero-home__lead">Trusted local tradespeople for homes, landlords, letting agents and businesses, with emergency call-outs and quick, clear replies by phone or WhatsApp.</p>
+      <div class="hero-home__actions">
+        <a class="btn btn--gold btn--xl hero-call" href="tel:{{phone.tel}}">{{icon phone}}<span><strong>Call Now</strong><small>{{phone.display}}</small></span></a>
+        <a class="btn btn--wa btn--lg" href="{{page.waUrl}}" rel="noopener">{{icon whatsapp}}WhatsApp</a>
+        <a class="btn btn--outline btn--lg" href="#enquiry">Get a Free Quote{{icon arrow}}</a>
       </div>
-      <div class="hero__contact">
-        <p><a class="hero__tel" href="tel:{{phone.tel}}">{{phone.display}}</a></p>
-        <p><span class="pulse" aria-hidden="true"></span>{{availability.emergencyText}}</p>
-      </div>
-    </div>
-    <div class="hero__media">
-      <figure class="frame">{{img! hero half}}</figure>
-      <p class="hero__chip">{{icon check}}Domestic &amp; commercial</p>
-      <div class="hero__float">
-        <span class="hero__float-icon">{{icon camera}}</span>
-        <p><strong>Send us a photo</strong>WhatsApp a picture of the problem and your postcode.</p>
-      </div>
+      <p class="hero-home__note">{{icon clock}}{{availability.emergencyText}}</p>
     </div>
   </div>
-</section>
-
-<section class="trust-strip" aria-label="Why people choose us">
   <div class="container">
-    <ul class="trust-strip__list">
-      <li class="trust-item">{{icon pin}}Local West London service</li>
-      <li class="trust-item">{{icon building}}Domestic &amp; commercial</li>
-      <li class="trust-item">{{icon key}}Landlords &amp; letting agents</li>
-      <li class="trust-item">{{icon alert}}Emergency call-outs</li>
-      <li class="trust-item">{{icon check}}Professional &amp; reliable</li>
+    <ul class="trust-bar" aria-label="Why customers choose us">
+{{html.trustBadges}}
     </ul>
   </div>
 </section>
@@ -61,7 +46,7 @@
   <div class="container">
     <div class="section-head section-head--split reveal">
       <div>
-        <p class="eyebrow">Our services</p>
+        <p class="eyebrow"><span class="eyebrow__num">01</span>Our services</p>
         <h2 id="services-title">One local team for the jobs that keep a property running</h2>
       </div>
       <p>Electrical work, non-gas plumbing and general maintenance from one contact, so you are not chasing three different tradespeople.</p>
@@ -119,7 +104,7 @@
   <figure class="frame emergency__bg" aria-hidden="true">{{img emergency full}}</figure>
   <div class="container emergency__grid">
     <div class="reveal">
-      <p class="eyebrow">Emergency call-outs</p>
+      <p class="eyebrow"><span class="eyebrow__num">02</span>Emergency call-outs</p>
       <h2 id="emergency-title">Lost power or got a leak? Call us first.</h2>
       <p class="emergency__lead">Emergency call-outs are available for electrical faults and non-gas plumbing problems. Availability changes day to day, so a phone call is the quickest way to find out when we can attend. If we cannot answer, send a WhatsApp message with your postcode and a photo.</p>
       <div class="emergency__lists">
@@ -145,10 +130,10 @@
       <p class="emergency__more"><a href="/emergency-electrician/">Emergency electrician</a><a href="/emergency-plumbing/">Emergency plumbing</a></p>
     </div>
     <div class="emergency__panel reveal">
-      <p class="emergency__status"><span class="pulse" aria-hidden="true"></span>Emergency call-outs available</p>
+      <p class="emergency__status">{{icon alert}}Emergency call-outs available</p>
       <h3>Call to confirm current availability</h3>
       <a class="emergency__number" href="tel:{{phone.tel}}">{{phone.display}}</a>
-      <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call now</a>
+      <a class="btn btn--gold btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call Now</a>
       <a class="btn btn--wa btn--lg" href="{{wa:Hello Amiri Building Services, I have an urgent problem. My postcode is: }}" rel="noopener">{{icon whatsapp}}WhatsApp a photo</a>
       <p class="emergency__note">{{icon alert}}<span>If there is fire, smoke, sparking or someone has had an electric shock, call 999. If you smell gas, leave the property and call the National Gas Emergency Service on 0800 111 999.</span></p>
     </div>
@@ -164,7 +149,7 @@
     </div>
     <div>
       <div class="reveal">
-        <p class="eyebrow">Why choose Amiri</p>
+        <p class="eyebrow"><span class="eyebrow__num">03</span>Why choose Amiri</p>
         <h2 id="why-title">Straightforward, local and easy to deal with</h2>
         <p class="lead">We keep things simple: answer the phone, explain things clearly, do the job properly and keep you informed from first message to finished work.</p>
       </div>
@@ -181,10 +166,10 @@
   </div>
 </section>
 
-<section class="section b2b" id="landlords" aria-labelledby="landlords-title">
+<section class="section b2b section--white" id="landlords" aria-labelledby="landlords-title">
   <div class="container b2b__grid">
     <div class="b2b__intro reveal">
-      <p class="eyebrow">Landlords, letting agents &amp; commercial</p>
+      <p class="eyebrow"><span class="eyebrow__num">04</span>Landlords, letting agents &amp; commercial</p>
       <h2 id="landlords-title">A dependable contractor for your properties and premises</h2>
       <p class="b2b__lead">Tenant-reported faults need sorting properly, with clear records. We handle electrical, plumbing and maintenance work across your portfolio or premises, so you have one contact for all three.</p>
       <ul class="audience" aria-label="Who we work with">
@@ -195,7 +180,7 @@
       </ul>
       <div class="cta-group">
         <a class="btn btn--gold btn--lg" href="/landlords-commercial/">Discuss contractor support</a>
-        <a class="btn btn--ghost btn--lg" href="{{wa:Hello Amiri Building Services, I manage properties and would like to discuss contractor support. My company and area: }}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
+        <a class="btn btn--wa btn--lg" href="{{wa:Hello Amiri Building Services, I manage properties and would like to discuss contractor support. My company and area: }}" rel="noopener">{{icon whatsapp}}WhatsApp us</a>
       </div>
     </div>
     <div>
@@ -215,7 +200,7 @@
 <section class="section section--alt" id="areas" aria-labelledby="areas-title">
   <div class="container areas-home__grid">
     <div class="reveal">
-      <p class="eyebrow">Areas we cover</p>
+      <p class="eyebrow"><span class="eyebrow__num">05</span>Areas we cover</p>
       <h2 id="areas-title">Based in West Drayton, working across West London</h2>
       <p class="lead">Our core areas are below. We also cover {{html.secondaryInline}} {{areas.secondaryNote}}. Not sure? Send us your postcode.</p>
       <ul class="area-list">{{html.areasCoreList}}<li>{{icon pin}}West London</li></ul>
@@ -239,7 +224,7 @@
 <section class="section" id="process" aria-labelledby="process-title">
   <div class="container">
     <div class="section-head section-head--center reveal">
-      <p class="eyebrow">How it works</p>
+      <p class="eyebrow"><span class="eyebrow__num">06</span>How it works</p>
       <h2 id="process-title">From first message to finished job</h2>
       <p>Four simple steps, with no surprises along the way.</p>
     </div>
@@ -256,7 +241,7 @@
   <div class="container">
     <div class="section-head section-head--split reveal">
       <div>
-        <p class="eyebrow">Testimonials</p>
+        <p class="eyebrow"><span class="eyebrow__num">07</span>Testimonials</p>
         <h2 id="reviews-title">What our customers say</h2>
       </div>
       <p>We only publish genuine reviews from real customers. As reviews come in on our Google profile, they will appear here.</p>
@@ -272,8 +257,8 @@
 <section class="section" id="enquiry" aria-labelledby="enquiry-title">
   <div class="container split">
     <div class="quote__aside reveal">
-      <p class="eyebrow">Request a quote</p>
-      <h2 id="enquiry-title">Tell us about the job</h2>
+      <p class="eyebrow"><span class="eyebrow__num">08</span>Request a quote</p>
+      <h2 id="enquiry-title">Get a free quote</h2>
       <p class="lead">Fill in the short form and it opens WhatsApp with your details ready to send. Prefer to talk? Call us.</p>
       <ul class="quote__methods">
         <li><a href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call</small><strong>{{phone.display}}</strong></span></a></li>

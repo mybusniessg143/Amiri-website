@@ -141,10 +141,16 @@ function renderImg(key, eager, sizeName) {
 /* ------------------------------------------------------- computed HTML bits */
 
 const NAV = [
-  { href: '/', label: 'Home' },
-  { href: '/electrical/', label: 'Electrical' },
-  { href: '/plumbing/', label: 'Plumbing' },
-  { href: '/property-maintenance/', label: 'Property Maintenance' },
+  {
+    label: 'Services',
+    children: [
+      { href: '/electrical/', label: 'Electrical', note: 'Faults, sockets, lighting, consumer units' },
+      { href: '/plumbing/', label: 'Plumbing', note: 'Leaks, taps, toilets (non-gas)' },
+      { href: '/property-maintenance/', label: 'Property Maintenance', note: 'Repairs and minor installations' },
+      { href: '/emergency-electrician/', label: 'Emergency Electrician', note: 'Call to confirm availability' },
+      { href: '/emergency-plumbing/', label: 'Emergency Plumbing', note: 'Call to confirm availability' }
+    ]
+  },
   { href: '/landlords-commercial/', label: 'Landlords &amp; Commercial' },
   { href: '/areas/', label: 'Areas' },
   { href: '/about/', label: 'About' },
@@ -152,13 +158,32 @@ const NAV = [
 ];
 
 function navHtml(currentPath) {
+  const link = (item) => `<a href="${item.href}"${currentPath === item.href ? ' aria-current="page"' : ''}>${item.label}</a>`;
   return NAV.map((item) => {
-    const current =
-      currentPath === item.href ||
-      (item.href === '/electrical/' && currentPath === '/emergency-electrician/') ||
-      (item.href === '/plumbing/' && currentPath === '/emergency-plumbing/');
-    return `<li><a href="${item.href}"${current ? ' aria-current="page"' : ''}>${item.label}</a></li>`;
+    if (!item.children) return `<li>${link(item)}</li>`;
+    const active = item.children.some((c) => c.href === currentPath);
+    const kids = item.children
+      .map((c) => `<li><a href="${c.href}"${currentPath === c.href ? ' aria-current="page"' : ''}><strong>${c.label}</strong><small>${c.note}</small></a></li>`)
+      .join('');
+    return `<li class="nav-drop${active ? ' is-active' : ''}"><button class="nav-drop__btn" type="button" aria-expanded="false" aria-controls="nav-services">${item.label}${icon('chevron')}</button><ul class="nav-drop__menu" id="nav-services">${kids}</ul></li>`;
   }).join('\n');
+}
+
+// Trust badges near the top of the homepage. "Fully insured" only appears once the
+// owner marks the insurance credential as verified in site.config.json.
+function trustBadgesHtml() {
+  const ins = cfg.credentials.find((c) => c.key === 'insurance');
+  const badge = (ic, title, sub, cls = '') => `<li class="trust-badge${cls}">${icon(ic)}<span><strong>${title}</strong><small>${sub}</small></span></li>`;
+  let first;
+  if (ins && ins.verified) first = badge('shield', 'Fully Insured', 'Details available on request');
+  else if (cfg.showPlaceholders) first = badge('shield', 'Fully Insured', 'Owner to confirm before launch', ' trust-badge--placeholder');
+  else first = badge('check', 'Professional &amp; Reliable', 'Clear, tidy, careful work');
+  return [
+    first,
+    badge('pin', 'Local West London Service', `Based in ${esc(cfg.baseTown)}`),
+    badge('building', 'Residential &amp; Commercial', 'Homes, landlords &amp; businesses'),
+    badge('alert', 'Emergency Call-Outs', 'Call to confirm availability')
+  ].join('\n');
 }
 
 function credentialsHtml() {
@@ -440,6 +465,7 @@ function build() {
     analytics: cfg.analytics.cloudflareWebAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(cfg.analytics.cloudflareWebAnalyticsToken)}"}'></script>`
       : '',
+    trustBadges: trustBadgesHtml(),
     year: String(new Date().getFullYear()),
     preconnect: Object.values(images).some((im) => im && /^https:\/\/images\.unsplash\.com\//.test(im.src || ''))
       ? '<link rel="preconnect" href="https://images.unsplash.com">'

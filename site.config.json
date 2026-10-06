@@ -119,8 +119,8 @@
   },
   "logo": {
     "src": "/assets/images/logo-placeholder.svg",
-    "width": 220,
-    "height": 48,
+    "width": 260,
+    "height": 56,
     "alt": "Amiri Building Services",
     "srcOnDark": "/assets/images/logo-placeholder-light.svg",
     "_note": "src = logo for light backgrounds (header). srcOnDark = version for dark backgrounds (footer). Replace both with the real logo."
