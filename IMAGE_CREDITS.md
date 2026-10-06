@@ -10,16 +10,16 @@ Before launch, open each link below and check you are happy with the picture. Un
 
 | Slot | Picture | Unsplash page |
 |---|---|---|
-| `hero` | Electrician testing a consumer unit with a multimeter | [PkHf7BUWbtk](https://unsplash.com/photos/PkHf7BUWbtk) |
-| `svc-electrical` | Electrician installing wiring | [_2AlIm-F6pw](https://unsplash.com/photos/_2AlIm-F6pw) |
-| `svc-plumbing` | Plumber repairing pipework in a bathroom | [jaP5ClBdIyU](https://unsplash.com/photos/jaP5ClBdIyU) |
-| `svc-maintenance` | Cordless drill, hammer and hand tools on a workbench | [ZEfFgaXVaV4](https://unsplash.com/photos/ZEfFgaXVaV4) |
-| `svc-emergency` | Tradesperson working on an electrical panel with a screwdriver | [GXLPLG3_Vf4](https://unsplash.com/photos/GXLPLG3_Vf4) |
+| `hero` | Electrician testing an electrical panel with a multimeter (Toolmash Expo) | [PkHf7BUWbtk](https://unsplash.com/photos/PkHf7BUWbtk) |
+| `svc-electrical` | Electrician in work gloves preparing cable (Jimmy Nilsson Masth) | [U3GiK1u5j24](https://unsplash.com/photos/U3GiK1u5j24) |
+| `svc-plumbing` | Plumber working on pipework in a sink cabinet (Timur Shakerzianov) | [wzIjLL4KB-4](https://unsplash.com/photos/wzIjLL4KB-4) |
+| `svc-maintenance` | Cordless drill, hammer and stud finder, Bristol (Sam Clarke) | [ZEfFgaXVaV4](https://unsplash.com/photos/ZEfFgaXVaV4) |
+| `svc-emergency` | Tradesperson repairing a pipe in a wall (Timur Shakerzianov) | [c314Gh8dXAo](https://unsplash.com/photos/c314Gh8dXAo) |
 | `emergency` | Water droplet on brass pipework | [n2ZufifTbSo](https://unsplash.com/photos/n2ZufifTbSo) |
-| `why` | Modern kitchen with an island and pendant lighting | [kAa2xEs_jZo](https://unsplash.com/photos/kAa2xEs_jZo) |
-| `landlords` | Street of red-brick terraced houses | [YjmnoFxpgIU](https://unsplash.com/photos/YjmnoFxpgIU) |
-| `commercial` | Office building with large windows | [BS42BqGSEUo](https://unsplash.com/photos/BS42BqGSEUo) |
-| `areas` | A row of houses on a residential street | [lOmcjfGlymU](https://unsplash.com/photos/lOmcjfGlymU) |
+| `why` | London flat living room with a large window (Robbie Duncan) | [L61Ekz4oTt4](https://unsplash.com/photos/L61Ekz4oTt4) |
+| `landlords` | Red-brick London street (Loris Boulinguez) | [YjmnoFxpgIU](https://unsplash.com/photos/YjmnoFxpgIU) |
+| `commercial` | Row of independent shops, East London (T / tanyabarrow) | [Ix7AIJUDQj0](https://unsplash.com/photos/Ix7AIJUDQj0) |
+| `areas` | Row of houses, Notting Hill, London (Diego Damato) | [lOmcjfGlymU](https://unsplash.com/photos/lOmcjfGlymU) |
 | `bathroom` | Modern bathroom with a walk-in shower and vanity unit | [g51F6-WYzyU](https://unsplash.com/photos/g51F6-WYzyU) |
 
 ## Fonts
