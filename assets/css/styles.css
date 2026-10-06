@@ -287,6 +287,10 @@ main:focus { outline: none; }
 @media (min-width: 1100px) and (max-width: 1279px) {
   .header-quote { display: none; }
 }
+@media (min-width: 1366px) {
+  .header-call__label { display: inline; font-weight: 750; }
+  .header-call__label::after { content: "·"; margin-left: .45rem; opacity: .55; }
+}
 
 /* ---------- Mobile contact bar ---------- */
 .mobile-bar {

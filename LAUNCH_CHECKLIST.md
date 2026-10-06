@@ -14,7 +14,7 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Confirm business hours (or leave `hours.confirmed: false`)
 - [ ] Confirm qualifications. Add to `credentials` only what you can evidence
 - [ ] Confirm insurance wording (insurer, cover level). Only add if the policy is in force
-- [ ] **"Fully Insured" badge (homepage):** it only appears once the `insurance` credential in site.config.json has `verified: true`. Set that only if public liability insurance is in force
+- [ ] **"Fully Insured" badge (homepage):** hidden for now (insurance not yet active). Once public liability insurance is in force, set the `insurance` credential in site.config.json to `verified: true` (and fill in `value`) and the badge replaces "Professional & Reliable"
 - [ ] **"Get a Free Quote":** the site promises free quotes. Make sure that is true for every job, or change the wording
 - [ ] Confirm years of experience / ECS card / accreditations, or leave unverified
 - [ ] Confirm call-out pricing and complete or remove Terms section 5

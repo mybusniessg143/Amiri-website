@@ -169,14 +169,14 @@ function navHtml(currentPath) {
   }).join('\n');
 }
 
-// Trust badges near the top of the homepage. "Fully insured" only appears once the
-// owner marks the insurance credential as verified in site.config.json.
+// Trust badges near the top of the homepage. "Fully Insured" stays hidden until the
+// owner has public liability insurance in force and marks the insurance credential
+// as verified in site.config.json; until then "Professional & Reliable" is shown.
 function trustBadgesHtml() {
   const ins = cfg.credentials.find((c) => c.key === 'insurance');
   const badge = (ic, title, sub, cls = '') => `<li class="trust-badge${cls}">${icon(ic)}<span><strong>${title}</strong><small>${sub}</small></span></li>`;
   let first;
   if (ins && ins.verified) first = badge('shield', 'Fully Insured', 'Details available on request');
-  else if (cfg.showPlaceholders) first = badge('shield', 'Fully Insured', 'Owner to confirm before launch', ' trust-badge--placeholder');
   else first = badge('check', 'Professional &amp; Reliable', 'Clear, tidy, careful work');
   return [
     first,
