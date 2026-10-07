@@ -9,10 +9,11 @@
   "waText": "Hello Amiri Building Services, I would like to discuss contractor support for my properties / business. My company and area: ",
   "service": { "name": "Contractor support for landlords, letting agents and commercial premises", "serviceType": "Property maintenance contractor", "description": "Responsive repairs, electrical maintenance, non-gas plumbing repairs and property maintenance for landlords, letting agents, property managers, shops, offices and contractors in West London." },
   "faq": [
-    { "q": "Can you deal with our tenants directly?", "a": "Yes. With your agreement we contact tenants to arrange access, keep them informed and report back to you." },
-    { "q": "Do you provide photos and invoices?", "a": "Yes. We can send photos of completed work and an invoice for each job, referencing the property and your work order number if you have one." },
-    { "q": "Can you work as a subcontractor?", "a": "Yes. We support builders and other contractors who need subcontract electrical, plumbing or maintenance help. Get in touch to discuss the project." },
-    { "q": "What are your rates and payment terms for regular work?", "a": "We agree rates and payment terms with each client before regular work starts. Contact us to discuss your requirements." }
+    {"q": "Can you deal with our tenants directly?", "a": "Yes. With your agreement we contact tenants to arrange access, keep them informed and report back to you."},
+    {"q": "Do you provide photos and invoices?", "a": "Yes. We can send photos of completed work and an invoice for each job, referencing the property and your work order number if you have one."},
+    {"q": "Can you work as a subcontractor?", "a": "Yes. We support builders and other contractors who need subcontract electrical, plumbing or maintenance help. Get in touch to discuss the project."},
+    {"q": "What are your rates and payment terms for regular work?", "a": "We agree rates and payment terms with each client before regular work starts. Contact us to discuss your requirements."},
+    {"q": "Are quotes free?", "a": "Yes, initial quotes are free. Site visits, diagnostics and emergency call-outs may be chargeable. We will explain any charge before we start, and agree rates for regular work with each client."}
   ]
 }
 -->
@@ -114,6 +115,7 @@
         <a class="btn btn--primary btn--lg" href="mailto:{{email.public}}?subject=Contractor%20support%20enquiry">{{icon mail}}Email us</a>
         <a class="btn btn--outline btn--lg" href="tel:{{phone.tel}}">{{icon phone}}Call {{phone.display}}</a>
       </div>
+      {{> pricing-note}}
     </div>
     {{> enquiry-form}}
   </div>

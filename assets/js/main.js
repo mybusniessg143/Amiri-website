@@ -1,6 +1,7 @@
 /*
  * Amiri Building Services – site script (vanilla JS, no dependencies).
  * - Mobile menu
+ * - Gentle scroll-reveal animations (off when the visitor prefers reduced motion)
  * - WhatsApp / email enquiry form (no server, nothing stored)
  * Business details come from /assets/js/config.js, generated from site.config.json.
  */
@@ -8,6 +9,34 @@
   'use strict';
 
   var CFG = window.SITE_CONFIG || {};
+
+  /* ---------------- Scroll reveal ---------------- */
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  if (!reduceMotion && 'IntersectionObserver' in window && revealEls.length) {
+    document.documentElement.classList.add('js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    Array.prototype.forEach.call(revealEls, function (el) { io.observe(el); });
+  }
+
+  /* ---------------- Mobile contact bar ----------------
+     Hidden while the page's own Call / WhatsApp buttons are on screen (top of the page),
+     so the two sets of buttons never compete. Shows as soon as they scroll away. */
+  var bar = document.querySelector('.mobile-bar');
+  var heroActions = document.querySelector('.hero-call, .hero .cta-group');
+  if (bar && heroActions && 'IntersectionObserver' in window) {
+    bar.classList.add('is-hidden');
+    new IntersectionObserver(function (entries) {
+      bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+    }, { rootMargin: '0px 0px -80px 0px' }).observe(heroActions);
+  }
 
   /* ---------------- Mobile menu ---------------- */
   var header = document.querySelector('.site-header');
@@ -31,9 +60,23 @@
       }
     });
     window.addEventListener('resize', function () {
-      if (window.innerWidth >= 1180) setOpen(false);
+      if (window.innerWidth >= 1100) setOpen(false);
     });
   }
+
+  /* ---------------- Services dropdown ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-drop'), function (drop) {
+    var btn = drop.querySelector('.nav-drop__btn');
+    var setDrop = function (open) {
+      drop.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', function () { setDrop(btn.getAttribute('aria-expanded') !== 'true'); });
+    document.addEventListener('click', function (e) { if (!drop.contains(e.target)) setDrop(false); });
+    drop.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && drop.classList.contains('is-open')) { setDrop(false); btn.focus(); }
+    });
+  });
 
   /* ---------------- Enquiry form ---------------- */
   var form = document.getElementById('enquiry-form');

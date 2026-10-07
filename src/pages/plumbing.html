@@ -9,10 +9,11 @@
   "waText": "Hello Amiri Building Services, I need a plumbing repair (non-gas). The problem is:   My postcode is: ",
   "service": { "name": "Plumbing repairs (non-gas)", "serviceType": "Plumbing repair", "description": "Non-gas plumbing repairs including leaks, taps, toilets, cisterns, isolation valves, traps, waste pipes, sinks and appliance connections in West London." },
   "faq": [
-    { "q": "Do you work on boilers or gas appliances?", "a": "No. We do not carry out any gas work, including boilers, gas hobs, gas fires or gas pipework. For those you need a Gas Safe registered engineer." },
-    { "q": "Can you fix a leak behind a wall or under the floor?", "a": "We repair leaks on pipework we can safely reach. If a leak is hidden, we will explain what access is needed before doing anything, so there are no surprises." },
-    { "q": "Can you connect my new washing machine or dishwasher?", "a": "Yes. We fit and replace appliance connections, valves and waste connections for washing machines and dishwashers." },
-    { "q": "Do you supply taps and toilet parts?", "a": "Tell us whether you already have the parts or would like us to source them, and we will discuss it when we confirm the job." }
+    {"q": "Do you work on boilers or gas appliances?", "a": "No. We do not carry out any gas work, including boilers, gas hobs, gas fires or gas pipework. For those you need a Gas Safe registered engineer."},
+    {"q": "Can you fix a leak behind a wall or under the floor?", "a": "We repair leaks on pipework we can safely reach. If a leak is hidden, we will explain what access is needed before doing anything, so there are no surprises."},
+    {"q": "Can you connect my new washing machine or dishwasher?", "a": "Yes. We fit and replace appliance connections, valves and waste connections for washing machines and dishwashers."},
+    {"q": "Do you supply taps and toilet parts?", "a": "Tell us whether you already have the parts or would like us to source them, and we will discuss it when we confirm the job."},
+    {"q": "Are quotes free?", "a": "Yes, initial quotes are free. Site visits, diagnostics and emergency call-outs may be chargeable. We will explain any charge before we start."}
   ]
 }
 -->
@@ -61,7 +62,7 @@
       <h2 id="notgas-title">What we do not do</h2>
       <div class="not-offered">
         <p><strong>We do not carry out gas work of any kind.</strong> That includes boilers, central heating boilers, gas hobs, ovens, fires and gas pipework. By law, gas work must be done by a Gas Safe registered engineer.</p>
-        <p>If you smell gas, leave the property, do not use switches, and call the National Gas Emergency Service on <a href="tel:08001119999">0800 111 999</a>.</p>
+        <p>If you smell gas, leave the property, do not use switches, and call the National Gas Emergency Service on <a href="tel:0800111999">0800 111 999</a>.</p>
       </div>
     </div>
     <ul class="gallery gallery--3" aria-label="Plumbing work photos">
@@ -79,6 +80,7 @@
       <h2 id="enquiry-title">Tell us about the plumbing problem</h2>
       <p class="lead">A photo of the leak, tap or fitting helps us bring the right parts.</p>
       <p>{{icon camera}} <a href="{{wa:Hello Amiri Building Services, I would like to send photos of a plumbing problem. My postcode is: }}" rel="noopener">Send photos on WhatsApp</a></p>
+      {{> pricing-note}}
     </div>
     {{> enquiry-form}}
   </div>

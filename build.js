@@ -8,7 +8,8 @@
  *   node build.js --serve   build, then preview at http://localhost:8080
  *
  * What it does:
- *   1. Reads site.config.json (business details) and src/photos.json (work photos).
+ *   1. Reads site.config.json (business details), src/photos.json (your own work
+ *      photos) and src/images.json (website images, swappable stock placeholders).
  *   2. Wraps every page in src/pages/ with the shared layout (header, footer,
  *      mobile contact bar) from src/layout.html and src/partials/.
  *   3. Replaces {{tokens}} with values from the config, so phone numbers, emails,
@@ -32,6 +33,7 @@ const OUT = path.join(ROOT, 'dist');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cfg = JSON.parse(read('site.config.json'));
 const photos = JSON.parse(read('src/photos.json'));
+const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 
@@ -107,26 +109,87 @@ function renderPhoto(key) {
 </figure>`;
 }
 
+/* ------------------------------------------------------------ site images */
+
+// Website images live in src/images.json. Unsplash addresses get a responsive
+// srcset automatically; a local file (/assets/images/...) is used as it is.
+const IMG_WIDTHS = [480, 800, 1200, 1600, 2000];
+const IMG_SIZES = {
+  full: '100vw',
+  half: '(min-width: 960px) 50vw, 100vw',
+  card: '(min-width: 1180px) 300px, (min-width: 600px) 50vw, 100vw'
+};
+
+function renderImg(key, eager, sizeName) {
+  const im = images[key];
+  if (!im || key.startsWith('_')) throw new Error(`Unknown image key "${key}" – add it to src/images.json`);
+  const sizes = IMG_SIZES[sizeName || 'half'];
+  if (!sizes) throw new Error(`Unknown image size "${sizeName}" for image "${key}"`);
+  const pos = im.position && im.position !== 'center' ? ` img--${esc(im.position)}` : '';
+  const load = eager ? ' fetchpriority="high"' : ' loading="lazy"';
+  let src = im.src;
+  let srcset = '';
+  if (/^https:\/\/images\.unsplash\.com\//.test(im.src)) {
+    const base = im.src.split('?')[0];
+    const url = (w) => `${base}?w=${w}&q=72&auto=format&fit=crop`;
+    src = url(1200);
+    srcset = ` srcset="${esc(IMG_WIDTHS.map((w) => `${url(w)} ${w}w`).join(', '))}" sizes="${sizes}"`;
+  } else if (/^\/assets\/images\/site\/[\w-]+$/.test(im.src)) {
+    // Self-hosted photo: assets/images/site/<name>-<width>.webp, made from the original upload.
+    const have = IMG_WIDTHS.filter((w) => fs.existsSync(path.join(ROOT, `${im.src}-${w}.webp`)));
+    if (!have.length) throw new Error(`No files found for image "${key}" (${im.src}-<width>.webp)`);
+    src = `${im.src}-${have.filter((w) => w <= 1200).pop() || have[0]}.webp`;
+    srcset = ` srcset="${esc(have.map((w) => `${im.src}-${w}.webp ${w}w`).join(', '))}" sizes="${sizes}"`;
+  }
+  return `<img class="media${pos}" src="${esc(src)}"${srcset} width="${im.width || 1600}" height="${im.height || 1067}" alt="${esc(im.alt || '')}"${load} decoding="async">`;
+}
+
 /* ------------------------------------------------------- computed HTML bits */
 
 const NAV = [
-  { href: '/electrical/', label: 'Electrical' },
-  { href: '/plumbing/', label: 'Plumbing' },
-  { href: '/property-maintenance/', label: 'Maintenance' },
-  { href: '/landlords-commercial/', label: 'Landlords &amp; commercial' },
+  {
+    label: 'Services',
+    children: [
+      { href: '/electrical/', label: 'Electrical', note: 'Faults, sockets, lighting, consumer units' },
+      { href: '/plumbing/', label: 'Plumbing', note: 'Leaks, taps, toilets (non-gas)' },
+      { href: '/property-maintenance/', label: 'Property Maintenance', note: 'Repairs and minor installations' },
+      { href: '/emergency-electrician/', label: 'Emergency Electrician', note: 'Call to confirm availability' },
+      { href: '/emergency-plumbing/', label: 'Emergency Plumbing', note: 'Call to confirm availability' }
+    ]
+  },
+  { href: '/landlords-commercial/', label: 'Landlords &amp; Commercial' },
   { href: '/areas/', label: 'Areas' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' }
 ];
 
 function navHtml(currentPath) {
+  const link = (item) => `<a href="${item.href}"${currentPath === item.href ? ' aria-current="page"' : ''}>${item.label}</a>`;
   return NAV.map((item) => {
-    const current =
-      currentPath === item.href ||
-      (item.href === '/electrical/' && currentPath === '/emergency-electrician/') ||
-      (item.href === '/plumbing/' && currentPath === '/emergency-plumbing/');
-    return `<li><a href="${item.href}"${current ? ' aria-current="page"' : ''}>${item.label}</a></li>`;
+    if (!item.children) return `<li>${link(item)}</li>`;
+    const active = item.children.some((c) => c.href === currentPath);
+    const kids = item.children
+      .map((c) => `<li><a href="${c.href}"${currentPath === c.href ? ' aria-current="page"' : ''}><strong>${c.label}</strong><small>${c.note}</small></a></li>`)
+      .join('');
+    return `<li class="nav-drop${active ? ' is-active' : ''}"><button class="nav-drop__btn" type="button" aria-expanded="false" aria-controls="nav-services">${item.label}${icon('chevron')}</button><ul class="nav-drop__menu" id="nav-services">${kids}</ul></li>`;
   }).join('\n');
+}
+
+// Trust badges near the top of the homepage. "Fully Insured" stays hidden until the
+// owner has public liability insurance in force and marks the insurance credential
+// as verified in site.config.json; until then "Professional & Reliable" is shown.
+function trustBadgesHtml() {
+  const ins = cfg.credentials.find((c) => c.key === 'insurance');
+  const badge = (ic, title, sub, cls = '') => `<li class="trust-badge${cls}">${icon(ic)}<span><strong>${title}</strong><small>${sub}</small></span></li>`;
+  let first;
+  if (ins && ins.verified) first = badge('shield', 'Fully Insured', 'Details available on request');
+  else first = badge('check', 'Professional &amp; Reliable', 'Clear, tidy, careful work');
+  return [
+    first,
+    badge('pin', 'Local West London Service', `Based in ${esc(cfg.baseTown)}`),
+    badge('building', 'Residential &amp; Commercial', 'Homes, landlords &amp; businesses'),
+    badge('alert', 'Emergency Call-Outs', 'Call to confirm availability')
+  ].join('\n');
 }
 
 function credentialsHtml() {
@@ -148,16 +211,18 @@ function reviewsHtml() {
     const cards = cfg.reviews
       .map((r) => {
         const stars = r.rating ? `<p class="review__stars" aria-label="${r.rating} out of 5 stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>` : '';
-        return `<li class="review card">${stars}<blockquote><p>${esc(r.text)}</p></blockquote><p class="review__meta">${esc(r.author)}${r.source ? ` · ${esc(r.source)}` : ''}${r.date ? ` · <time datetime="${esc(r.date)}">${esc(new Date(r.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }))}</time>` : ''}</p></li>`;
+        const date = r.date ? ` · <time datetime="${esc(r.date)}">${esc(new Date(r.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }))}</time>` : '';
+        return `<li class="t-card">${stars}<blockquote><p>${esc(r.text)}</p></blockquote><div class="t-card__who"><span class="t-card__avatar" aria-hidden="true">${esc(String(r.author).charAt(0))}</span><p><strong>${esc(r.author)}</strong>${r.source ? esc(r.source) : ''}${date}</p></div></li>`;
       })
       .join('\n');
-    return `<ul class="reviews grid grid--3">${cards}</ul>`;
+    return `<ul class="t-grid">${cards}</ul>`;
   }
   if (!cfg.showPlaceholders) return '<p class="muted">We are a new company and will show genuine customer reviews here as they come in.</p>';
-  return `<ul class="reviews grid grid--3">
+  // Clearly labelled placeholders: no invented names, quotes, star ratings or counts.
+  return `<ul class="t-grid">
 ${[1, 2, 3]
   .map(
-    (n) => `<li class="review card card--placeholder"><span class="photo__tag">Review placeholder ${n}</span><p>A genuine Google review will appear here once customers have left one. No reviews have been invented.</p></li>`
+    (n) => `<li class="t-card t-card--placeholder"><span class="photo__tag">Placeholder ${n} – not a real review</span><blockquote><p>A genuine customer review will appear here once customers have left one on Google.</p></blockquote><div class="t-card__who"><span class="t-card__avatar" aria-hidden="true">?</span><p><strong>Customer name</strong>Area · Google review</p></div></li>`
   )
   .join('\n')}
 </ul>`;
@@ -326,6 +391,7 @@ function render(tpl, ctx, file) {
   out = out
     .replace(/\{\{#placeholders\}\}([\s\S]*?)\{\{\/placeholders\}\}/g, (_, inner) => (cfg.showPlaceholders ? inner : ''))
     .replace(/\{\{photo\s+([\w-]+)\s*\}\}/g, (_, k) => renderPhoto(k))
+    .replace(/\{\{img(!?)\s+([\w-]+)(?:\s+(\w+))?\s*\}\}/g, (_, eager, k, size) => renderImg(k, Boolean(eager), size))
     .replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, k) => icon(k))
     .replace(/\{\{wa:([^}]*)\}\}/g, (_, t) => esc(waUrl(t.trim())))
     .replace(/\{\{mail:([^|}]*)(?:\|([^}]*))?\}\}/g, (_, s, b) => esc(mailtoUrl(s.trim(), (b || '').trim())));
@@ -405,7 +471,11 @@ function build() {
     analytics: cfg.analytics.cloudflareWebAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(cfg.analytics.cloudflareWebAnalyticsToken)}"}'></script>`
       : '',
-    year: String(new Date().getFullYear())
+    trustBadges: trustBadgesHtml(),
+    year: String(new Date().getFullYear()),
+    preconnect: Object.values(images).some((im) => im && /^https:\/\/images\.unsplash\.com\//.test(im.src || ''))
+      ? '<link rel="preconnect" href="https://images.unsplash.com">'
+      : ''
   };
 
   for (const f of pageFiles) {
@@ -420,6 +490,8 @@ function build() {
     };
     page.canonical = DOMAIN + (page.path === '/404.html' ? '/404.html' : page.path);
     page.waUrl = waUrl(page.waText);
+    // 'Get a quote' goes to the form on this page, or to the contact page if there isn't one.
+    page.quoteUrl = body.includes('{{> enquiry-form}}') ? '#enquiry' : '/contact/#enquiry';
     page.ogImage = DOMAIN + cfg.ogImage;
 
     const ctx = {
@@ -462,8 +534,8 @@ function build() {
         description: `${cfg.tagline} – ${cfg.regionLabel}`,
         start_url: '/',
         display: 'browser',
-        background_color: '#ffffff',
-        theme_color: '#0b1b33',
+        background_color: '#faf7f2',
+        theme_color: '#16191e',
         icons: [
           { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
@@ -482,7 +554,7 @@ function build() {
 
 function serve(port = 8080) {
   const http = require('http');
-  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
+  const types = { '.woff2': 'font/woff2', '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.json': 'application/json', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
   http
     .createServer((req, res) => {
       let p = decodeURIComponent(req.url.split('?')[0]);

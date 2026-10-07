@@ -1,17 +1,14 @@
 {
   "_README": "This is the ONE place to change business details. Edit, save, then run `node build.js` (Cloudflare Pages does this automatically on every push). Never put API keys or passwords in this file: it is public.",
-
   "legalName": "AMIRI BUILDING SERVICES LTD",
   "tradingName": "Amiri Building Services",
   "companyNumber": "17472711",
   "jurisdiction": "England and Wales",
   "jurisdictionVerified": false,
-
   "domain": "https://amiribuildingservices.com",
   "tagline": "Electrical | Plumbing | Property Maintenance",
   "regionLabel": "West London",
   "baseTown": "West Drayton",
-
   "phone": {
     "display": "07438 635942",
     "international": "+44 7438 635942",
@@ -26,72 +23,132 @@
     "owner": "waris@amiribuildingservices.com",
     "_note": "Only the public address is shown on the website. The owner address is kept here for reference and for future back-end notifications."
   },
-
   "registeredOffice": {
-    "lines": ["25 Farringdon House", "29 Park Lodge Avenue", "West Drayton", "UB7 9FX", "United Kingdom"],
+    "lines": [
+      "25 Farringdon House",
+      "29 Park Lodge Avenue",
+      "West Drayton",
+      "UB7 9FX",
+      "United Kingdom"
+    ],
     "notice": "Registered office — not a customer service location."
   },
-
   "areas": {
-    "core": ["West Drayton", "Hayes", "Uxbridge", "Hillingdon", "Heathrow"],
-    "secondary": ["Southall", "Ruislip", "Iver", "Langley", "Slough", "Ealing"],
+    "core": [
+      "West Drayton",
+      "Hayes",
+      "Uxbridge",
+      "Hillingdon",
+      "Heathrow"
+    ],
+    "secondary": [
+      "Southall",
+      "Ruislip",
+      "Iver",
+      "Langley",
+      "Slough",
+      "Ealing"
+    ],
     "secondaryNote": "and surrounding West London areas"
   },
-
   "availability": {
     "emergencyText": "Emergency call-outs available — call to confirm current availability.",
     "generalText": "Call, WhatsApp or email and we will confirm availability for your job."
   },
-
   "hours": {
     "confirmed": false,
     "displayText": "",
     "_note": "Leave confirmed=false until you have decided your hours. When confirmed, set displayText (e.g. 'Monday to Friday 8am–6pm, Saturday 9am–1pm') and fill openingHoursSpecification so search engines can read them.",
     "openingHoursSpecification": [
-      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "18:00" }
+      {
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "18:00"
+      }
     ]
   },
-
   "showPlaceholders": true,
   "_showPlaceholdersNote": "true = show clearly labelled 'owner to add' boxes for credentials, reviews and the review link. Set to false before launch if you have not filled them in; empty items will then be hidden instead.",
-
   "credentials": [
-    { "key": "experience", "label": "Years of experience", "value": "", "verified": false },
-    { "key": "qualifications", "label": "Electrical qualifications", "value": "", "verified": false },
-    { "key": "ecs", "label": "ECS card", "value": "", "verified": false },
-    { "key": "insurance", "label": "Public liability insurance", "value": "", "verified": false },
-    { "key": "accreditations", "label": "Verified accreditations / scheme memberships", "value": "", "verified": false }
+    {
+      "key": "experience",
+      "label": "Years of experience",
+      "value": "",
+      "verified": false
+    },
+    {
+      "key": "qualifications",
+      "label": "Electrical qualifications",
+      "value": "",
+      "verified": false
+    },
+    {
+      "key": "ecs",
+      "label": "ECS card",
+      "value": "",
+      "verified": false
+    },
+    {
+      "key": "insurance",
+      "label": "Public liability insurance",
+      "value": "",
+      "verified": false
+    },
+    {
+      "key": "accreditations",
+      "label": "Verified accreditations / scheme memberships",
+      "value": "",
+      "verified": false
+    }
   ],
-
   "reviews": [],
   "_reviewsNote": "Add ONLY genuine reviews, copied word for word with permission or from your Google Business Profile. Format: { \"author\": \"First name + initial\", \"text\": \"...\", \"rating\": 5, \"date\": \"2026-11-01\", \"source\": \"Google\" }",
-
   "googleReviewUrl": "",
   "googleBusinessProfileUrl": "",
-
   "social": {
     "instagram": "",
     "facebook": "",
     "tiktok": "",
     "youtube": ""
   },
-
   "logo": {
-    "src": "/assets/images/logo-placeholder.svg",
-    "width": 220,
-    "height": 48,
-    "alt": "Amiri Building Services"
+    "src": "/assets/images/logo/amiri-logo-320.png",
+    "webp": "/assets/images/logo/amiri-logo-320.webp 320w, /assets/images/logo/amiri-logo-640.webp 640w",
+    "png": "/assets/images/logo/amiri-logo-320.png 320w, /assets/images/logo/amiri-logo-640.png 640w",
+    "width": 320,
+    "height": 79,
+    "alt": "Amiri Building Services",
+    "srcOnDark": "/assets/images/logo/amiri-logo-on-dark-320.png",
+    "webpOnDark": "/assets/images/logo/amiri-logo-on-dark-320.webp 320w, /assets/images/logo/amiri-logo-on-dark-640.webp 640w",
+    "pngOnDark": "/assets/images/logo/amiri-logo-on-dark-320.png 320w, /assets/images/logo/amiri-logo-on-dark-640.png 640w",
+    "icon": "/assets/images/logo/amiri-icon-64.png",
+    "iconPng": "/assets/images/logo/amiri-icon-64.png 1x, /assets/images/logo/amiri-icon-128.png 2x",
+    "iconWebp": "/assets/images/logo/amiri-icon-64.webp 1x, /assets/images/logo/amiri-icon-128.webp 2x",
+    "iconOnDark": "/assets/images/logo/amiri-icon-on-dark-64.png",
+    "iconOnDarkPng": "/assets/images/logo/amiri-icon-on-dark-64.png 1x, /assets/images/logo/amiri-icon-on-dark-128.png 2x",
+    "iconOnDarkWebp": "/assets/images/logo/amiri-icon-on-dark-64.webp 1x, /assets/images/logo/amiri-icon-on-dark-128.webp 2x",
+    "_note": "Owner's logo. icon = ABS monogram only, for small spaces. src = for light backgrounds (header). OnDark = same logo with the black lettering lightened, for the dark footer. Original file and monograms: brand/. Favicons and app icons in static/ are made from the AB monogram."
   },
   "ogImage": "/assets/images/og-image.png",
-
   "aiChat": {
     "enabled": false,
     "endpoint": "/api/chat",
     "_note": "AI_CHAT_ENABLED. Keep false until the secure back end in AI_RECEPTIONIST_PLAN.md is live and tested. When false, no chat code is loaded at all."
   },
-
   "analytics": {
     "cloudflareWebAnalyticsToken": "",
     "_note": "Optional. Prefer turning on Web Analytics in the Cloudflare Pages dashboard (no code needed). Only fill this if you use the manual JS snippet. Do NOT add Google Analytics, Meta Pixel or other trackers without a consent mechanism."
+  },
+  "pricing": {
+    "_note": "Confirmed by the owner on 2026-10-06. Do not add figures until prices are decided.",
+    "quoteFree": "Initial quotes are free.",
+    "maybeCharged": "Site visits, diagnostics and emergency call-outs may be chargeable.",
+    "explain": "We will explain any charge before we start."
   }
 }

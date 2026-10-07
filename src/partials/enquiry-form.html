@@ -1,6 +1,7 @@
 <form class="enquiry card" id="enquiry-form" method="dialog" novalidate data-default-category="{{page.formCategory}}" aria-describedby="enquiry-intro">
-  <h3 class="enquiry__title">{{icon whatsapp}}Quick enquiry</h3>
+  <div class="enquiry__head">{{> brand-icon}}<div><h3 class="enquiry__title">Quick enquiry</h3><p class="enquiry__brand">{{tradingName}}</p></div></div>
   <p id="enquiry-intro" class="muted">Fill this in and press send. It opens WhatsApp with your details already written, ready for you to send. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+  <p class="form-pricing">{{icon receipt}}<span>{{pricing.quoteFree}} {{pricing.maybeCharged}}</span></p>
   <div class="form-errors" id="enquiry-errors" role="alert" aria-live="assertive" hidden></div>
 
   <div class="form-row form-row--2">

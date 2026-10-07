@@ -1,0 +1,8 @@
+// Cloudflare Worker "amiri-website": the website, static assets only (no Worker code, no bindings).
+// Production deploys use the dashboard deploy command; branch previews (npx wrangler preview) need this file.
+{
+  "name": "amiri-website",
+  "compatibility_date": "2026-10-06",
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "previews": {}
+}
