@@ -118,12 +118,16 @@
     "youtube": ""
   },
   "logo": {
-    "src": "/assets/images/logo-placeholder.svg",
-    "width": 260,
-    "height": 56,
+    "src": "/assets/images/logo/amiri-logo-320.png",
+    "webp": "/assets/images/logo/amiri-logo-320.webp 320w, /assets/images/logo/amiri-logo-640.webp 640w",
+    "png": "/assets/images/logo/amiri-logo-320.png 320w, /assets/images/logo/amiri-logo-640.png 640w",
+    "width": 320,
+    "height": 79,
     "alt": "Amiri Building Services",
-    "srcOnDark": "/assets/images/logo-placeholder-light.svg",
-    "_note": "src = logo for light backgrounds (header). srcOnDark = version for dark backgrounds (footer). Replace both with the real logo."
+    "srcOnDark": "/assets/images/logo/amiri-logo-on-dark-320.png",
+    "webpOnDark": "/assets/images/logo/amiri-logo-on-dark-320.webp 320w, /assets/images/logo/amiri-logo-on-dark-640.webp 640w",
+    "pngOnDark": "/assets/images/logo/amiri-logo-on-dark-320.png 320w, /assets/images/logo/amiri-logo-on-dark-640.png 640w",
+    "_note": "Owner's logo. src = for light backgrounds (header). OnDark = same logo with the black lettering lightened, for the dark footer. Original file and monograms: brand/. Favicons and app icons in static/ are made from the AB monogram."
   },
   "ogImage": "/assets/images/og-image.png",
   "aiChat": {

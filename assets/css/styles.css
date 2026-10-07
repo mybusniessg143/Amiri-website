@@ -200,13 +200,16 @@ main:focus { outline: none; }
 .site-header .container { max-width: 1400px; }
 .site-header__inner { display: flex; align-items: center; gap: 1rem; min-height: 72px; }
 .brand { display: flex; align-items: center; margin-right: auto; flex-shrink: 0; }
-.brand img { width: 172px; height: auto; }
+.brand img { width: 184px; height: auto; display: block; }
 .site-header__cta { display: flex; align-items: center; gap: .6rem; }
 
 .header-quote { display: none; color: var(--ink-900); font-weight: 600; font-size: .95rem; text-decoration: none; white-space: nowrap; padding: .5rem .25rem; border-bottom: 1.5px solid var(--gold); }
 .header-quote:hover { color: var(--gold-deep); }
 .header-call { min-height: 46px; padding: .55rem 1.1rem; gap: .5rem; white-space: nowrap; }
 .header-call__num { display: none; }
+@media (max-width: 359px) {
+  .brand img { width: 160px; }
+}
 @media (max-width: 419px) {
   .header-call { width: 46px; padding: 0; }
   .header-call__label { display: none; }
@@ -258,7 +261,7 @@ main:focus { outline: none; }
 @media (min-width: 1100px) {
   .site-header__inner { min-height: var(--header-h); gap: 1.5rem; }
   .nav-toggle { display: none; }
-  .brand img { width: 236px; }
+  .brand img { width: 256px; }
   .brand { margin-right: 0; }
   .site-nav { display: block; margin: 0 auto; }
   .site-nav__cta { display: none; }
@@ -288,6 +291,7 @@ main:focus { outline: none; }
   .header-quote { display: none; }
 }
 @media (min-width: 1366px) {
+  .brand img { width: 280px; }
   .header-call__label { display: inline; font-weight: 750; }
   .header-call__label::after { content: "·"; margin-left: .45rem; opacity: .55; }
 }
@@ -1002,7 +1006,7 @@ table.simple th { background: var(--paper-2); color: var(--ink-900); }
 .site-footer .btn--wa, .site-footer .btn--wa:hover { color: #fff; }
 .footer-top { display: grid; gap: 1.5rem; padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--line-dark); }
 .footer-top__brand p { margin: 1rem 0 0; max-width: 32rem; }
-.footer-logo img { width: 196px; height: auto; }
+.footer-logo img { width: 240px; height: auto; display: block; }
 .footer-top__cta { display: flex; flex-wrap: wrap; gap: .75rem; }
 @media (min-width: 960px) { .footer-top { grid-template-columns: 1fr auto; align-items: end; } }
 .footer-grid { display: grid; gap: 2rem; }

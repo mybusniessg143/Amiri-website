@@ -119,12 +119,13 @@ Then update `alt` (a short description of the picture) and rebuild. If every pic
 
 ## 6. Replacing the logo
 
-1. Save your logo as **SVG** (best) or PNG/WebP, ideally with a transparent background and wide format (about 220×48).
-2. Put it in `assets/images/`, e.g. `logo.svg`.
-3. In `site.config.json` update `logo.src` (e.g. `/assets/images/logo.svg`), `logo.width`, `logo.height`. Also set `logo.srcOnDark` to a light version of the logo for the dark footer (it can be the same file if your logo works on dark backgrounds).
-4. Replace the icons in `static/` (favicon.svg, favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png, icon-512-maskable.png) using your logo mark – realfavicongenerator.net does this for free.
+Your logo is already on the site (header and footer). The files are in `assets/images/logo/`:
+
+1. `amiri-logo-*.png` / `.webp`: the logo for light backgrounds (header). `amiri-logo-on-dark-*`: the same logo with the black lettering lightened, used in the dark footer.
+2. To replace it, save new files with the same names (320 and 640 pixels wide, transparent background) or change the paths in `site.config.json` under `logo`. If the shape changes, update `logo.width` and `logo.height`.
+3. The original file you supplied, and the AB monogram on its own, are kept in the `brand/` folder (not published).
+4. The icons in `static/` (favicon.ico, favicon-32.png, apple-touch-icon.png, icon-192.png, icon-512.png, icon-512-maskable.png) are already made from your AB monogram. To change them, replace these files (realfavicongenerator.net does this for free).
 5. Replace `assets/images/og-image.png` (1200×630) – the picture shown when the site is shared on WhatsApp/Facebook.
-6. Delete `assets/images/logo-placeholder.svg` and `assets/images/logo-placeholder-light.svg`.
 
 ## 7. Changing colours
 

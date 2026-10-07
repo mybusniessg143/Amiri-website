@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="brand" href="/" aria-label="{{tradingName}} – home">
-      <img src="{{logo.src}}" width="{{logo.width}}" height="{{logo.height}}" alt="{{logo.alt}}">
+      <picture><source type="image/webp" srcset="{{logo.webp}}" sizes="(min-width: 1366px) 280px, (min-width: 1100px) 256px, (min-width: 600px) 220px, 184px"><img src="{{logo.src}}" srcset="{{logo.png}}" sizes="(min-width: 1366px) 280px, (min-width: 1100px) 256px, (min-width: 600px) 220px, 184px" width="{{logo.width}}" height="{{logo.height}}" alt="{{logo.alt}}" fetchpriority="high"></picture>
     </a>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul class="site-nav__list">
