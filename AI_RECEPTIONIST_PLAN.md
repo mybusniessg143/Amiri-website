@@ -40,7 +40,11 @@ The endpoint answers **404 unless `ENQUIRY_API_ENABLED` is `true`**, so it is in
 
 The privacy notice switches automatically: while the chat is on, section 6 describes the enquiry assistant (Cloudflare storage, Resend email, optional WhatsApp alert, 12-month deletion) and Resend is listed as a processor. Review it before going live.
 
-### Setup (owner, one time, about 30–45 minutes)
+### Setup
+
+**Automated:** `scripts/cloudflare-setup.sh` does all the Cloudflare steps below (D1 database + table, private R2 bucket + 12-month deletion rule, Pages bindings and settings, a generated `FILE_LINK_SECRET`) and, given a Resend key, adds Resend's DNS records to the domain. It switches the endpoint on for **Preview deployments only**; the live site stays off until it is run with `--enable-production`. It needs `CLOUDFLARE_API_TOKEN` (permissions listed at the top of the script) and optionally `RESEND_API_KEY`, set as environment variables, never committed.
+
+**Manual equivalent (owner, one time, about 30–45 minutes)**
 
 **Cloudflare** (same account as the website):
 1. **R2** → Create bucket `amiri-enquiries` (keep it private, no public access). Settings → Object lifecycle rules → add "Delete objects with prefix `enquiries/` after 365 days".
