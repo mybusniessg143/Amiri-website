@@ -121,7 +121,8 @@ Then update `alt` (a short description of the picture) and rebuild. If every pic
 
 Your logo is already on the site (header and footer). The files are in `assets/images/logo/`:
 
-1. `amiri-logo-*.png` / `.webp`: the logo for light backgrounds (header). `amiri-logo-on-dark-*`: the same logo with the black lettering lightened, used in the dark footer.
+1. `amiri-logo-*.png` / `.webp`: the main horizontal logo for light backgrounds (header on every page).
+   `amiri-icon-*`: the ABS monogram on its own, for small spaces (mobile menu, quote forms). `amiri-icon-on-dark-*` is the same for dark panels. `amiri-logo-on-dark-*`: the same logo with the black lettering lightened, used in the dark footer.
 2. To replace it, save new files with the same names (320 and 640 pixels wide, transparent background) or change the paths in `site.config.json` under `logo`. If the shape changes, update `logo.width` and `logo.height`.
 3. The original file you supplied, and the AB monogram on its own, are kept in the `brand/` folder (not published).
 4. The icons in `static/` (favicon.ico, favicon-32.png, apple-touch-icon.png, icon-192.png, icon-512.png, icon-512-maskable.png) are already made from your AB monogram. To change them, replace these files (realfavicongenerator.net does this for free).
