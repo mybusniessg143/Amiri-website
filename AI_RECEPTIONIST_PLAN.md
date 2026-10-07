@@ -46,7 +46,7 @@ The privacy notice switches automatically: while the chat is on, section 6 descr
 > - Done: D1 database `amiri-enquiries` (id `617c2a60-cc4f-48c9-af22-bdadb401d611`) with `0001_enquiries.sql` and `0002_settings.sql` applied.
 > - `FILE_LINK_SECRET` is generated automatically on first use and kept in D1 (a Worker secret of the same name overrides it).
 > - Files are deleted together with their enquiry after 12 months by the endpoint itself, so no R2 lifecycle rule is needed.
-> - Done: private R2 bucket `amiri-enquiries` (no public access, no r2.dev URL; photos are only reachable through signed links from `/api/enquiry-file`).
+> - Done: private R2 bucket `amiri-ai-receptionist-uploads` (Western Europe; no public access, no r2.dev URL; photos are only reachable through signed links from `/api/enquiry-file`).
 > - Still needed: a Resend account with the domain verified; `RESEND_API_KEY` as a Worker secret (for production and for Previews).
 >
 > The Pages-based steps below and `scripts/cloudflare-setup.sh` are kept for reference if the site ever moves to Pages.

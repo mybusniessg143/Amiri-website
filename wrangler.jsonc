@@ -20,7 +20,7 @@
     { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
   ],
   "r2_buckets": [
-    { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-enquiries" }
+    { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-ai-receptionist-uploads" }
   ],
   "vars": {
     // Live site: the enquiry API stays OFF until the owner approves going live.
@@ -41,7 +41,7 @@
       { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
     ],
     "r2_buckets": [
-      { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-enquiries" }
+      { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-ai-receptionist-uploads" }
     ]
   }
 }
