@@ -26,6 +26,18 @@
     Array.prototype.forEach.call(revealEls, function (el) { io.observe(el); });
   }
 
+  /* ---------------- Mobile contact bar ----------------
+     Hidden while the page's own Call / WhatsApp buttons are on screen (top of the page),
+     so the two sets of buttons never compete. Shows as soon as they scroll away. */
+  var bar = document.querySelector('.mobile-bar');
+  var heroActions = document.querySelector('.hero-call, .hero .cta-group');
+  if (bar && heroActions && 'IntersectionObserver' in window) {
+    bar.classList.add('is-hidden');
+    new IntersectionObserver(function (entries) {
+      bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+    }, { rootMargin: '0px 0px -80px 0px' }).observe(heroActions);
+  }
+
   /* ---------------- Mobile menu ---------------- */
   var header = document.querySelector('.site-header');
   var toggle = document.querySelector('.nav-toggle');

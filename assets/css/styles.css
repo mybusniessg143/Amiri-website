@@ -309,6 +309,9 @@ main:focus { outline: none; }
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: 0 -8px 24px rgba(14, 16, 19, .25);
 }
+.mobile-bar { transition: transform .3s var(--ease), visibility .3s; }
+.mobile-bar.is-hidden { transform: translateY(110%); visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .mobile-bar { transition: none; } }
 .mobile-bar__btn {
   display: flex; align-items: center; justify-content: center; gap: .45rem;
   min-height: 50px; border-radius: 14px; color: #fff; text-decoration: none; font-weight: 650; font-size: .95rem;
