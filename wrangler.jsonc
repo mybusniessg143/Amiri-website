@@ -31,7 +31,9 @@
     "vars": {
       "ENQUIRY_API_ENABLED": "true",
       "EMAIL_TO": "waris@amiribuildingservices.com",
-      "EMAIL_FROM": "Amiri Website <enquiries@amiribuildingservices.com>"
+      // Resend's shared test sender works before the domain is verified, but only
+      // delivers to the Resend account owner's address. Switch to enquiries@… once verified.
+      "EMAIL_FROM": "Amiri Website <onboarding@resend.dev>"
     },
     "d1_databases": [
       { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
