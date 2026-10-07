@@ -1,6 +1,44 @@
 # AI receptionist – technical plan
 
-Status: **not built**. The website is ready for it: a chat UI exists (`assets/js/chat.js`) but is switched off with `aiChat.enabled: false` (`AI_CHAT_ENABLED`) in `site.config.json`, and no chat code loads while it is off. Nothing on the site claims an AI receptionist exists.
+Status: **Phase 1 (guided chat) built, switched off.** `assets/js/chat.js` + `assets/css/chat.css` are a step-by-step enquiry assistant that runs in the visitor's browser. It is off (`aiChat.enabled: false`) and loads nothing until it is turned on. The full AI back end below is **not built**. Nothing on the site claims an AI receptionist exists.
+
+## Phase 1 – guided website chat (built, off)
+
+No AI model, no server, no running cost. The assistant asks, in order:
+
+1. Service: Electrical / Plumbing (non-gas reminder) / Property Maintenance / Other
+2. Emergency or planned. Emergency shows a large **Call Now** + **WhatsApp** card and keeps a Call/WhatsApp strip pinned at the top of the chat.
+3. Postcode (UK format checked; districts outside `aiChat.coveredPostcodeAreas` get "we'll check and let you know", never a refusal)
+4. Photos or short video (up to 6 files, 50 MB each, previews only; they stay on the device)
+5. Description of the problem
+6. Name and phone number (UK number checked)
+7. When it is needed + optional preferred days/times
+8. Summary card with a reference (e.g. `ABS-071026-4821`) and send buttons: **Send on WhatsApp** (pre-filled summary), **Send by email** (pre-filled), **Share photos to WhatsApp** (phones that support it), **Copy summary**. Emergencies also get **Call Now** first.
+
+Fixed wording only, no free-form answers: it never quotes a price or confirms a booking (uses the owner-approved `pricing` text), never says 24/7, and never gives repair instructions. Keyword checks in the description trigger fixed safety messages: smell of gas / CO alarm → leave and call 0800 111 999; sparking/smoke/burning/shock/water near electrics → keep away, don't repair it yourself, 999 for fire/smoke/shock; boiler/gas → non-gas only; price questions → "assessed first" + pricing text. Progress survives a page change (sessionStorage); photos do not, and the customer is told to attach them.
+
+**Turning it on:** after the homepage is approved, set `aiChat.enabled: true` and push. **Trying it first:** in Cloudflare Pages → Settings → Environment variables, add `AI_CHAT_PREVIEW = 1` to the **Preview** environment only; every branch preview then has the chat while the live site does not. Locally: `AI_CHAT_PREVIEW=1 node build.js --serve`.
+
+On phones the "Get help" button appears together with the sticky Call/WhatsApp bar (after the hero buttons scroll away) so it never covers them. Any link or button with a `data-open-chat` attribute also opens the chat, if the owner later wants an entry point inside a page.
+
+## Phase 1b – recommended: direct delivery with photos
+
+WhatsApp/email hand-off works today but relies on the customer pressing send and attaching photos themselves. Recommended next step (about £0/month at this volume):
+
+- **Cloudflare Pages Function** `functions/api/enquiry.js` (same repo, same domain, no CORS). Set `aiChat.submitEndpoint: "/api/enquiry"`; chat.js then shows **Send to us now** and posts `multipart/form-data` (all answers, the summary text, and the files as `files`).
+- **Cloudflare Turnstile** on the chat (free) + server-side validation of every field + a rate limit per IP.
+- **Photos → Cloudflare R2** (free tier, no egress fees), private bucket, keys like `enquiries/<ref>/<n>.jpg`; the owner email links to them through a signed or authenticated route, never a public bucket. Re-check type and size on the server; strip nothing client-side.
+- **Email → owner** via a transactional email API (Resend, Postmark or Mailgun; Resend's free tier covers a small business), from a verified `notifications@` address on the domain, to `email.owner`. Subject `EMERGENCY:` first for urgent jobs. Optionally also a WhatsApp Cloud API template message to the owner for emergencies.
+- Secrets (`RESEND_API_KEY`, `TURNSTILE_SECRET`) only in Cloudflare encrypted environment variables, never in this repo.
+- CSP: no change for same-origin uploads; add `https://challenges.cloudflare.com` to `script-src` and `frame-src` for Turnstile.
+- Update the privacy notice (photos stored in R2, retention period) before switching this on.
+
+Phase 2 (below) swaps the fixed questions for the Claude-powered receptionist using the same chat UI and endpoint pattern.
+
+---
+
+# Phase 2 – full AI receptionist (not built)
+
 
 Goal: one assistant that handles first contact on **website chat, WhatsApp Business, Gmail** and checks **Google Calendar**, with strict limits on what it may do on its own, a human approval step for anything that matters, and minimal fixed monthly cost.
 

@@ -32,6 +32,8 @@ const OUT = path.join(ROOT, 'dist');
 
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cfg = JSON.parse(read('site.config.json'));
+// AI receptionist chat: on when aiChat.enabled is true, or for a preview build (AI_CHAT_PREVIEW=1).
+const CHAT_ON = Boolean(cfg.aiChat.enabled) || process.env.AI_CHAT_PREVIEW === '1';
 const photos = JSON.parse(read('src/photos.json'));
 const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');
@@ -432,8 +434,15 @@ function build() {
     phoneDisplay: cfg.phone.display,
     whatsappNumber: cfg.whatsapp.number,
     email: cfg.email.public,
-    AI_CHAT_ENABLED: Boolean(cfg.aiChat.enabled),
-    aiChatEndpoint: cfg.aiChat.endpoint
+    AI_CHAT_ENABLED: CHAT_ON,
+    aiChatEndpoint: cfg.aiChat.endpoint,
+    aiChat: {
+      mode: cfg.aiChat.mode || 'guided',
+      submitEndpoint: cfg.aiChat.submitEndpoint || '',
+      coveredPostcodeAreas: (cfg.aiChat.coveredPostcodeAreas || []).map((s) => String(s).toUpperCase())
+    },
+    emergencyText: cfg.availability.emergencyText,
+    pricing: { quoteFree: cfg.pricing.quoteFree, maybeCharged: cfg.pricing.maybeCharged, explain: cfg.pricing.explain }
   };
   fs.writeFileSync(
     path.join(OUT, 'assets/js/config.js'),
@@ -444,7 +453,8 @@ function build() {
     css: hashFile(path.join(OUT, 'assets/css/styles.css')),
     js: hashFile(path.join(OUT, 'assets/js/main.js')),
     cfg: hashFile(path.join(OUT, 'assets/js/config.js')),
-    chat: hashFile(path.join(OUT, 'assets/js/chat.js'))
+    chat: hashFile(path.join(OUT, 'assets/js/chat.js')),
+    chatCss: hashFile(path.join(OUT, 'assets/css/chat.css'))
   };
 
   const layout = fs.readFileSync(path.join(SRC, 'layout.html'), 'utf8');
@@ -467,7 +477,8 @@ function build() {
       !cfg.jurisdictionVerified && cfg.showPlaceholders
         ? ' <span class="placeholder-note">(jurisdiction to be verified by owner before launch)</span>'
         : '',
-    chat: cfg.aiChat.enabled ? `<script src="/assets/js/chat.js?v=${versions.chat}" defer></script>` : '',
+    chat: CHAT_ON ? `<script src="/assets/js/chat.js?v=${versions.chat}" defer></script>` : '',
+    chatCss: CHAT_ON ? `<link rel="stylesheet" href="/assets/css/chat.css?v=${versions.chatCss}">` : '',
     analytics: cfg.analytics.cloudflareWebAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(cfg.analytics.cloudflareWebAnalyticsToken)}"}'></script>`
       : '',

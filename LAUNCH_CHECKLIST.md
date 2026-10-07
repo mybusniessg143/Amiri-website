@@ -65,4 +65,4 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Ask happy customers for honest Google reviews
 - [ ] Add new job photos regularly
 - [ ] Review Search Console monthly for errors
-- [ ] Keep `AI_CHAT_ENABLED` (`aiChat.enabled`) false until the back end in AI_RECEPTIONIST_PLAN.md is built and tested
+- [ ] Keep `AI_CHAT_ENABLED` (`aiChat.enabled`) false until the homepage is approved and the guided chat has been tried on a preview (AI_RECEPTIONIST_PLAN.md, Phase 1)

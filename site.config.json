@@ -138,8 +138,11 @@
   "ogImage": "/assets/images/og-image.png",
   "aiChat": {
     "enabled": false,
+    "mode": "guided",
     "endpoint": "/api/chat",
-    "_note": "AI_CHAT_ENABLED. Keep false until the secure back end in AI_RECEPTIONIST_PLAN.md is live and tested. When false, no chat code is loaded at all."
+    "submitEndpoint": "",
+    "coveredPostcodeAreas": ["UB7", "UB3", "UB4", "UB8", "UB10", "UB11", "TW6", "UB1", "UB2", "HA4", "SL0", "SL3", "SL1", "SL2", "W5", "W7", "W13"],
+    "_note": "AI_CHAT_ENABLED. false = no chat code or styles are loaded at all. Turn on only after the homepage is approved. mode 'guided' = the step-by-step enquiry assistant that runs in the visitor's browser (no AI back end, no running cost); the customer sends the summary to you by WhatsApp or email. submitEndpoint: leave empty until the Cloudflare Pages Function in AI_RECEPTIONIST_PLAN.md exists; then '/api/enquiry' adds a 'Send to us now' button that uploads photos too. coveredPostcodeAreas: postcode districts treated as your usual area (others get 'we'll check and let you know'); owner to check this list. To try the chat on a preview without switching it on for the live site, build with AI_CHAT_PREVIEW=1."
   },
   "analytics": {
     "cloudflareWebAnalyticsToken": "",

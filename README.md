@@ -38,7 +38,7 @@ amiri-website/
 ├── assets/
 │   ├── css/styles.css      ← all styling (colours at the top)
 │   ├── js/main.js          ← mobile menu + WhatsApp/email enquiry form
-│   ├── js/chat.js          ← future AI chat UI (only loaded when enabled)
+│   ├── js/chat.js          ← guided enquiry chat (only loaded when enabled)
 │   ├── icons/sprite.svg    ← all icons
 │   └── images/             ← logo, social share image, work/ photos
 ├── static/                 ← copied to the site root: favicons, _headers (security headers)
@@ -74,7 +74,7 @@ Open `site.config.json`. Change the value, save, rebuild. It updates every page,
 | Google Business Profile link | `googleBusinessProfileUrl` |
 | Instagram / Facebook / TikTok / YouTube | `social.*` |
 | Hide all "owner to add" placeholder boxes | `showPlaceholders: false` |
-| AI chat on/off | `aiChat.enabled` (keep `false` until the back end is live) |
+| AI chat on/off | `aiChat.enabled` (keep `false` until the homepage is approved; see AI_RECEPTIONIST_PLAN.md, Phase 1) |
 
 **Never put passwords or API keys in this file** – it is public.
 
