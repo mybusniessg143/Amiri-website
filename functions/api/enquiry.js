@@ -26,7 +26,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
   // Only accept posts from our own pages.
   const url = new URL(request.url);
   const origin = request.headers.get('Origin');
-  if (origin && new URL(origin).host !== url.host) return json(403, { ok: false, error: 'forbidden' });
+  const allowed = String(env.ALLOWED_ORIGINS || '').split(',').map((o) => o.trim()).filter(Boolean);
+  if (origin && new URL(origin).host !== url.host && !allowed.includes(origin)) return json(403, { ok: false, error: 'forbidden' });
   if (Number(request.headers.get('Content-Length') || 0) > LIMITS.totalBytes + 5 * 1024 * 1024) {
     return json(413, { ok: false, error: 'too_large' });
   }
