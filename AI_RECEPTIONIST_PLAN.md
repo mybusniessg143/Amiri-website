@@ -7,13 +7,13 @@ Status: **Phase 1 (guided chat) built, switched off.** `assets/js/chat.js` + `as
 No AI model, no server, no running cost. The assistant asks, in order:
 
 1. Service: Electrical / Plumbing (non-gas reminder) / Property Maintenance / Other
-2. Emergency or planned. Emergency shows a large **Call Now** + **WhatsApp** card and keeps a Call/WhatsApp strip pinned at the top of the chat.
+2. Emergency / Urgent / Planned. Emergency shows a large **Call Now** + **WhatsApp** card and keeps a Call/WhatsApp strip pinned at the top of the chat; Urgent shows smaller Call/WhatsApp buttons. The summary and email subject are prefixed EMERGENCY or URGENT.
 3. Postcode (UK format checked; districts outside `aiChat.coveredPostcodeAreas` get "we'll check and let you know", never a refusal)
 4. Photos or short video (up to 6 files, 50 MB each, previews only; they stay on the device)
 5. Description of the problem
 6. Name and phone number (UK number checked)
 7. When it is needed + optional preferred days/times
-8. Summary card with a reference (e.g. `ABS-071026-4821`) and send buttons: **Send on WhatsApp** (pre-filled summary), **Send by email** (pre-filled), **Share photos to WhatsApp** (phones that support it), **Copy summary**. Emergencies also get **Call Now** first.
+8. Summary card with a reference (e.g. `ABS-071026-4821`) and send buttons: **Send on WhatsApp** (pre-filled summary), **Send by email** (pre-filled), **Share photos to WhatsApp** (phones that support it), **Copy summary**. Emergency and urgent jobs also get **Call Now** first. Colours follow the site: charcoal, white and gold, with green only on WhatsApp buttons.
 
 Fixed wording only, no free-form answers: it never quotes a price or confirms a booking (uses the owner-approved `pricing` text), never says 24/7, and never gives repair instructions. Keyword checks in the description trigger fixed safety messages: smell of gas / CO alarm → leave and call 0800 111 999; sparking/smoke/burning/shock/water near electrics → keep away, don't repair it yourself, 999 for fire/smoke/shock; boiler/gas → non-gas only; price questions → "assessed first" + pricing text. Progress survives a page change (sessionStorage); photos do not, and the customer is told to attach them.
 

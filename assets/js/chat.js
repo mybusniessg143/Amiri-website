@@ -31,6 +31,7 @@
   var SVG_NS = 'http://www.w3.org/2000/svg';
 
   var SERVICES = ['Electrical', 'Plumbing', 'Property Maintenance', 'Other'];
+  var URGENCY_LABEL = { Emergency: 'EMERGENCY', Urgent: 'URGENT', Planned: 'Planned / non-emergency' };
   var WHEN = ['As soon as possible', 'In the next few days', 'In the next 2 weeks', "I'm flexible"];
 
   /* ------------------------------------------------------------ helpers */
@@ -228,6 +229,7 @@
   function normPhone(v) {
     var d = v.replace(/[\s()-]/g, '');
     if (/^\+44\d{9,10}$/.test(d)) return d;
+    if (/^07\d{9}$/.test(d)) return d.slice(0, 5) + ' ' + d.slice(5);
     if (/^0\d{9,10}$/.test(d)) return d;
     return null;
   }
@@ -245,8 +247,12 @@
       });
     },
     urgency: function () {
-      say('Is this an emergency, or a planned job?');
-      chips([{ label: 'Emergency – it\'s urgent', value: 'Emergency' }, { label: 'Planned job', value: 'Planned' }], function (v, label) {
+      say('How soon does this need sorting?\n\nEmergency: something is unsafe or causing damage right now.\nUrgent: it needs looking at soon, but nothing is dangerous.\nPlanned: a job that can be booked in.');
+      chips([
+        { label: 'Emergency', value: 'Emergency' },
+        { label: 'Urgent', value: 'Urgent' },
+        { label: 'Planned / non-emergency', value: 'Planned' }
+      ], function (v, label) {
         say(label, 'user');
         state.answers.urgency = v;
         if (v === 'Emergency') {
@@ -261,6 +267,12 @@
           box.appendChild(el('p', { class: 'abs-chat__small' }, 'If there is fire, smoke, an electric shock or any danger to life, call 999. If you smell gas, call 0800 111 999.'));
           append(box);
           say('You can also carry on here and we\'ll put your details together for you.');
+        } else if (v === 'Urgent') {
+          say('Thanks, we\'ll mark this as urgent. If you\'d rather speak to us straight away, you can call or WhatsApp us at any point.');
+          var quick = el('div', { class: 'abs-chat__actions abs-chat__actions--pair' });
+          quick.appendChild(linkBtn('tel:' + CFG.phoneTel, 'abs-chat-btn--call', 'phone', 'Call Now'));
+          quick.appendChild(linkBtn(waLink('URGENT (' + state.answers.service + '): I need help soon.'), 'abs-chat-btn--wa', 'whatsapp', 'WhatsApp', { rel: 'noopener', target: '_blank' }));
+          append(quick);
         }
         go('postcode');
       });
@@ -411,7 +423,7 @@
     return [
       ['Reference', state.ref],
       ['Service', a.service],
-      ['Urgency', a.urgency === 'Emergency' ? 'EMERGENCY' : 'Planned job'],
+      ['Urgency', URGENCY_LABEL[a.urgency] || a.urgency],
       ['Postcode', a.postcode],
       ['Problem', a.description],
       ['Photos/video', a.photos ? a.photos + ' to follow' : 'None yet'],
@@ -421,7 +433,8 @@
     ];
   }
   function summaryText() {
-    var head = (state.answers.urgency === 'Emergency' ? 'EMERGENCY ENQUIRY' : 'New enquiry') + ' – via website chat';
+    var u = state.answers.urgency;
+    var head = (u === 'Emergency' ? 'EMERGENCY ENQUIRY' : u === 'Urgent' ? 'URGENT ENQUIRY' : 'New enquiry') + ' – via website chat';
     return [head].concat(summaryRows().map(function (r) { return r[0] + ': ' + r[1]; })).join('\n');
   }
 
@@ -434,7 +447,7 @@
     card.appendChild(el('p', { class: 'abs-chat__card-title' }, 'Your enquiry'));
     var dl = el('dl');
     summaryRows().forEach(function (r) {
-      var row = el('div', { class: r[0] === 'Urgency' && a.urgency === 'Emergency' ? 'is-urgent' : null });
+      var row = el('div', { class: r[0] === 'Urgency' && a.urgency !== 'Planned' ? 'is-urgent' : null });
       row.appendChild(el('dt', null, r[0]));
       row.appendChild(el('dd', null, r[1]));
       dl.appendChild(row);
@@ -446,7 +459,7 @@
     // whole summary can be scrolled and read on a small phone screen.
     var box = el('div', { class: 'abs-chat__send-box' });
     var acts = el('div', { class: 'abs-chat__actions abs-chat__actions--stack' });
-    if (a.urgency === 'Emergency') {
+    if (a.urgency !== 'Planned') {
       acts.appendChild(linkBtn('tel:' + CFG.phoneTel, 'abs-chat-btn--call abs-chat-btn--lg', 'phone', 'Call Now ' + (CFG.phoneDisplay || '')));
     }
     var text = summaryText();
@@ -464,8 +477,8 @@
       acts.appendChild(share);
     }
 
-    var subject = (a.urgency === 'Emergency' ? 'EMERGENCY: ' : '') + a.service + ' enquiry ' + state.ref + ' (' + a.postcode + ')';
-    var mail = linkBtn('mailto:' + (CFG.email || '') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text + '\n\n(Please attach your photos to this email.)'), 'abs-chat-btn--dark', 'mail', 'Send by email');
+    var subject = (a.urgency === 'Planned' ? '' : a.urgency.toUpperCase() + ': ') + a.service + ' enquiry ' + state.ref + ' (' + a.postcode + ')';
+    var mail = linkBtn('mailto:' + (CFG.email || '') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text + (a.photos ? '\n\n(Please attach your photos or video to this email.)' : '')), 'abs-chat-btn--dark', 'mail', 'Send by email');
     mail.addEventListener('click', function () { sent('email'); });
     acts.appendChild(mail);
 
