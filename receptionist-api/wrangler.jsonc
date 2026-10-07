@@ -4,6 +4,7 @@
 //   cd .. && AI_CHAT_PREVIEW=1 node build.js
 // Secrets are set in the dashboard, never here: RESEND_API_KEY (required for email),
 // optional TURNSTILE_SECRET_KEY, WHATSAPP_TOKEN, FILE_LINK_SECRET.
+// The R2 bucket stays private: no public bucket URL or r2.dev; photos open only via signed /api/enquiry-file links.
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "amiri-receptionist-api",
