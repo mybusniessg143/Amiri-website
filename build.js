@@ -134,6 +134,12 @@ function renderImg(key, eager, sizeName) {
     const url = (w) => `${base}?w=${w}&q=72&auto=format&fit=crop`;
     src = url(1200);
     srcset = ` srcset="${esc(IMG_WIDTHS.map((w) => `${url(w)} ${w}w`).join(', '))}" sizes="${sizes}"`;
+  } else if (/^\/assets\/images\/site\/[\w-]+$/.test(im.src)) {
+    // Self-hosted photo: assets/images/site/<name>-<width>.webp, made from the original upload.
+    const have = IMG_WIDTHS.filter((w) => fs.existsSync(path.join(ROOT, `${im.src}-${w}.webp`)));
+    if (!have.length) throw new Error(`No files found for image "${key}" (${im.src}-<width>.webp)`);
+    src = `${im.src}-${have.filter((w) => w <= 1200).pop() || have[0]}.webp`;
+    srcset = ` srcset="${esc(have.map((w) => `${im.src}-${w}.webp ${w}w`).join(', '))}" sizes="${sizes}"`;
   }
   return `<img class="media${pos}" src="${esc(src)}"${srcset} width="${im.width || 1600}" height="${im.height || 1067}" alt="${esc(im.alt || '')}"${load} decoding="async">`;
 }

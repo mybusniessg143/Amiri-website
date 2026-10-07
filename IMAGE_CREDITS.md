@@ -6,6 +6,8 @@ The website pictures listed in `src/images.json` are free photos from [Unsplash]
 
 They are **illustrative only** and are not photos of Amiri Building Services jobs. Replace them with your own photos when you have them (see README, "Website pictures").
 
+Most homepage photos are now **self-hosted** (files in `assets/images/site/`, made from the originals the owner downloaded from Unsplash on 2026-10-07). Two homepage cards use temporary stand-ins until their own photos are uploaded: `svc-electrical` is cropped from the hero photo (wanted: [U3GiK1u5j24](https://unsplash.com/photos/U3GiK1u5j24)) and `svc-emergency` is cropped from the water-drop photo (wanted: [c314Gh8dXAo](https://unsplash.com/photos/c314Gh8dXAo)).
+
 Before launch, open each link below and check you are happy with the picture. Unsplash+ (paid) photos are not used.
 
 | Slot | Picture | Unsplash page |
