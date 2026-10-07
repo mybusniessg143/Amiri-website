@@ -1,0 +1,10 @@
+// Cloudflare Worker "amiri-website": the live website, static assets only (no Worker code,
+// no bindings). Deployed by Workers Builds: build `node build.js`, output dist/.
+// The AI Receptionist back end is a separate Worker: see receptionist-api/wrangler.jsonc.
+{
+  "name": "amiri-website",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./dist" },
+  // Branch previews use the same static settings.
+  "previews": {}
+}
