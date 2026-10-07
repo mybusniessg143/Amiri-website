@@ -145,7 +145,8 @@
 .abs-chat__small a { color: var(--gold-deep); }
 
 /* Photos */
-#abs-chat-files:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.abs-chat__file-input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
 .abs-chat__thumbs { list-style: none; margin: .6rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
 .abs-chat__thumbs:empty { display: none; }
 .abs-chat__thumbs li { position: relative; width: 64px; height: 64px; border-radius: 10px; overflow: hidden; background: var(--ink-800); }
@@ -180,3 +181,32 @@
 
 @media (prefers-reduced-motion: reduce) { .abs-chat-launcher { transition: none; } }
 @media print { .abs-chat-launcher, .abs-chat { display: none !important; } }
+
+/* ---------- Automatic submission ---------- */
+.abs-chat__photos--compact { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--paper-3); }
+.abs-chat-btn--sm { min-height: 42px; font-size: .88rem; }
+.abs-chat-btn--block { width: 100%; }
+.abs-chat__send-box { display: grid; gap: .6rem; }
+.abs-chat__consent {
+  display: grid; grid-template-columns: auto 1fr; gap: .65rem; align-items: start;
+  padding: .8rem .9rem; border-radius: 12px; background: var(--white); border: 1px solid var(--line);
+  font-size: .85rem; line-height: 1.45; color: var(--text);
+}
+.abs-chat__consent input { width: 22px; height: 22px; margin: .05rem 0 0; accent-color: var(--ink-900); }
+.abs-chat__consent a { color: var(--gold-deep); font-weight: 600; }
+.abs-chat__small--strong { color: var(--ink-900); font-weight: 650; }
+.abs-chat__progress { height: 6px; border-radius: 999px; background: var(--paper-3); overflow: hidden; }
+.abs-chat__progress[hidden] { display: none; }
+.abs-chat__progress span { display: block; height: 100%; width: 0; background: var(--gold-grad); transition: width .2s; }
+.abs-chat__fallback { margin-top: .25rem; }
+.abs-chat__confirm { text-align: center; border: 1.5px solid var(--gold); padding: 1.25rem 1.1rem; }
+.abs-chat__confirm .abs-chat__card-title { font-size: 1.05rem !important; line-height: 1.4; }
+.abs-chat__confirm-icon {
+  display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto .75rem; border-radius: 50%;
+  background: var(--ink-900); color: var(--gold-light);
+}
+.abs-chat__confirm-icon .icon { width: 1.5rem; height: 1.5rem; }
+.abs-chat__ref { font-size: .95rem !important; }
+.abs-chat__ref strong { letter-spacing: .03em; }
+.abs-chat__confirm .abs-chat__actions { text-align: left; }
+.abs-chat__turnstile { min-height: 0; }

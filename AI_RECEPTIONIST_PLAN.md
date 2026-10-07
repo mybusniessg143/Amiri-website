@@ -1,6 +1,6 @@
 # AI receptionist – technical plan
 
-Status: **Phase 1 (guided chat) built, switched off.** `assets/js/chat.js` + `assets/css/chat.css` are a step-by-step enquiry assistant that runs in the visitor's browser. It is off (`aiChat.enabled: false`) and loads nothing until it is turned on. The full AI back end below is **not built**. Nothing on the site claims an AI receptionist exists.
+Status: **Phase 1 (guided chat) and automatic submission built, switched off.** `assets/js/chat.js` + `assets/css/chat.css` are a step-by-step enquiry assistant that runs in the visitor's browser. It is off (`aiChat.enabled: false`) and loads nothing until it is turned on. The full AI back end below is **not built**. Nothing on the site claims an AI receptionist exists.
 
 ## Phase 1 – guided website chat (built, off)
 
@@ -21,17 +21,57 @@ Fixed wording only, no free-form answers: it never quotes a price or confirms a 
 
 On phones the "Get help" button appears together with the sticky Call/WhatsApp bar (after the hero buttons scroll away) so it never covers them. Any link or button with a `data-open-chat` attribute also opens the chat, if the owner later wants an entry point inside a page.
 
-## Phase 1b – recommended: direct delivery with photos
+## Automatic submission (built, off)
 
-WhatsApp/email hand-off works today but relies on the customer pressing send and attaching photos themselves. Recommended next step (about £0/month at this volume):
+When `aiChat.submitEndpoint` is `/api/enquiry` (the default), the last step of the chat is a **Submit** button instead of "send it yourself":
 
-- **Cloudflare Pages Function** `functions/api/enquiry.js` (same repo, same domain, no CORS). Set `aiChat.submitEndpoint: "/api/enquiry"`; chat.js then shows **Send to us now** and posts `multipart/form-data` (all answers, the summary text, and the files as `files`).
-- **Cloudflare Turnstile** on the chat (free) + server-side validation of every field + a rate limit per IP.
-- **Photos → Cloudflare R2** (free tier, no egress fees), private bucket, keys like `enquiries/<ref>/<n>.jpg`; the owner email links to them through a signed or authenticated route, never a public bucket. Re-check type and size on the server; strip nothing client-side.
-- **Email → owner** via a transactional email API (Resend, Postmark or Mailgun; Resend's free tier covers a small business), from a verified `notifications@` address on the domain, to `email.owner`. Subject `EMERGENCY:` first for urgent jobs. Optionally also a WhatsApp Cloud API template message to the owner for emergencies.
-- Secrets (`RESEND_API_KEY`, `TURNSTILE_SECRET`) only in Cloudflare encrypted environment variables, never in this repo.
-- CSP: no change for same-origin uploads; add `https://challenges.cloudflare.com` to `script-src` and `frame-src` for Turnstile.
-- Update the privacy notice (photos stored in R2, retention period) before switching this on.
+1. The customer checks their details, can add or change photos/video, and must tick a consent box (privacy wording + link) before Submit works.
+2. Photos are resized in the browser (max 2000px JPEG, typically 3 MB → 300–450 KB) so uploads are quick on mobile data. Videos are sent as they are (max 60 MB each, 90 MB in total, 6 files).
+3. `functions/api/enquiry.js` (Cloudflare Pages Function) checks the request (same site, hidden spam field, optional Turnstile, max 5 per hour per connection, every field, file types and sizes), then:
+   - saves photos/video in a **private Cloudflare R2 bucket** under `enquiries/<reference>/`,
+   - saves the enquiry in **Cloudflare D1** (`migrations/0001_enquiries.sql`), so it is kept even if an email fails,
+   - emails the job summary to the business through **Resend** (photos attached up to 18 MB; every file also linked with a signed link that expires after 30 days, served by `functions/api/enquiry-file.js`),
+   - optionally sends a **WhatsApp alert** to the business (WhatsApp Cloud API template: urgency, service, postcode, reference),
+   - records whether the email and WhatsApp alert were sent, and deletes D1 rows older than 12 months.
+4. The customer sees: "Thank you. Amiri Building Services has received your enquiry and will contact you shortly." with their reference. Emergencies also get Call Now and WhatsApp buttons again. If some files failed, they are asked to WhatsApp them with the reference. If sending fails completely, "Try again" plus "Send on WhatsApp instead" / "Send by email instead" appear, so the enquiry is never stuck.
+5. After submitting, changing page shows the confirmation again (no double submission).
+
+The endpoint answers **404 unless `ENQUIRY_API_ENABLED` is `true`**, so it is inert until the owner sets it up, even though the `functions/` folder deploys with the site.
+
+The privacy notice switches automatically: while the chat is on, section 6 describes the enquiry assistant (Cloudflare storage, Resend email, optional WhatsApp alert, 12-month deletion) and Resend is listed as a processor. Review it before going live.
+
+### Setup (owner, one time, about 30–45 minutes)
+
+**Cloudflare** (same account as the website):
+1. **R2** → Create bucket `amiri-enquiries` (keep it private, no public access). Settings → Object lifecycle rules → add "Delete objects with prefix `enquiries/` after 365 days".
+2. **D1** → Create database `amiri-enquiries`. Open its Console tab and paste/run the contents of `migrations/0001_enquiries.sql`.
+3. **Pages project → Settings → Bindings**: add D1 binding `DB` → `amiri-enquiries`, and R2 binding `ENQUIRY_FILES` → `amiri-enquiries`. Do this for **Production and Preview**.
+4. **Pages project → Settings → Variables and secrets** (Production and Preview):
+   - `ENQUIRY_API_ENABLED` = `true`
+   - `FILE_LINK_SECRET` = a long random string (type **Secret**; e.g. from a password manager, 40+ characters)
+   - `EMAIL_TO` = `waris@amiribuildingservices.com` (comma-separate to add more)
+   - `EMAIL_FROM` = `Amiri Website <enquiries@amiribuildingservices.com>`
+   - `RESEND_API_KEY` (Secret) – see below
+5. Optional spam check: **Turnstile** → add widget for the domain → put the **site key** in `aiChat.turnstileSiteKey` in `site.config.json`, and the **secret key** as `TURNSTILE_SECRET_KEY` (Secret).
+
+**Resend** (email delivery, free tier 3,000 emails/month):
+1. Sign up at resend.com → Domains → add `amiribuildingservices.com` → add the DNS records it shows (in Cloudflare DNS). This lets it send as `enquiries@amiribuildingservices.com` without landing in spam. It doesn't change your Google Workspace email.
+2. API Keys → create a key with "Sending access" only → paste it into Cloudflare as `RESEND_API_KEY`.
+
+**WhatsApp alert** (optional; email already arrives on your phone):
+- Meta WhatsApp Cloud API needs a Meta Business account, a **separate phone number** for sending (it can't be the number already in the WhatsApp app), and an approved **utility template**, e.g. name `new_enquiry`, language English (UK), body: `New {{1}} website enquiry: {{2}} in {{3}}. Reference {{4}}. Full details and photos are in your email.` Business-initiated template messages are charged per message by Meta (a few pence each in the UK).
+- Then set `WHATSAPP_TOKEN` (Secret, a permanent system-user token), `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ALERT_TO` = `447438635942` (digits only), and optionally `WHATSAPP_TEMPLATE` / `WHATSAPP_TEMPLATE_LANG` if different from `new_enquiry` / `en_GB`.
+- If these are not set, the alert is simply skipped (recorded as `not_configured`).
+
+**Turning it on (after homepage approval):** set `aiChat.enabled: true` in `site.config.json`, push, then send one real test enquiry from your phone and check the email, the photos and the D1 row.
+
+**Viewing stored enquiries:** Cloudflare → D1 → `amiri-enquiries` → Console: `SELECT reference, created_at, urgency, service, name, phone, postcode, email_status FROM enquiries ORDER BY id DESC LIMIT 20;`. Files are under R2 → `amiri-enquiries` → `enquiries/<reference>/`.
+
+**Running costs:** Cloudflare Pages Functions, D1 and R2 free tiers cover a small business comfortably; Resend free tier covers 3,000 emails/month; WhatsApp alerts are the only per-message cost, and only if you turn them on.
+
+### Testing locally
+
+`npm test` runs the unit tests for `lib/enquiry.js` (validation, file checks, signed links, email). For an end-to-end run, use `wrangler pages dev` with local D1/R2 bindings and point `RESEND_API_URL` / `WHATSAPP_API_URL` at a mock server, so no real email or WhatsApp message is sent.
 
 Phase 2 (below) swaps the fixed questions for the Claude-powered receptionist using the same chat UI and endpoint pattern.
 

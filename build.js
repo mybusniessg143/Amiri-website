@@ -392,6 +392,9 @@ function render(tpl, ctx, file) {
   // 2. helpers. {{#placeholders}}...{{/placeholders}} only shows while showPlaceholders is true.
   out = out
     .replace(/\{\{#placeholders\}\}([\s\S]*?)\{\{\/placeholders\}\}/g, (_, inner) => (cfg.showPlaceholders ? inner : ''))
+    // {{#aiChat}}...{{/aiChat}} only while the AI receptionist chat is on; {{#noAiChat}} the opposite.
+    .replace(/\{\{#aiChat\}\}([\s\S]*?)\{\{\/aiChat\}\}/g, (_, inner) => (CHAT_ON ? inner : ''))
+    .replace(/\{\{#noAiChat\}\}([\s\S]*?)\{\{\/noAiChat\}\}/g, (_, inner) => (CHAT_ON ? '' : inner))
     .replace(/\{\{photo\s+([\w-]+)\s*\}\}/g, (_, k) => renderPhoto(k))
     .replace(/\{\{img(!?)\s+([\w-]+)(?:\s+(\w+))?\s*\}\}/g, (_, eager, k, size) => renderImg(k, Boolean(eager), size))
     .replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, k) => icon(k))
@@ -436,9 +439,11 @@ function build() {
     email: cfg.email.public,
     AI_CHAT_ENABLED: CHAT_ON,
     aiChatEndpoint: cfg.aiChat.endpoint,
+    legalName: cfg.legalName,
     aiChat: {
       mode: cfg.aiChat.mode || 'guided',
       submitEndpoint: cfg.aiChat.submitEndpoint || '',
+      turnstileSiteKey: cfg.aiChat.turnstileSiteKey || '',
       coveredPostcodeAreas: (cfg.aiChat.coveredPostcodeAreas || []).map((s) => String(s).toUpperCase())
     },
     emergencyText: cfg.availability.emergencyText,

@@ -41,6 +41,9 @@ amiri-website/
 │   ├── js/chat.js          ← guided enquiry chat (only loaded when enabled)
 │   ├── icons/sprite.svg    ← all icons
 │   └── images/             ← logo, social share image, work/ photos
+├── functions/api/          ← enquiry back end (Cloudflare Pages Functions; off until set up)
+├── lib/enquiry.js          ← shared enquiry logic (validation, email, signed file links)
+├── migrations/             ← database table for stored enquiries (Cloudflare D1)
 ├── static/                 ← copied to the site root: favicons, _headers (security headers)
 └── dist/                   ← GENERATED website. Don't edit – it is rebuilt every time.
 ```

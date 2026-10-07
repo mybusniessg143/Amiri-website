@@ -8,9 +8,11 @@
  * Guided mode runs entirely in the visitor's browser: it asks a fixed set of
  * questions, then builds an enquiry summary the customer sends to us by
  * WhatsApp or email. Nothing leaves the device until they press send.
- * If aiChat.submitEndpoint is set (a future Cloudflare Pages Function, see
- * AI_RECEPTIONIST_PLAN.md), a "Send to us now" button also posts the enquiry
- * and photos there.
+ * If aiChat.submitEndpoint is set (functions/api/enquiry.js, see
+ * AI_RECEPTIONIST_PLAN.md), the customer instead ticks a consent box and
+ * presses Submit: the enquiry, photos and video are uploaded to our own back
+ * end, which stores them and emails the business automatically. If that
+ * fails, WhatsApp and email buttons appear so the enquiry is never stuck.
  *
  * Rules built in (owner's brief): no prices or bookings promised, no 24/7
  * claims, non-gas plumbing only, and no technical repair instructions – only
@@ -27,7 +29,9 @@
   var PRICING = CFG.pricing || {};
   var STORE_KEY = 'abs-chat-v1';
   var MAX_FILES = 6;
-  var MAX_FILE_MB = 50;
+  var MAX_PHOTO_MB = 25;   // before compression; photos are resized to ~2000px before upload
+  var MAX_VIDEO_MB = 60;
+  var AUTO = Boolean(AI.submitEndpoint);   // automatic submission to our own back end
   var SVG_NS = 'http://www.w3.org/2000/svg';
 
   var SERVICES = ['Electrical', 'Plumbing', 'Property Maintenance', 'Other'];
@@ -345,6 +349,9 @@
     },
     summary: function () {
       renderSummary();
+    },
+    done: function () {
+      renderConfirmation(state.result || {});
     }
   };
 
@@ -356,16 +363,18 @@
 
   /* ------------------------------------------------------------ photos */
 
-  function renderPhotoPicker() {
-    clearDock();
-    var wrap = el('div', { class: 'abs-chat__photos' });
-    var input = el('input', { type: 'file', id: 'abs-chat-files', accept: 'image/*,video/*', multiple: true, class: 'visually-hidden' });
-    var pick = el('label', { for: 'abs-chat-files', class: 'abs-chat-btn abs-chat-btn--outline' });
+  var fileWidgetCount = 0;
+  // Add/remove photos and video. Used on the photos step and on the Submit card.
+  function fileWidget(onChange, compact) {
+    var id = 'abs-chat-files-' + (++fileWidgetCount);
+    var wrap = el('div', { class: 'abs-chat__photos' + (compact ? ' abs-chat__photos--compact' : '') });
+    var input = el('input', { type: 'file', id: id, accept: 'image/*,video/*', multiple: true, class: 'visually-hidden abs-chat__file-input' });
+    var pick = el('label', { for: id, class: 'abs-chat-btn abs-chat-btn--outline' + (compact ? ' abs-chat-btn--sm' : '') });
     pick.appendChild(icon('camera'));
-    pick.appendChild(el('span', null, 'Add photos or video'));
+    var pickText = el('span', null, 'Add photos or video');
+    pick.appendChild(pickText);
     var thumbs = el('ul', { class: 'abs-chat__thumbs', 'aria-label': 'Selected files' });
     var msg = el('p', { class: 'abs-chat__error', role: 'alert', hidden: true });
-    var next = el('button', { type: 'button', class: 'abs-chat__chip abs-chat__chip--primary' }, 'Skip for now');
 
     function draw() {
       while (thumbs.firstChild) thumbs.removeChild(thumbs.firstChild);
@@ -380,17 +389,19 @@
           li.appendChild(el('span', { class: 'abs-chat__vid' }, 'Video'));
         }
         var rm = el('button', { type: 'button', 'aria-label': 'Remove ' + f.name }, '×');
-        rm.addEventListener('click', function () { files.splice(i, 1); draw(); });
+        rm.addEventListener('click', function () { files.splice(i, 1); draw(); onChange(); });
         li.appendChild(rm);
         thumbs.appendChild(li);
       });
-      next.textContent = files.length ? 'Done – continue' : 'Skip for now';
+      if (compact) pickText.textContent = files.length ? 'Add or change photos' : 'Add photos or video';
     }
     input.addEventListener('change', function () {
       var problems = [];
       Array.prototype.forEach.call(input.files, function (f) {
         if (!/^(image|video)\//.test(f.type)) return problems.push(f.name + ' is not a photo or video.');
-        if (f.size > MAX_FILE_MB * 1024 * 1024) return problems.push(f.name + ' is over ' + MAX_FILE_MB + ' MB.');
+        var isVideo = /^video\//.test(f.type);
+        var max = isVideo ? MAX_VIDEO_MB : MAX_PHOTO_MB;
+        if (f.size > max * 1024 * 1024) return problems.push(f.name + ' is over ' + max + ' MB.' + (isVideo ? ' Please send a shorter video.' : ''));
         if (files.length >= MAX_FILES) return problems.push('You can add up to ' + MAX_FILES + ' files.');
         files.push(f);
       });
@@ -398,21 +409,33 @@
       msg.textContent = problems.join(' ');
       msg.hidden = !problems.length;
       draw();
-    });
-    next.addEventListener('click', function () {
-      state.answers.photos = files.length;
-      say(files.length ? files.length + (files.length === 1 ? ' file added' : ' files added') : 'No photos for now', 'user');
-      go('description');
+      onChange();
     });
     wrap.appendChild(input);
     wrap.appendChild(pick);
     wrap.appendChild(thumbs);
     wrap.appendChild(msg);
-    wrap.appendChild(el('p', { class: 'abs-chat__small' }, 'Your photos stay on your device until you choose to send them to us.'));
-    wrap.appendChild(next);
-    dock.appendChild(wrap);
     draw();
-    if (!panel.hidden) input.focus();
+    wrap.focusInput = function () { input.focus(); };
+    return wrap;
+  }
+
+  function renderPhotoPicker() {
+    clearDock();
+    var next = el('button', { type: 'button', class: 'abs-chat__chip abs-chat__chip--primary' }, 'Skip for now');
+    var widget = fileWidget(function () { next.textContent = files.length ? 'Done – continue' : 'Skip for now'; });
+    next.textContent = files.length ? 'Done – continue' : 'Skip for now';
+    next.addEventListener('click', function () {
+      state.answers.photos = files.length;
+      say(files.length ? files.length + (files.length === 1 ? ' file added' : ' files added') : 'No photos for now', 'user');
+      go('description');
+    });
+    widget.appendChild(el('p', { class: 'abs-chat__small' }, AUTO
+      ? 'Up to ' + MAX_FILES + ' files. Videos up to ' + MAX_VIDEO_MB + ' MB (about 30 seconds). Nothing is sent until you press Submit at the end.'
+      : 'Your photos stay on your device until you choose to send them to us.'));
+    widget.appendChild(next);
+    dock.appendChild(widget);
+    if (!panel.hidden) widget.focusInput();
   }
 
   /* ----------------------------------------------------------- summary */
@@ -420,17 +443,25 @@
   function summaryRows() {
     var a = state.answers;
     var when = a.when + (a.availability ? ' – ' + a.availability : '');
-    return [
+    var rows = [
       ['Reference', state.ref],
       ['Service', a.service],
       ['Urgency', URGENCY_LABEL[a.urgency] || a.urgency],
       ['Postcode', a.postcode],
       ['Problem', a.description],
-      ['Photos/video', a.photos ? a.photos + ' to follow' : 'None yet'],
+      ['Photos/video', AUTO ? filesLabel() : (a.photos ? a.photos + ' to follow' : 'None yet')],
       ['Name', a.name],
       ['Phone', a.phone],
       ['When', when]
     ];
+    // In automatic mode the reference comes from the server after submitting.
+    return AUTO ? rows.slice(1) : rows;
+  }
+  function filesLabel() {
+    var p = files.filter(function (f) { return /^image\//.test(f.type); }).length;
+    var v = files.length - p;
+    if (!files.length) return 'None';
+    return [p ? p + (p === 1 ? ' photo' : ' photos') : '', v ? v + (v === 1 ? ' video' : ' videos') : ''].filter(Boolean).join(', ');
   }
   function summaryText() {
     var u = state.answers.urgency;
@@ -439,6 +470,7 @@
   }
 
   function renderSummary() {
+    if (AUTO) return renderSubmit();
     clearDock();
     var a = state.answers;
     say('Thanks, ' + a.name.split(' ')[0] + '. Here\'s a summary of your enquiry. Nothing has been sent yet, so please choose how to send it to us.');
@@ -482,14 +514,6 @@
     mail.addEventListener('click', function () { sent('email'); });
     acts.appendChild(mail);
 
-    if (AI.submitEndpoint) {
-      var direct = el('button', { type: 'button', class: 'abs-chat-btn abs-chat-btn--gold abs-chat-btn--lg' });
-      direct.appendChild(icon('check'));
-      direct.appendChild(el('span', null, 'Send to us now'));
-      direct.addEventListener('click', function () { submitDirect(direct); });
-      acts.insertBefore(direct, wa);
-    }
-
     var copy = el('button', { type: 'button', class: 'abs-chat__skip' }, 'Copy summary');
     copy.addEventListener('click', function () {
       if (!navigator.clipboard) return;
@@ -518,23 +542,210 @@
     }, 400);
   }
 
-  function submitDirect(btn) {
-    btn.disabled = true;
-    var fd = new FormData();
-    fd.append('reference', state.ref);
-    Object.keys(state.answers).forEach(function (k) { fd.append(k, state.answers[k]); });
-    fd.append('summary', summaryText());
-    files.forEach(function (f) { fd.append('files', f, f.name); });
-    fetch(AI.submitEndpoint, { method: 'POST', body: fd })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })
-      .then(function () {
-        say('Sent. We\'ve received your enquiry (' + state.ref + ') and will get back to you as soon as we can.');
-        btn.hidden = true;
-      })
-      .catch(function () {
-        btn.disabled = false;
-        say('Sorry, that didn\'t send. Please use WhatsApp or email instead, or call ' + (CFG.phoneDisplay || 'us') + '.', 'bot', { tone: 'alert' });
+  /* ------------------------------------------- automatic submission */
+
+  function renderSubmit() {
+    clearDock();
+    var a = state.answers;
+    say('Thanks, ' + a.name.split(' ')[0] + '. Please check your details below, then press Submit to send your enquiry to us.');
+
+    var card = el('div', { class: 'abs-chat__card abs-chat__summary' });
+    card.appendChild(el('p', { class: 'abs-chat__card-title' }, 'Your enquiry'));
+    var dl = el('dl');
+    function drawRows() {
+      while (dl.firstChild) dl.removeChild(dl.firstChild);
+      summaryRows().forEach(function (r) {
+        var row = el('div', { class: r[0] === 'Urgency' && a.urgency !== 'Planned' ? 'is-urgent' : null });
+        row.appendChild(el('dt', null, r[0]));
+        row.appendChild(el('dd', null, r[1]));
+        dl.appendChild(row);
       });
+    }
+    drawRows();
+    card.appendChild(dl);
+    // Photos can be added or changed here too (e.g. after a page change).
+    card.appendChild(fileWidget(function () { state.answers.photos = files.length; save(); drawRows(); }, true));
+    append(card);
+
+    var box = el('form', { class: 'abs-chat__send-box', novalidate: true });
+    if (a.urgency === 'Emergency') {
+      var urgentActs = el('div', { class: 'abs-chat__actions abs-chat__actions--pair' });
+      urgentActs.appendChild(linkBtn('tel:' + CFG.phoneTel, 'abs-chat-btn--call', 'phone', 'Call Now'));
+      urgentActs.appendChild(linkBtn(waLink('EMERGENCY (' + a.service + '): I need help urgently.'), 'abs-chat-btn--wa', 'whatsapp', 'WhatsApp', { rel: 'noopener', target: '_blank' }));
+      box.appendChild(el('p', { class: 'abs-chat__small abs-chat__small--strong' }, 'Emergency? For the fastest help, call or WhatsApp us now as well.'));
+      box.appendChild(urgentActs);
+    }
+
+    var consent = el('div', { class: 'abs-chat__consent' });
+    var cb = el('input', { type: 'checkbox', id: 'abs-chat-consent', required: true });
+    var lab = el('label', { for: 'abs-chat-consent' });
+    lab.appendChild(document.createTextNode('I agree that ' + ((CFG.tradingName || 'Amiri Building Services') + ' Ltd') + ' can use the details, photos and video I have given to respond to my enquiry. They are stored securely and deleted after 12 months if they do not lead to work. '));
+    lab.appendChild(el('a', { href: '/privacy/', target: '_blank', rel: 'noopener' }, 'Privacy notice'));
+    consent.appendChild(cb);
+    consent.appendChild(lab);
+    box.appendChild(consent);
+
+    var ts = null;
+    if (AI.turnstileSiteKey) { ts = el('div', { class: 'abs-chat__turnstile' }); box.appendChild(ts); loadTurnstile(ts); }
+
+    var err = el('p', { class: 'abs-chat__error', role: 'alert', hidden: true });
+    var submit = el('button', { type: 'submit', class: 'abs-chat-btn abs-chat-btn--gold abs-chat-btn--lg abs-chat-btn--block' });
+    submit.appendChild(icon('check'));
+    var submitLabel = el('span', null, 'Submit enquiry');
+    submit.appendChild(submitLabel);
+    var progress = el('div', { class: 'abs-chat__progress', hidden: true, role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-label': 'Upload progress' });
+    var bar = el('span');
+    progress.appendChild(bar);
+    box.appendChild(err);
+    box.appendChild(submit);
+    box.appendChild(progress);
+    box.appendChild(el('p', { class: 'abs-chat__small' }, 'We can\'t confirm a price or booking in this chat. ' + [PRICING.quoteFree, PRICING.maybeCharged].filter(Boolean).join(' ')));
+    append(box);
+
+    box.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!cb.checked) { err.textContent = 'Please tick the box to agree, so we can use your details to reply.'; err.hidden = false; cb.focus(); return; }
+      err.hidden = true;
+      submit.disabled = true;
+      cb.disabled = true;
+      submitLabel.textContent = files.length ? 'Preparing photos…' : 'Sending…';
+      prepareFiles(files).then(function (prepared) {
+        var fd = new FormData();
+        ['service', 'urgency', 'postcode', 'description', 'name', 'phone', 'when', 'availability'].forEach(function (k) { fd.append(k, a[k] || ''); });
+        fd.append('consent', 'yes');
+        fd.append('page', location.pathname);
+        fd.append('website', '');   // honeypot: always empty for real visitors
+        var tok = box.querySelector('[name="cf-turnstile-response"]');
+        if (tok) fd.append('cf-turnstile-response', tok.value);
+        prepared.forEach(function (f) { fd.append('files', f.blob, f.name); });
+        submitLabel.textContent = 'Sending…';
+        progress.hidden = false;
+        return upload(fd, function (pct) {
+          bar.style.width = pct + '%';
+          progress.setAttribute('aria-valuenow', String(pct));
+          if (prepared.length) submitLabel.textContent = 'Sending… ' + pct + '%';
+        });
+      }).then(function (res) {
+        state.result = { reference: res.reference, filesReceived: res.filesReceived || 0, filesSent: files.length };
+        box.parentNode && box.parentNode.removeChild(box);
+        // Photos can no longer be changed once the enquiry has been sent.
+        Array.prototype.forEach.call(log.querySelectorAll('.abs-chat__photos--compact'), function (w) {
+          Array.prototype.forEach.call(w.querySelectorAll('label, input, button'), function (n) { n.parentNode.removeChild(n); });
+        });
+        state.step = 'done';
+        renderConfirmation(state.result);
+        save();
+      }).catch(function (x) {
+        submit.disabled = false;
+        cb.disabled = false;
+        submitLabel.textContent = 'Try again';
+        progress.hidden = true;
+        var msg = x && x.status === 429
+          ? 'We\'ve had several enquiries from this connection. Please call or WhatsApp us instead.'
+          : x && x.status === 413
+            ? 'Your photos or video are too large to send. Please remove the video or send a shorter one, then try again.'
+            : 'Sorry, your enquiry didn\'t send. Please check your connection and try again, or send it by WhatsApp or email below.';
+        err.textContent = msg;
+        err.hidden = false;
+        renderFallback(box);
+        if (window.turnstile && ts) { try { window.turnstile.reset(ts); } catch (e2) { /* ignore */ } }
+      });
+    });
+  }
+
+  function upload(fd, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', AI.submitEndpoint);
+      xhr.timeout = 180000;
+      xhr.upload.onprogress = function (e) { if (e.lengthComputable) onProgress(Math.min(99, Math.round(e.loaded / e.total * 100))); };
+      xhr.onload = function () {
+        var body = null;
+        try { body = JSON.parse(xhr.responseText); } catch (e) { /* not JSON */ }
+        if (xhr.status === 200 && body && body.ok) { onProgress(100); resolve(body); } else reject({ status: xhr.status, body: body });
+      };
+      xhr.onerror = xhr.ontimeout = function () { reject({ status: 0 }); };
+      xhr.send(fd);
+    });
+  }
+
+  // Resize large photos in the browser (max 2000px, JPEG) so uploads are
+  // quick on mobile data. Videos and anything that can't be read go as-is.
+  function prepareFiles(list) {
+    return Promise.all(list.map(function (f) {
+      if (!/^image\/(jpeg|png|webp|heic|heif)$/.test(f.type) || !window.createImageBitmap) return Promise.resolve({ blob: f, name: f.name });
+      return createImageBitmap(f).then(function (bmp) {
+        var scale = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+        var c = document.createElement('canvas');
+        c.width = Math.round(bmp.width * scale);
+        c.height = Math.round(bmp.height * scale);
+        c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+        return new Promise(function (res) { c.toBlob(res, 'image/jpeg', 0.85); });
+      }).then(function (blob) {
+        if (!blob || blob.size >= f.size) return { blob: f, name: f.name };
+        return { blob: blob, name: f.name.replace(/\.[^.]+$/, '') + '.jpg' };
+      }, function () { return { blob: f, name: f.name }; });
+    }));
+  }
+
+  function renderConfirmation(res) {
+    clearDock();
+    var a = state.answers;
+    var card = el('div', { class: 'abs-chat__card abs-chat__confirm', role: 'status' });
+    var tick = el('div', { class: 'abs-chat__confirm-icon' });
+    tick.appendChild(icon('check'));
+    card.appendChild(tick);
+    card.appendChild(el('p', { class: 'abs-chat__card-title' }, 'Thank you. ' + (CFG.tradingName || 'Amiri Building Services') + ' has received your enquiry and will contact you shortly.'));
+    if (res.reference) {
+      var ref = el('p', { class: 'abs-chat__ref' }, 'Your reference: ');
+      ref.appendChild(el('strong', null, res.reference));
+      card.appendChild(ref);
+    }
+    if (a.urgency === 'Emergency') {
+      card.appendChild(el('p', null, 'As this is an emergency, please also call or WhatsApp us now so we can help as quickly as possible.'));
+      var acts = el('div', { class: 'abs-chat__actions' });
+      acts.appendChild(linkBtn('tel:' + CFG.phoneTel, 'abs-chat-btn--call abs-chat-btn--lg', 'phone', 'Call Now ' + (CFG.phoneDisplay || '')));
+      acts.appendChild(linkBtn(waLink('EMERGENCY: enquiry ' + (res.reference || '') + ' (' + a.service + ', ' + a.postcode + ')'), 'abs-chat-btn--wa abs-chat-btn--lg', 'whatsapp', 'WhatsApp us', { rel: 'noopener', target: '_blank' }));
+      card.appendChild(acts);
+      card.appendChild(el('p', { class: 'abs-chat__small' }, 'If there is fire, smoke, an electric shock or any danger to life, call 999. If you smell gas, call 0800 111 999.'));
+    } else if (a.urgency === 'Urgent') {
+      card.appendChild(el('p', null, 'If you\'d like to talk to us sooner, you can call ' + (CFG.phoneDisplay || 'us') + ' or WhatsApp us.'));
+    }
+    if (res.filesSent && res.filesReceived < res.filesSent) {
+      var missing = res.filesSent - res.filesReceived;
+      var note = el('p', { class: 'abs-chat__small abs-chat__small--strong' }, 'We couldn\'t receive ' + missing + (missing === 1 ? ' of your files' : ' of your files') + '. Please send ' + (missing === 1 ? 'it' : 'them') + ' on WhatsApp with your reference. ');
+      note.appendChild(el('a', { href: waLink('Photos for enquiry ' + (res.reference || '')), target: '_blank', rel: 'noopener' }, 'Open WhatsApp'));
+      card.appendChild(note);
+    }
+    append(card);
+  }
+
+  // Shown only if automatic sending fails: the customer can still reach us.
+  function renderFallback(box) {
+    if (box.querySelector('.abs-chat__fallback')) return;
+    var a = state.answers;
+    var text = summaryText();
+    var wrap = el('div', { class: 'abs-chat__actions abs-chat__actions--stack abs-chat__fallback' });
+    wrap.appendChild(linkBtn(waLink(text), 'abs-chat-btn--wa', 'whatsapp', 'Send on WhatsApp instead', { rel: 'noopener', target: '_blank' }));
+    var subject = (a.urgency === 'Planned' ? '' : a.urgency.toUpperCase() + ': ') + a.service + ' enquiry (' + a.postcode + ')';
+    wrap.appendChild(linkBtn('mailto:' + (CFG.email || '') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text), 'abs-chat-btn--dark', 'mail', 'Send by email instead'));
+    box.appendChild(wrap);
+  }
+
+  var turnstileLoading = null;
+  function loadTurnstile(container) {
+    if (!turnstileLoading) {
+      turnstileLoading = new Promise(function (resolve) {
+        window.absTurnstileReady = resolve;
+        var sc = document.createElement('script');
+        sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=absTurnstileReady';
+        sc.async = true;
+        document.head.appendChild(sc);
+      });
+    }
+    turnstileLoading.then(function () {
+      window.turnstile.render(container, { sitekey: AI.turnstileSiteKey, size: 'flexible', appearance: 'interaction-only' });
+    });
   }
 
   /* ------------------------------------------------------ open / close */
@@ -563,8 +774,10 @@
       state.transcript.forEach(function (m) { say(m.text, m.who, { tone: m.tone, replay: true }); });
       if (state.answers.urgency === 'Emergency' || state.notices.gasLeak || state.notices.danger) showUrgent();
       // Photos can't survive a page change; ask again rather than lose them silently.
-      if (state.step !== 'service' && state.answers.photos && !files.length && state.step !== 'photos') {
-        say('Welcome back. Your photos weren\'t kept when you changed page, so please attach them when you send your message.', 'bot', { tone: 'info' });
+      if (state.step !== 'service' && state.step !== 'done' && state.answers.photos && !files.length && state.step !== 'photos') {
+        say(AUTO
+          ? 'Welcome back. Your photos weren\'t kept when you changed page, so please add them again before you submit.'
+          : 'Welcome back. Your photos weren\'t kept when you changed page, so please attach them when you send your message.', 'bot', { tone: 'info' });
       }
       // Re-show the current question's controls without repeating it in the chat.
       muted = true;
@@ -578,7 +791,7 @@
   function restart() {
     forget();
     files = [];
-    state = { step: 'service', answers: {}, transcript: [], notices: {}, ref: newRef() };
+    state = { step: 'service', answers: {}, transcript: [], notices: {}, ref: newRef(), result: null };
     while (log.firstChild) log.removeChild(log.firstChild);
     urgentBar.hidden = true;
     go('service');
