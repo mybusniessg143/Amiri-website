@@ -8,6 +8,8 @@
   "name": "amiri-website",
   "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
+  // Gives each branch Preview its own *.workers.dev link for testing.
+  "preview_urls": true,
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
