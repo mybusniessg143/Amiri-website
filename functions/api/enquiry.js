@@ -108,9 +108,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
       .bind(email, whatsapp, e.reference).run().catch(() => {});
     if (waitUntil) waitUntil(update); else await update;
   }
-  // Housekeeping: enquiry rows older than 12 months are deleted (privacy notice).
-  // Stored files are removed by an R2 lifecycle rule on the "enquiries/" prefix.
-  if (waitUntil) waitUntil(env.DB.prepare("DELETE FROM enquiries WHERE created_at < datetime('now', '-365 days')").run().catch(() => {}));
+  // Housekeeping: enquiries older than 12 months are deleted with their files (privacy notice).
+  if (waitUntil) waitUntil(deleteExpired(env).catch(() => {}));
 
   if (!saved && email !== 'sent') {
     console.error('enquiry: not stored and not emailed', e.reference, email);
@@ -121,6 +120,16 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
 export function onRequest() {
   return json(405, { ok: false, error: 'method_not_allowed' });
+}
+
+async function deleteExpired(env) {
+  const old = "created_at < datetime('now', '-365 days')";
+  const { results } = await env.DB.prepare(`SELECT files_json FROM enquiries WHERE ${old} LIMIT 50`).all();
+  const keys = (results || []).flatMap((r) => {
+    try { return JSON.parse(r.files_json).map((f) => f.key).filter(Boolean); } catch (e) { return []; }
+  });
+  if (keys.length) await env.ENQUIRY_FILES.delete(keys);
+  await env.DB.prepare(`DELETE FROM enquiries WHERE ${old}`).run();
 }
 
 async function verifyTurnstile(env, token, ip) {

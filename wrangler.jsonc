@@ -1,0 +1,43 @@
+// Cloudflare Worker "amiri-website": the static site (dist/) plus the AI Receptionist
+// enquiry API (worker/index.js). Deployed by Workers Builds on every push.
+// Production = main. Other branches get a Preview (separate settings in "previews").
+// No secrets in this file: RESEND_API_KEY (and optional TURNSTILE_SECRET_KEY,
+// WHATSAPP_TOKEN, FILE_LINK_SECRET) are set in the Cloudflare dashboard.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "amiri-website",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
+  ],
+  "r2_buckets": [
+    { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-enquiries" }
+  ],
+  "vars": {
+    // Live site: the enquiry API stays OFF until the owner approves going live.
+    "ENQUIRY_API_ENABLED": "false",
+    "EMAIL_TO": "waris@amiribuildingservices.com",
+    "EMAIL_FROM": "Amiri Website <enquiries@amiribuildingservices.com>"
+  },
+  "observability": { "enabled": true },
+  "previews": {
+    "vars": {
+      "ENQUIRY_API_ENABLED": "true",
+      "EMAIL_TO": "waris@amiribuildingservices.com",
+      "EMAIL_FROM": "Amiri Website <enquiries@amiribuildingservices.com>"
+    },
+    "d1_databases": [
+      { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
+    ],
+    "r2_buckets": [
+      { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-enquiries" }
+    ]
+  }
+}

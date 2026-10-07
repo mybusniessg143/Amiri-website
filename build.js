@@ -32,8 +32,10 @@ const OUT = path.join(ROOT, 'dist');
 
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cfg = JSON.parse(read('site.config.json'));
-// AI receptionist chat: on when aiChat.enabled is true, or for a preview build (AI_CHAT_PREVIEW=1).
-const CHAT_ON = Boolean(cfg.aiChat.enabled) || process.env.AI_CHAT_PREVIEW === '1';
+// AI receptionist chat: on when aiChat.enabled is true, or for a preview build
+// (AI_CHAT_PREVIEW=1, or a Workers Builds build of any branch other than main).
+const PREVIEW_BUILD = Boolean(process.env.WORKERS_CI_BRANCH) && process.env.WORKERS_CI_BRANCH !== 'main';
+const CHAT_ON = Boolean(cfg.aiChat.enabled) || process.env.AI_CHAT_PREVIEW === '1' || PREVIEW_BUILD;
 const photos = JSON.parse(read('src/photos.json'));
 const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');

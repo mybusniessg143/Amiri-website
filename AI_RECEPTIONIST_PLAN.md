@@ -42,6 +42,15 @@ The privacy notice switches automatically: while the chat is on, section 6 descr
 
 ### Setup
 
+> **Current setup (2026-10-07).** The site runs as the Cloudflare **Worker** `amiri-website` (Workers Builds from GitHub), not a Pages project. `wrangler.jsonc` holds the bindings and settings, and `worker/index.js` routes `/api/*` to the handlers in `functions/api/`. Production (`main`) keeps the endpoint off (`ENQUIRY_API_ENABLED=false`); Previews of other branches have it on and show the chat.
+> - Done: D1 database `amiri-enquiries` (id `617c2a60-cc4f-48c9-af22-bdadb401d611`) with `0001_enquiries.sql` and `0002_settings.sql` applied.
+> - `FILE_LINK_SECRET` is generated automatically on first use and kept in D1 (a Worker secret of the same name overrides it).
+> - Files are deleted together with their enquiry after 12 months by the endpoint itself, so no R2 lifecycle rule is needed.
+> - Still needed: R2 switched on for the account, then the private bucket `amiri-enquiries`; a Resend account with the domain verified; `RESEND_API_KEY` as a Worker secret (for production and for Previews).
+>
+> The Pages-based steps below and `scripts/cloudflare-setup.sh` are kept for reference if the site ever moves to Pages.
+
+
 **Automated:** `scripts/cloudflare-setup.sh` does all the Cloudflare steps below (D1 database + table, private R2 bucket + 12-month deletion rule, Pages bindings and settings, a generated `FILE_LINK_SECRET`) and, given a Resend key, adds Resend's DNS records to the domain. It switches the endpoint on for **Preview deployments only**; the live site stays off until it is run with `--enable-production`. It needs `CLOUDFLARE_API_TOKEN` (permissions listed at the top of the script) and optionally `RESEND_API_KEY`, set as environment variables, never committed.
 
 **Manual equivalent (owner, one time, about 30–45 minutes)**
