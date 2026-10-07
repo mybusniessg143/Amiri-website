@@ -1,0 +1,36 @@
+// Cloudflare Worker "amiri-receptionist-api" – the AI Receptionist back end.
+// Deployed by Workers Builds with Root directory = receptionist-api.
+// Build command (builds a test copy of the site with the chat on):
+//   cd .. && AI_CHAT_PREVIEW=1 node build.js
+// Secrets are set in the dashboard, never here: RESEND_API_KEY (required for email),
+// optional TURNSTILE_SECRET_KEY, WHATSAPP_TOKEN, FILE_LINK_SECRET.
+// The R2 bucket stays private: no public bucket URL or r2.dev; photos open only via signed /api/enquiry-file links.
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "amiri-receptionist-api",
+  "main": "index.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "../migrations" }
+  ],
+  "r2_buckets": [
+    { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-ai-receptionist-uploads" }
+  ],
+  "vars": {
+    "ENQUIRY_API_ENABLED": "true",
+    "ALLOWED_ORIGINS": "https://amiribuildingservices.com,https://www.amiribuildingservices.com",
+    "EMAIL_TO": "waris@amiribuildingservices.com",
+    // Resend's shared test sender works before the domain is verified, but only delivers
+    // to the Resend account owner's address. Switch to enquiries@… once the domain is verified.
+    "EMAIL_FROM": "Amiri Website <onboarding@resend.dev>"
+  },
+  "observability": { "enabled": true }
+}

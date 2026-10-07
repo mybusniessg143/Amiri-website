@@ -1,0 +1,112 @@
+{
+  "_README": "Website images (stock placeholders until you have your own photos). To change an image: replace 'src' with another Unsplash photo address (https://images.unsplash.com/photo-...) OR a self-hosted photo: put files named <name>-480.webp, <name>-800.webp, <name>-1200.webp, <name>-1600.webp, <name>-2000.webp in /assets/images/site/ and set 'src' to /assets/images/site/<name> (no extension). Most homepage photos are self-hosted this way; 'unsplash' keeps the original link. Update 'alt' to describe the new picture, and 'credit'/'page' if it is a new stock photo. 'position' moves the crop focus: center, top, bottom, left or right. These stock photos are decorative and are NOT presented as Amiri's own completed jobs. Licence: Unsplash Licence (free for commercial use, no permission needed). See IMAGE_CREDITS.md.",
+  "hero": {
+    "src": "/assets/images/site/hero",
+    "alt": "Electrician testing an electrical panel with a multimeter",
+    "position": "center",
+    "page": "https://unsplash.com/photos/PkHf7BUWbtk",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1758101755915-462eddc23f57",
+    "width": 1600,
+    "height": 1200
+  },
+  "svc-electrical": {
+    "src": "/assets/images/site/svc-electrical",
+    "alt": "Electrician in gloves testing wiring in an electrical panel",
+    "position": "center",
+    "page": "https://unsplash.com/photos/PkHf7BUWbtk",
+    "credit": "Toolmash Expo / Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1682345262055-8f95f3c513ea",
+    "width": 1600,
+    "height": 1200,
+    "_temporary": "Stand-in cropped from the hero photo until U3GiK1u5j24 is uploaded; Unsplash link kept in \"unsplash\"."
+  },
+  "svc-plumbing": {
+    "src": "/assets/images/site/svc-plumbing",
+    "alt": "Plumber working on pipework inside a sink cabinet",
+    "position": "center",
+    "page": "https://unsplash.com/photos/wzIjLL4KB-4",
+    "credit": "Timur Shakerzianov / Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1676210133055-eab6ef033ce3",
+    "width": 1600,
+    "height": 2109
+  },
+  "svc-maintenance": {
+    "src": "/assets/images/site/svc-maintenance",
+    "alt": "Cordless drill, hammer and stud finder on a carpeted floor",
+    "position": "center",
+    "page": "https://unsplash.com/photos/ZEfFgaXVaV4",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1606676539940-12768ce0e762",
+    "width": 1600,
+    "height": 2400
+  },
+  "svc-emergency": {
+    "src": "/assets/images/site/svc-emergency",
+    "alt": "Water leaking from a brass pipe fitting",
+    "position": "center",
+    "page": "https://unsplash.com/photos/n2ZufifTbSo",
+    "credit": "Elimende Inagella / Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1676210134188-4c05dd172f89",
+    "width": 1600,
+    "height": 1200,
+    "_temporary": "Stand-in cropped from the water-drop photo until c314Gh8dXAo is uploaded; Unsplash link kept in \"unsplash\"."
+  },
+  "emergency": {
+    "src": "/assets/images/site/emergency",
+    "alt": "Water leaking from a brass pipe fitting",
+    "position": "center",
+    "page": "https://unsplash.com/photos/n2ZufifTbSo",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1596394723269-b2cbca4e6313",
+    "width": 1600,
+    "height": 2400
+  },
+  "why": {
+    "src": "/assets/images/site/why",
+    "alt": "Bright London flat living room with a large window",
+    "position": "center",
+    "page": "https://unsplash.com/photos/L61Ekz4oTt4",
+    "credit": "Robbie Duncan / Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1632743441209-8a09b8a37e25",
+    "width": 1600,
+    "height": 1067
+  },
+  "landlords": {
+    "src": "/assets/images/site/landlords",
+    "alt": "Street of red-brick terraced houses",
+    "position": "center",
+    "page": "https://unsplash.com/photos/YjmnoFxpgIU",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1694501522559-980c07631b21",
+    "width": 1600,
+    "height": 1067
+  },
+  "commercial": {
+    "src": "https://images.unsplash.com/photo-1767522247439-d8c1cdf10226",
+    "alt": "Row of independent shops on an East London street",
+    "position": "center",
+    "page": "https://unsplash.com/photos/Ix7AIJUDQj0",
+    "credit": "T (@tanyabarrow) / Unsplash"
+  },
+  "areas": {
+    "src": "/assets/images/site/areas",
+    "alt": "A row of houses on a residential street",
+    "position": "center",
+    "page": "https://unsplash.com/photos/lOmcjfGlymU",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1680990722238-5f86639bac68",
+    "width": 1600,
+    "height": 2400
+  },
+  "bathroom": {
+    "src": "/assets/images/site/bathroom",
+    "alt": "Modern bathroom with a walk-in shower and vanity unit",
+    "position": "center",
+    "page": "https://unsplash.com/photos/g51F6-WYzyU",
+    "credit": "Unsplash",
+    "unsplash": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a",
+    "width": 1600,
+    "height": 1067
+  }
+}

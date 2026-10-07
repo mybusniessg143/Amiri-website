@@ -38,9 +38,12 @@ amiri-website/
 ├── assets/
 │   ├── css/styles.css      ← all styling (colours at the top)
 │   ├── js/main.js          ← mobile menu + WhatsApp/email enquiry form
-│   ├── js/chat.js          ← future AI chat UI (only loaded when enabled)
+│   ├── js/chat.js          ← guided enquiry chat (only loaded when enabled)
 │   ├── icons/sprite.svg    ← all icons
 │   └── images/             ← logo, social share image, work/ photos
+├── functions/api/          ← enquiry back end (Cloudflare Pages Functions; off until set up)
+├── lib/enquiry.js          ← shared enquiry logic (validation, email, signed file links)
+├── migrations/             ← database table for stored enquiries (Cloudflare D1)
 ├── static/                 ← copied to the site root: favicons, _headers (security headers)
 └── dist/                   ← GENERATED website. Don't edit – it is rebuilt every time.
 ```
@@ -74,7 +77,7 @@ Open `site.config.json`. Change the value, save, rebuild. It updates every page,
 | Google Business Profile link | `googleBusinessProfileUrl` |
 | Instagram / Facebook / TikTok / YouTube | `social.*` |
 | Hide all "owner to add" placeholder boxes | `showPlaceholders: false` |
-| AI chat on/off | `aiChat.enabled` (keep `false` until the back end is live) |
+| AI chat on/off | `aiChat.enabled` (keep `false` until the homepage is approved; see AI_RECEPTIONIST_PLAN.md, Phase 1) |
 
 **Never put passwords or API keys in this file** – it is public.
 
@@ -107,18 +110,30 @@ If you make a mistake, `node build.js` stops and tells you which file and token 
 
 Only use photos of your own work. Avoid showing house numbers, faces or anything that identifies a customer without their permission.
 
+### Website pictures (stock placeholders)
+
+The large pictures on the homepage (hero, service cards, emergency, areas and so on) are **free Unsplash stock photos**, listed in `src/images.json` and credited in `IMAGE_CREDITS.md`. They are illustrative only and are never presented as our own jobs.
+
+To change one, edit its `src` in `src/images.json`:
+- **Another Unsplash photo:** open the photo on unsplash.com, right-click the image, choose "Copy image address", and paste the part up to the `?` (it starts `https://images.unsplash.com/photo-`). The build adds the right sizes automatically.
+- **Your own photo:** put it in `assets/images/site/` (WebP, about 1600 px wide) and set `src` to e.g. `/assets/images/site/hero.webp`, with `width` and `height` set to its real size.
+
+Then update `alt` (a short description of the picture) and rebuild. If every picture becomes a local file, you can remove `https://images.unsplash.com` from `img-src` in `static/_headers`.
+
 ## 6. Replacing the logo
 
-1. Save your logo as **SVG** (best) or PNG/WebP, ideally with a transparent background and wide format (about 220×48).
-2. Put it in `assets/images/`, e.g. `logo.svg`.
-3. In `site.config.json` update `logo.src` (e.g. `/assets/images/logo.svg`), `logo.width`, `logo.height`.
-4. Replace the icons in `static/` (favicon.svg, favicon.ico, apple-touch-icon.png, icon-192.png, icon-512.png, icon-512-maskable.png) using your logo mark – realfavicongenerator.net does this for free.
+Your logo is already on the site (header and footer). The files are in `assets/images/logo/`:
+
+1. `amiri-logo-*.png` / `.webp`: the main horizontal logo for light backgrounds (header on every page).
+   `amiri-icon-*`: the ABS monogram on its own, for small spaces (mobile menu, quote forms). `amiri-icon-on-dark-*` is the same for dark panels. `amiri-logo-on-dark-*`: the same logo with the black lettering lightened, used in the dark footer.
+2. To replace it, save new files with the same names (320 and 640 pixels wide, transparent background) or change the paths in `site.config.json` under `logo`. If the shape changes, update `logo.width` and `logo.height`.
+3. The original file you supplied, and the AB monogram on its own, are kept in the `brand/` folder (not published).
+4. The icons in `static/` (favicon.ico, favicon-32.png, apple-touch-icon.png, icon-192.png, icon-512.png, icon-512-maskable.png) are already made from your AB monogram. To change them, replace these files (realfavicongenerator.net does this for free).
 5. Replace `assets/images/og-image.png` (1200×630) – the picture shown when the site is shared on WhatsApp/Facebook.
-6. Delete `assets/images/logo-placeholder.svg`.
 
 ## 7. Changing colours
 
-Colours are at the top of `assets/css/styles.css` under `:root` (navy, deep blue, electric blue, teal). Change them there and they update everywhere. Keep text contrast high (check with webaim.org/resources/contrastchecker).
+Colours are at the top of `assets/css/styles.css` under `:root` (charcoal, warm off-white, gold, muted teal). Fonts (Plus Jakarta Sans and Inter) are self-hosted in `assets/fonts/`. Change them there and they update everywhere. Keep text contrast high (check with webaim.org/resources/contrastchecker).
 
 ## 8. Deploying
 

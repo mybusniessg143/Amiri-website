@@ -3,8 +3,9 @@
 Work through this before pointing amiribuildingservices.com at the new site. Test on the free `*.pages.dev` address first.
 
 ## Content you must supply or confirm
-- [ ] Upload the final logo and replace favicons and the social share image (README §6)
+- [x] Logo added (header, footer), favicons and app icons made from the AB monogram, social share image updated (README §6)
 - [ ] Replace placeholder photos with real photos of your own work (`src/photos.json`, README §5)
+- [ ] Check every stock picture in IMAGE_CREDITS.md looks right, or swap it for your own (`src/images.json`)
 - [ ] Verify legal company details: AMIRI BUILDING SERVICES LTD, company no. 17472711, registered office (check against Companies House)
 - [ ] **Verify registered jurisdiction (England and Wales)**, then set `jurisdictionVerified: true` in site.config.json
 - [ ] Verify service areas (`areas` in site.config.json) and the local text on /areas/
@@ -13,6 +14,9 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Confirm business hours (or leave `hours.confirmed: false`)
 - [ ] Confirm qualifications. Add to `credentials` only what you can evidence
 - [ ] Confirm insurance wording (insurer, cover level). Only add if the policy is in force
+- [ ] **"Fully Insured" badge (homepage):** hidden for now (insurance not yet active). Once public liability insurance is in force, set the `insurance` credential in site.config.json to `verified: true` (and fill in `value`) and the badge replaces "Professional & Reliable"
+- [x] **"Get a Free Quote":** confirmed 6 Oct 2026: initial quotes are free; site visits, diagnostics and emergency call-outs may be chargeable (wording in `pricing` in site.config.json)
+- [ ] Decide the amounts for site visits, diagnostics and emergency call-outs (Terms 5.1); add figures to the site only once decided
 - [ ] Confirm years of experience / ECS card / accreditations, or leave unverified
 - [ ] Confirm call-out pricing and complete or remove Terms section 5
 - [ ] Remove all placeholder reviews (they disappear automatically when `showPlaceholders` is `false`; add only genuine reviews)
@@ -61,4 +65,4 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Ask happy customers for honest Google reviews
 - [ ] Add new job photos regularly
 - [ ] Review Search Console monthly for errors
-- [ ] Keep `AI_CHAT_ENABLED` (`aiChat.enabled`) false until the back end in AI_RECEPTIONIST_PLAN.md is built and tested
+- [ ] Keep `AI_CHAT_ENABLED` (`aiChat.enabled`) false until the homepage is approved and the automatic submission setup (Cloudflare D1/R2, Resend) is done and tested (AI_RECEPTIONIST_PLAN.md, "Automatic submission")

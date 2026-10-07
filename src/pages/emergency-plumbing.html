@@ -11,9 +11,10 @@
   "waText": "URGENT – Hello Amiri Building Services, I have a water leak / plumbing emergency. The problem is:   My postcode is: ",
   "service": { "name": "Emergency plumbing (non-gas)", "serviceType": "Emergency plumbing repair", "description": "Emergency non-gas plumbing call-outs for urgent leaks, overflowing toilets, pipe leaks, failed isolation valves, leaking taps and waste leaks in West Drayton and West London, subject to availability." },
   "faq": [
-    { "q": "How do I find my stop tap?", "a": "Stop taps (stopcocks) are often under the kitchen sink, but can also be in a downstairs toilet, utility room, airing cupboard, under the stairs or near the front door. In flats there may be one inside the flat and another in a communal area. It is worth finding yours before you need it." },
-    { "q": "Do you fix boilers or heating?", "a": "No. We do not carry out any gas or boiler work. For boiler breakdowns contact a Gas Safe registered engineer. If you smell gas, call the National Gas Emergency Service on 0800 111 999." },
-    { "q": "Can you come out straight away?", "a": "Emergency call-outs are available, but availability changes during the day. Call and we will tell you honestly whether and when we can attend." }
+    {"q": "How do I find my stop tap?", "a": "Stop taps (stopcocks) are often under the kitchen sink, but can also be in a downstairs toilet, utility room, airing cupboard, under the stairs or near the front door. In flats there may be one inside the flat and another in a communal area. It is worth finding yours before you need it."},
+    {"q": "Do you fix boilers or heating?", "a": "No. We do not carry out any gas or boiler work. For boiler breakdowns contact a Gas Safe registered engineer. If you smell gas, call the National Gas Emergency Service on 0800 111 999."},
+    {"q": "Can you come out straight away?", "a": "Emergency call-outs are available, but availability changes during the day. Call and we will tell you honestly whether and when we can attend."},
+    {"q": "Is there a charge for an emergency call-out?", "a": "Emergency call-outs may be chargeable, as may site visits and diagnostics. Initial quotes are free. Ask when you call and we will explain any charge before we start."}
   ]
 }
 -->
@@ -35,6 +36,7 @@
       <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
       <a class="btn btn--wa btn--lg" href="{{wa:URGENT – Hello Amiri Building Services, I am sending photos of a leak. My postcode is: }}" rel="noopener">{{icon camera}}Send photos on WhatsApp</a>
       <p class="callcard__note">{{icon clock}}<span>Can't get through? Send a WhatsApp with your postcode and a photo.</span></p>
+      <p class="callcard__note">{{icon receipt}}<span>Emergency call-outs may be chargeable. Ask when you call and we will explain any charge before we start.</span></p>
     </aside>
   </div>
 </section>
@@ -100,6 +102,7 @@
       <h2 id="enquiry-title">Not an emergency?</h2>
       <p class="lead">For a dripping tap or planned plumbing work, send us the details.</p>
       <p><a class="link-arrow" href="/plumbing/">All plumbing services {{icon arrow}}</a></p>
+      {{> pricing-note}}
     </div>
     {{> enquiry-form}}
   </div>
