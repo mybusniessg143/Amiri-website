@@ -32,6 +32,10 @@ const OUT = path.join(ROOT, 'dist');
 
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const cfg = JSON.parse(read('site.config.json'));
+// AI receptionist chat: on when aiChat.enabled is true, or for a preview build
+// (AI_CHAT_PREVIEW=1, or a Workers Builds build of any branch other than main).
+const PREVIEW_BUILD = Boolean(process.env.WORKERS_CI_BRANCH) && process.env.WORKERS_CI_BRANCH !== 'main';
+const CHAT_ON = Boolean(cfg.aiChat.enabled) || process.env.AI_CHAT_PREVIEW === '1' || PREVIEW_BUILD;
 const photos = JSON.parse(read('src/photos.json'));
 const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');
@@ -397,6 +401,9 @@ function render(tpl, ctx, file) {
     // {{#noworkphotos}}...{{/noworkphotos}}: the opposite – an illustrative stock image shown until real work photos exist.
     .replace(/\{\{#noworkphotos\}\}([\s\S]*?)\{\{\/noworkphotos\}\}/g, (_, inner) =>
       cfg.showPlaceholders || Object.entries(photos).some(([k, v]) => !k.startsWith('_') && v && v.src) ? '' : inner)
+    // {{#aiChat}}...{{/aiChat}} only while the AI receptionist chat is on; {{#noAiChat}} the opposite.
+    .replace(/\{\{#aiChat\}\}([\s\S]*?)\{\{\/aiChat\}\}/g, (_, inner) => (CHAT_ON ? inner : ''))
+    .replace(/\{\{#noAiChat\}\}([\s\S]*?)\{\{\/noAiChat\}\}/g, (_, inner) => (CHAT_ON ? '' : inner))
     .replace(/\{\{photo\s+([\w-]+)\s*\}\}/g, (_, k) => renderPhoto(k))
     .replace(/\{\{img(!?)\s+([\w-]+)(?:\s+(\w+))?\s*\}\}/g, (_, eager, k, size) => renderImg(k, Boolean(eager), size))
     .replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, k) => icon(k))
@@ -439,8 +446,17 @@ function build() {
     phoneDisplay: cfg.phone.display,
     whatsappNumber: cfg.whatsapp.number,
     email: cfg.email.public,
-    AI_CHAT_ENABLED: Boolean(cfg.aiChat.enabled),
-    aiChatEndpoint: cfg.aiChat.endpoint
+    AI_CHAT_ENABLED: CHAT_ON,
+    aiChatEndpoint: cfg.aiChat.endpoint,
+    legalName: cfg.legalName,
+    aiChat: {
+      mode: cfg.aiChat.mode || 'guided',
+      submitEndpoint: cfg.aiChat.submitEndpoint || '',
+      turnstileSiteKey: cfg.aiChat.turnstileSiteKey || '',
+      coveredPostcodeAreas: (cfg.aiChat.coveredPostcodeAreas || []).map((s) => String(s).toUpperCase())
+    },
+    emergencyText: cfg.availability.emergencyText,
+    pricing: { quoteFree: cfg.pricing.quoteFree, maybeCharged: cfg.pricing.maybeCharged, explain: cfg.pricing.explain }
   };
   fs.writeFileSync(
     path.join(OUT, 'assets/js/config.js'),
@@ -451,7 +467,8 @@ function build() {
     css: hashFile(path.join(OUT, 'assets/css/styles.css')),
     js: hashFile(path.join(OUT, 'assets/js/main.js')),
     cfg: hashFile(path.join(OUT, 'assets/js/config.js')),
-    chat: hashFile(path.join(OUT, 'assets/js/chat.js'))
+    chat: hashFile(path.join(OUT, 'assets/js/chat.js')),
+    chatCss: hashFile(path.join(OUT, 'assets/css/chat.css'))
   };
 
   const layout = fs.readFileSync(path.join(SRC, 'layout.html'), 'utf8');
@@ -474,7 +491,8 @@ function build() {
       !cfg.jurisdictionVerified && cfg.showPlaceholders
         ? ' <span class="placeholder-note">(jurisdiction to be verified by owner before launch)</span>'
         : '',
-    chat: cfg.aiChat.enabled ? `<script src="/assets/js/chat.js?v=${versions.chat}" defer></script>` : '',
+    chat: CHAT_ON ? `<script src="/assets/js/chat.js?v=${versions.chat}" defer></script>` : '',
+    chatCss: CHAT_ON ? `<link rel="stylesheet" href="/assets/css/chat.css?v=${versions.chatCss}">` : '',
     analytics: cfg.analytics.cloudflareWebAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${esc(cfg.analytics.cloudflareWebAnalyticsToken)}"}'></script>`
       : '',
