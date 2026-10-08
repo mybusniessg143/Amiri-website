@@ -65,12 +65,13 @@
         <p>If you smell gas, leave the property, do not use switches, and call the National Gas Emergency Service on <a href="tel:0800111999">0800 111 999</a>.</p>
       </div>
     </div>
-    <ul class="gallery gallery--3" aria-label="Plumbing work photos">
+    {{#workphotos}}<ul class="gallery gallery--3" aria-label="Plumbing work photos">
       <li>{{photo plumbing-repair}}</li>
       <li>{{photo taps-toilets}}</li>
       <li>{{photo appliance}}</li>
       <li>{{photo before-after}}</li>
-    </ul>
+    </ul>{{/workphotos}}
+    {{#noworkphotos}}<figure class="frame">{{img svc-plumbing half}}</figure>{{/noworkphotos}}
   </div>
 </section>
 

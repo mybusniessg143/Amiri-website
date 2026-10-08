@@ -34,6 +34,7 @@
     </div>
     <div>
       {{photo owner-on-site}}
+      {{#noworkphotos}}<figure class="frame">{{img landlords half}}</figure>{{/noworkphotos}}
       <div class="note-box mt-2">
         <h3>Company details</h3>
         <p><strong>{{legalName}}</strong><br>Company number {{companyNumber}}<br>Registered in {{jurisdiction}}{{html.jurisdictionFlag}}</p>
@@ -45,7 +46,7 @@
 
 {{> trust}}
 
-<section class="section section--alt" aria-labelledby="work-title">
+{{#workphotos}}<section class="section section--alt" aria-labelledby="work-title">
   <div class="container">
     <div class="section-head">
       <h2 id="work-title">Our work</h2>
@@ -58,7 +59,7 @@
       <li>{{photo vehicle-tools}}</li>
     </ul>
   </div>
-</section>
+</section>{{/workphotos}}
 
 {{> reviews}}
 

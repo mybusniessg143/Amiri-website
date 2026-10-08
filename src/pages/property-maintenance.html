@@ -48,12 +48,13 @@
       <h2 id="work-title">Maintenance jobs we have completed</h2>
       <p>Real photos of our own work will be added here.</p>
     </div>
-    <ul class="gallery">
+    {{#workphotos}}<ul class="gallery">
       <li>{{photo maintenance}}</li>
       <li>{{photo before-after}}</li>
       <li>{{photo commercial}}</li>
       <li>{{photo owner-on-site}}</li>
-    </ul>
+    </ul>{{/workphotos}}
+    {{#noworkphotos}}<figure class="frame">{{img svc-maintenance half}}</figure>{{/noworkphotos}}
   </div>
 </section>
 
