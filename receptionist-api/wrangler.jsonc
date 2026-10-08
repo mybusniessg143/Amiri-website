@@ -26,11 +26,10 @@
   ],
   "vars": {
     "ENQUIRY_API_ENABLED": "true",
-    "ALLOWED_ORIGINS": "https://amiribuildingservices.com,https://www.amiribuildingservices.com",
+    "ALLOWED_ORIGINS": "https://amiribuildingservices.com,https://www.amiribuildingservices.com,https://ai-receptionist-amiri-website.waris-ac2.workers.dev",
     "EMAIL_TO": "waris@amiribuildingservices.com",
-    // Resend's shared test sender works before the domain is verified, but only delivers
-    // to the Resend account owner's address. Switch to enquiries@… once the domain is verified.
-    "EMAIL_FROM": "Amiri Website <onboarding@resend.dev>"
+    // amiribuildingservices.com is verified in Resend (DKIM on resend._domainkey, return path on send./rsend.).
+    "EMAIL_FROM": "Amiri Building Services <enquiries@amiribuildingservices.com>"
   },
   "observability": { "enabled": true }
 }
