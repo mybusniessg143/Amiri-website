@@ -72,12 +72,13 @@
         <li>{{icon key}}<span><strong>Tenant access</strong> arranged directly with tenants when you prefer us to.</span></li>
       </ul>
     </div>
-    <ul class="gallery gallery--3" aria-label="Commercial and landlord work photos">
+    {{#workphotos}}<ul class="gallery gallery--3" aria-label="Commercial and landlord work photos">
       <li>{{photo commercial}}</li>
       <li>{{photo emergency-lighting}}</li>
       <li>{{photo maintenance}}</li>
       <li>{{photo before-after}}</li>
-    </ul>
+    </ul>{{/workphotos}}
+    {{#noworkphotos}}<figure class="frame">{{img landlords half}}</figure>{{/noworkphotos}}
   </div>
 </section>
 

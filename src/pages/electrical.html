@@ -109,12 +109,13 @@
         <div><p><strong>Do not attempt electrical repairs yourself.</strong> If you are worried something is unsafe, stop using it and contact a qualified electrician. If there is fire, smoke or someone has had an electric shock, call 999.</p></div>
       </div>
     </div>
-    <ul class="gallery gallery--3" aria-label="Electrical work photos">
+    {{#workphotos}}<ul class="gallery gallery--3" aria-label="Electrical work photos">
       <li>{{photo consumer-unit}}</li>
       <li>{{photo sockets}}</li>
       <li>{{photo lighting}}</li>
       <li>{{photo emergency-lighting}}</li>
-    </ul>
+    </ul>{{/workphotos}}
+    {{#noworkphotos}}<figure class="frame">{{img svc-electrical half}}</figure>{{/noworkphotos}}
   </div>
 </section>
 

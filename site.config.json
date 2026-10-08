@@ -73,7 +73,7 @@
       }
     ]
   },
-  "showPlaceholders": true,
+  "showPlaceholders": false,
   "_showPlaceholdersNote": "true = show clearly labelled 'owner to add' boxes for credentials, reviews and the review link. Set to false before launch if you have not filled them in; empty items will then be hidden instead.",
   "credentials": [
     {
