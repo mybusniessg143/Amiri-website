@@ -73,7 +73,7 @@
       }
     ]
   },
-  "showPlaceholders": true,
+  "showPlaceholders": false,
   "_showPlaceholdersNote": "true = show clearly labelled 'owner to add' boxes for credentials, reviews and the review link. Set to false before launch if you have not filled them in; empty items will then be hidden instead.",
   "credentials": [
     {
@@ -137,10 +137,10 @@
   },
   "ogImage": "/assets/images/og-image.png",
   "aiChat": {
-    "enabled": false,
+    "enabled": true,
     "mode": "guided",
     "endpoint": "/api/chat",
-    "submitEndpoint": "/api/enquiry",
+    "submitEndpoint": "https://amiri-receptionist-api.waris-ac2.workers.dev/api/enquiry",
     "turnstileSiteKey": "",
     "coveredPostcodeAreas": ["UB7", "UB3", "UB4", "UB8", "UB10", "UB11", "TW6", "UB1", "UB2", "HA4", "SL0", "SL3", "SL1", "SL2", "W5", "W7", "W13"],
     "_note": "AI_CHAT_ENABLED. false = no chat code or styles are loaded at all. Turn on only after the homepage is approved. mode 'guided' = the step-by-step enquiry assistant that runs in the visitor's browser (no AI back end, no running cost); the customer sends the summary to you by WhatsApp or email. submitEndpoint '/api/enquiry' = customers press Submit and the enquiry, photos and video are stored and emailed to you automatically (needs the Cloudflare setup in AI_RECEPTIONIST_PLAN.md, 'Automatic submission'); empty = customers send the summary themselves by WhatsApp or email. turnstileSiteKey: optional Cloudflare Turnstile spam check (public site key; the secret key goes in Cloudflare only). coveredPostcodeAreas: postcode districts treated as your usual area (others get 'we'll check and let you know'); owner to check this list. To try the chat on a preview without switching it on for the live site, build with AI_CHAT_PREVIEW=1."

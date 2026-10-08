@@ -98,6 +98,7 @@ function getPath(obj, dotted) {
 function renderPhoto(key) {
   const p = photos[key];
   if (!p) throw new Error(`Unknown photo key "${key}" – add it to src/photos.json`);
+  if (!p.src && !cfg.showPlaceholders) return '';
   if (p.src) {
     const avif = p.avif ? `<source type="image/avif" srcset="${esc(p.avif)}">` : '';
     return `<figure class="photo"><picture>${avif}<img src="${esc(p.src)}" width="${p.width}" height="${p.height}" alt="${esc(p.alt)}" loading="lazy" decoding="async"></picture><figcaption>${esc(p.label)}</figcaption></figure>`;
@@ -394,6 +395,12 @@ function render(tpl, ctx, file) {
   // 2. helpers. {{#placeholders}}...{{/placeholders}} only shows while showPlaceholders is true.
   out = out
     .replace(/\{\{#placeholders\}\}([\s\S]*?)\{\{\/placeholders\}\}/g, (_, inner) => (cfg.showPlaceholders ? inner : ''))
+    // {{#workphotos}}...{{/workphotos}} only shows when at least one real work photo exists (or placeholders are on).
+    .replace(/\{\{#workphotos\}\}([\s\S]*?)\{\{\/workphotos\}\}/g, (_, inner) =>
+      cfg.showPlaceholders || Object.entries(photos).some(([k, v]) => !k.startsWith('_') && v && v.src) ? inner : '')
+    // {{#noworkphotos}}...{{/noworkphotos}}: the opposite – an illustrative stock image shown until real work photos exist.
+    .replace(/\{\{#noworkphotos\}\}([\s\S]*?)\{\{\/noworkphotos\}\}/g, (_, inner) =>
+      cfg.showPlaceholders || Object.entries(photos).some(([k, v]) => !k.startsWith('_') && v && v.src) ? '' : inner)
     // {{#aiChat}}...{{/aiChat}} only while the AI receptionist chat is on; {{#noAiChat}} the opposite.
     .replace(/\{\{#aiChat\}\}([\s\S]*?)\{\{\/aiChat\}\}/g, (_, inner) => (CHAT_ON ? inner : ''))
     .replace(/\{\{#noAiChat\}\}([\s\S]*?)\{\{\/noAiChat\}\}/g, (_, inner) => (CHAT_ON ? '' : inner))
@@ -526,7 +533,10 @@ function build() {
       }
     };
     ctx.html.content = render(body, ctx, f);
-    const html = render(layout, ctx, 'layout.html');
+    const html = render(layout, ctx, 'layout.html')
+      // Galleries whose photo slots are all empty (no real work photos yet) are left out completely.
+      .replace(/<li>\s*<\/li>/g, '')
+      .replace(/<ul class="gallery[^"]*"[^>]*>\s*<\/ul>/g, '');
     if (/\{\{/.test(html)) throw new Error(`${f}: unresolved {{ token left in output`);
 
     const outFile = page.path.endsWith('/') ? path.join(OUT, page.path, 'index.html') : path.join(OUT, page.path);
