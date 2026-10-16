@@ -1,0 +1,114 @@
+<!--page
+{
+  "path": "/areas/hillingdon/",
+  "title": "Electrician & Plumber in Hillingdon (UB10) | Amiri",
+  "description": "Electrician and non-gas plumber in Hillingdon, Ickenham and Hillingdon Heath. Sockets, lighting, fault finding, leaks, toilets and emergency call-outs.",
+  "breadcrumb": "Hillingdon",
+  "breadcrumbParent": {
+    "name": "Areas we cover",
+    "path": "/areas/"
+  },
+  "priority": 0.7,
+  "waText": "Hello Amiri Building Services, I am in Hillingdon and need help with a job. The problem is:   My postcode is: ",
+  "service": {
+    "name": "Electrical, plumbing and property maintenance in Hillingdon",
+    "serviceType": "Electrician, non-gas plumbing and property maintenance",
+    "description": "Electrical installation and repairs, emergency electrical call-outs, non-gas plumbing and emergency plumbing, and property maintenance in Hillingdon (UB10).",
+    "areaServed": [
+      "Hillingdon"
+    ]
+  },
+  "faq": [
+    {
+      "q": "Do you cover Ickenham and Hillingdon Heath?",
+      "a": "Yes. We cover Hillingdon, Hillingdon Heath, Ickenham and the surrounding UB10 streets."
+    },
+    {
+      "q": "Can you add sockets or lighting to my extension?",
+      "a": "Yes. Tell us what you would like and, if you can, send photos of the room. We will explain what is involved and confirm a price before we start."
+    },
+    {
+      "q": "Are quotes free?",
+      "a": "Yes, initial quotes are free. Site visits, diagnostics and emergency call-outs may be chargeable. We will explain any charge before we start."
+    },
+    {
+      "q": "Do you do gas or boiler work?",
+      "a": "No. We do not carry out any gas work. For boilers and gas appliances contact a Gas Safe registered engineer. If you smell gas, call the National Gas Emergency Service on 0800 111 999."
+    }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">{{icon pin}} Hillingdon · UB10</p>
+      <h1 id="page-title">Electrician and plumber in Hillingdon</h1>
+      <p class="hero__lead">Electrical work, non-gas plumbing and property repairs for homes and landlords across Hillingdon, Hillingdon Heath, Ickenham and the surrounding UB10 area.</p>
+      {{> contact-strip}}
+    </div>
+    <aside class="callcard" aria-labelledby="callcard-title">
+      <h2 id="callcard-title">Emergency in Hillingdon?</h2>
+      <p class="muted mb-0">{{availability.emergencyText}}</p>
+      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+      <a class="btn btn--wa btn--lg" href="{{wa:URGENT – Hello Amiri Building Services, I am in Hillingdon and have an emergency. The problem is:   My postcode is: }}" rel="noopener">{{icon whatsapp}}WhatsApp urgent job</a>
+      <p class="callcard__note">{{icon alert}}<span>No power, sparking or water near electrics? See <a href="/emergency-electrician/">emergency electrician</a>. Leak or overflow? See <a href="/emergency-plumbing/">emergency plumbing</a>.</span></p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="services-title">What we do in Hillingdon</h2>
+      <p>One local team for electrical work, non-gas plumbing and general repairs, so many jobs that would need two or three tradespeople can be done in one visit.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon bolt}}</span><h3>Electrical work</h3><p>Fault finding, tripping circuits, consumer units, sockets, switches, lighting and appliance circuits.</p><a class="link-arrow" href="/electrical/">Electrical services {{icon arrow}}</a></article>
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon drop}}</span><h3>Plumbing (non-gas)</h3><p>Leaks and burst pipes, taps, toilets and cisterns, blockages, isolation valves and appliance connections.</p><a class="link-arrow" href="/plumbing/">Plumbing services {{icon arrow}}</a></article>
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon wrench}}</span><h3>Property maintenance</h3><p>General building maintenance and repairs for homes, landlords, letting agents and commercial premises.</p><a class="link-arrow" href="/property-maintenance/">Property maintenance {{icon arrow}}</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="local-title">
+  <div class="container split">
+    <div>
+      <h2 id="local-title">Working in Hillingdon</h2>
+      <p>Much of Hillingdon is established residential housing: 1930s semis, terraces and bungalows, many of which have had extensions, loft conversions and new kitchens added over the decades. That kind of work often leaves circuits that have been altered several times, so typical jobs include tracing faults, adding sockets and lighting, replacing old switches and fittings, and upgrading consumer units.</p>
+      <p>On the plumbing side we deal with leaking taps and pipework, toilets that keep running, failed isolation valves and appliance connections for new kitchens. Many of our Hillingdon customers are homeowners who want a job done carefully and explained in plain English, and that is how we work.</p>
+    </div>
+    <div class="note-box">
+      <h3>Typical jobs in Hillingdon</h3>
+      <ul class="ticks">
+        <li>{{icon check}}Adding sockets and lighting in extended and converted homes</li>
+        <li>{{icon check}}Tracing faults on circuits that have been altered over the years</li>
+        <li>{{icon check}}Consumer unit upgrades</li>
+        <li>{{icon check}}Leaking taps, running toilets and appliance connections</li>
+      </ul>
+      <p class="mb-0">We visit you at your property. We do not have a shop or office for customers to visit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Get a quote in Hillingdon</h2>
+      <p class="lead">Tell us what the problem is and your postcode. A photo helps us give you a clearer answer.</p>
+      <p>{{icon camera}} <a href="{{page.waUrl}}" rel="noopener">Send photos on WhatsApp</a></p>
+      {{> pricing-note}}
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Questions from Hillingdon customers</h2></div>
+    {{html.faq}}
+    <h3 class="mt-2" id="nearby-title">Nearby areas we cover</h3>
+    <ul class="nearby" aria-labelledby="nearby-title"><li><a class="link-arrow" href="/areas/uxbridge/">Uxbridge {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/west-drayton/">West Drayton {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/hayes/">Hayes {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/southall/">Southall {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/">All areas {{icon arrow}}</a></li></ul>
+  </div>
+</section>
+
+{{> cta-final}}

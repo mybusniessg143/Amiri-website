@@ -18,7 +18,7 @@
  *      site.webmanifest and assets/js/config.js.
  *   5. Copies /assets and /static into ./dist.
  *
- * Cloudflare Pages: build command `node build.js`, output directory `dist`.
+ * Cloudflare (Worker "amiri-website", see wrangler.jsonc): build command `node build.js`, deploy `npx wrangler deploy`.
  */
 'use strict';
 
@@ -351,7 +351,7 @@ function pageJsonLd(page) {
       description: page.service.description || page.description,
       url: DOMAIN + page.path,
       provider: { '@id': `${DOMAIN}/#business` },
-      areaServed: cfg.areas.core.concat(cfg.areas.secondary).map((n) => ({ '@type': 'Place', name: n }))
+      areaServed: (page.service.areaServed || cfg.areas.core.concat(cfg.areas.secondary)).map((n) => ({ '@type': 'Place', name: n }))
     });
   }
   if (page.path !== '/' && page.breadcrumb) {
@@ -460,8 +460,14 @@ function build() {
 
   const shared = {
     areasInline: esc(listToSentence(cfg.areas.core)),
+    areasInlineLinked: listToSentence(cfg.areas.core.map((a) => ((cfg.areas.pages || {})[a] ? `<a href="${cfg.areas.pages[a]}">${esc(a)}</a>` : esc(a)))),
     secondaryInline: esc(listToSentence(cfg.areas.secondary)),
-    areasCoreList: cfg.areas.core.map((a) => `<li>${icon('pin')}${esc(a)}</li>`).join(''),
+    areasCoreList: cfg.areas.core
+      .map((a) => {
+        const href = (cfg.areas.pages || {})[a];
+        return href ? `<li><a href="${href}">${icon('pin')}${esc(a)}</a></li>` : `<li>${icon('pin')}${esc(a)}</li>`;
+      })
+      .join(''),
     areasSecondaryList: cfg.areas.secondary.map((a) => `<li>${esc(a)}</li>`).join(''),
     credentials: credentialsHtml(),
     reviews: reviewsHtml(),

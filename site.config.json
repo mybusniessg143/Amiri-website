@@ -1,5 +1,5 @@
 {
-  "_README": "This is the ONE place to change business details. Edit, save, then run `node build.js` (Cloudflare Pages does this automatically on every push). Never put API keys or passwords in this file: it is public.",
+  "_README": "This is the ONE place to change business details. Edit, save, then run `node build.js` (Cloudflare does this automatically on every push). Never put API keys or passwords in this file: it is public.",
   "legalName": "AMIRI BUILDING SERVICES LTD",
   "tradingName": "Amiri Building Services",
   "companyNumber": "17472711",
@@ -10,12 +10,12 @@
   "regionLabel": "West London",
   "baseTown": "West Drayton",
   "phone": {
-    "display": "07438 635942",
-    "international": "+44 7438 635942",
-    "tel": "+447438635942"
+    "display": "07942 333994",
+    "international": "+44 7942 333994",
+    "tel": "+447942333994"
   },
   "whatsapp": {
-    "number": "447438635942",
+    "number": "447942333994",
     "_note": "Digits only, country code first, no + or spaces. Change this if you get a separate WhatsApp Business number."
   },
   "email": {
@@ -38,18 +38,26 @@
       "West Drayton",
       "Hayes",
       "Uxbridge",
+      "Southall",
       "Hillingdon",
       "Heathrow"
     ],
     "secondary": [
-      "Southall",
       "Ruislip",
       "Iver",
       "Langley",
       "Slough",
       "Ealing"
     ],
-    "secondaryNote": "and surrounding West London areas"
+    "secondaryNote": "and surrounding West London areas",
+    "pages": {
+      "West Drayton": "/areas/west-drayton/",
+      "Hayes": "/areas/hayes/",
+      "Uxbridge": "/areas/uxbridge/",
+      "Southall": "/areas/southall/",
+      "Hillingdon": "/areas/hillingdon/"
+    },
+    "_pagesNote": "Areas that have their own local page. Their chips on the homepage and Areas page link to it. A new local page also needs a file in src/pages/."
   },
   "availability": {
     "emergencyText": "Emergency call-outs available — call to confirm current availability.",
@@ -143,7 +151,7 @@
   },
   "analytics": {
     "cloudflareWebAnalyticsToken": "",
-    "_note": "Optional. Prefer turning on Web Analytics in the Cloudflare Pages dashboard (no code needed). Only fill this if you use the manual JS snippet. Do NOT add Google Analytics, Meta Pixel or other trackers without a consent mechanism."
+    "_note": "Optional. Prefer automatic Web Analytics setup in the Cloudflare dashboard (no code needed). Only fill this if you use the manual JS snippet. Do NOT add Google Analytics, Meta Pixel or other trackers without a consent mechanism."
   },
   "pricing": {
     "_note": "Confirmed by the owner on 2026-10-06. Do not add figures until prices are decided.",

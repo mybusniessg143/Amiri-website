@@ -52,7 +52,7 @@ Tick every box in order. Do not change nameservers until sections A–C are comp
   - [ ] Any other TXT/CNAME records present (Microsoft, Facebook domain verification, etc.).
 - [ ] Add anything missing manually (**+ Add record**).
 - [ ] Mail-related records must be **DNS only (grey cloud)**. MX records can't be proxied; set any CNAMEs used for email or verification to **DNS only**.
-- [ ] Old website A/AAAA/CNAME records for `@` and `www`: leave them for now. They will be replaced when you connect Cloudflare Pages (CLOUDFLARE_DEPLOYMENT.md step 4).
+- [ ] Old website A/AAAA/CNAME records for `@` and `www`: leave them for now. They will be replaced when you connect the Cloudflare Worker custom domain (CLOUDFLARE_DEPLOYMENT.md step 4).
 - [ ] Do **not** enable Cloudflare **Email Routing**. It replaces your MX records.
 
 ## D. Switch the nameservers
