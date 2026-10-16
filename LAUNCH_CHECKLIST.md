@@ -9,7 +9,7 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Verify legal company details: AMIRI BUILDING SERVICES LTD, company no. 17472711, registered office (check against Companies House)
 - [ ] **Verify registered jurisdiction (England and Wales)**, then set `jurisdictionVerified: true` in site.config.json
 - [ ] Verify service areas (`areas` in site.config.json) and the local text on /areas/ and the five local pages (/areas/west-drayton/, /hayes/, /uxbridge/, /southall/, /hillingdon/)
-- [ ] Verify phone number 07438 635942
+- [x] Phone number changed to 07942 333994 (confirmed by the owner, 16 Oct 2026)
 - [ ] Verify email info@amiribuildingservices.com receives mail
 - [ ] Confirm business hours (or leave `hours.confirmed: false`)
 - [ ] Confirm qualifications. Add to `credentials` only what you can evidence
@@ -29,7 +29,7 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 
 ## Testing
 - [ ] Check mobile layout on a real phone (iPhone and Android if possible)
-- [ ] Test the Call button (opens the dialler with 07438 635942)
+- [ ] Test the Call button (opens the dialler with 07942 333994)
 - [ ] Test the WhatsApp button (opens a chat with the business number and pre-filled text)
 - [ ] Test the enquiry form: errors show for empty fields; WhatsApp message is correctly filled; "Send by email instead" works
 - [ ] Test "Send photos on WhatsApp"
