@@ -119,6 +119,8 @@
   "_reviewsNote": "Add ONLY genuine reviews, copied word for word with permission or from your Google Business Profile. Format: { \"author\": \"First name + initial\", \"text\": \"...\", \"rating\": 5, \"date\": \"2026-11-01\", \"source\": \"Google\" }",
   "googleReviewUrl": "",
   "googleBusinessProfileUrl": "",
+  "googleSiteVerification": "",
+  "_googleSiteVerificationNote": "Optional. Only the content value of the HTML tag Google Search Console gives you for a URL-prefix property (the long code inside content=\"...\"). Adds <meta name=\"google-site-verification\"> to every page. Not needed if you verify with a DNS TXT record instead.",
   "social": {
     "instagram": "",
     "facebook": "",

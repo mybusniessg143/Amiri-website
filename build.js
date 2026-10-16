@@ -282,10 +282,10 @@ const SERVICES = {
     'Socket installation and replacement', 'Switch installation and replacement', 'Lighting installation',
     'Downlights', 'Emergency lighting', 'Consumer unit work', 'Electrical repairs',
     'First fix and second fix electrical work', 'Domestic electrical work', 'Commercial electrical work',
-    'Shop and small commercial installations'
+    'Shop and small commercial installations', 'Electrical installation'
   ],
   plumbing: [
-    'Emergency water leaks', 'Accessible pipe leaks', 'Tap repairs and replacements', 'Toilet repairs',
+    'Emergency water leaks', 'Burst pipe repairs', 'Accessible pipe leaks', 'Blocked sinks, basins, baths and toilets', 'Tap repairs and replacements', 'Toilet repairs',
     'Cistern problems', 'Isolation valves', 'Traps and waste pipes', 'Washing machine connections',
     'Dishwasher connections', 'Sink plumbing', 'General non-gas plumbing repairs'
   ],
@@ -318,7 +318,7 @@ function businessJsonLd() {
       'Electrical work, non-gas plumbing repairs and property maintenance for homes, landlords, letting agents and small commercial premises in West Drayton and West London.',
     identifier: { '@type': 'PropertyValue', propertyID: 'Companies House company number', value: cfg.companyNumber },
     address: { '@type': 'PostalAddress', addressLocality: cfg.baseTown, addressRegion: 'Greater London', addressCountry: 'GB' },
-    areaServed: cfg.areas.core.concat(cfg.areas.secondary).map((n) => ({ '@type': 'Place', name: n })),
+    areaServed: cfg.areas.core.concat(cfg.areas.secondary, [cfg.regionLabel]).map((n) => ({ '@type': 'Place', name: n })),
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Building services',
@@ -460,6 +460,8 @@ function build() {
 
   const shared = {
     areasInline: esc(listToSentence(cfg.areas.core)),
+    areaPageLinks: Object.entries(cfg.areas.pages || {}).map(([n, href]) => `<a href="${href}">${esc(n)}</a>`).join(' · '),
+    siteVerification: cfg.googleSiteVerification ? `<meta name="google-site-verification" content="${esc(cfg.googleSiteVerification)}">` : '',
     areasInlineLinked: listToSentence(cfg.areas.core.map((a) => ((cfg.areas.pages || {})[a] ? `<a href="${cfg.areas.pages[a]}">${esc(a)}</a>` : esc(a)))),
     secondaryInline: esc(listToSentence(cfg.areas.secondary)),
     areasCoreList: cfg.areas.core
