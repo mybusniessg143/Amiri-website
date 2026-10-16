@@ -1,6 +1,6 @@
 # Launch checklist
 
-Work through this before pointing amiribuildingservices.com at the new site. Test on the free `*.pages.dev` address first.
+Work through this before pointing amiribuildingservices.com at the new site. Test on the free `*.workers.dev` address first.
 
 ## Content you must supply or confirm
 - [x] Logo added (header, footer), favicons and app icons made from the AB monogram, social share image updated (README §6)
@@ -8,7 +8,7 @@ Work through this before pointing amiribuildingservices.com at the new site. Tes
 - [ ] Check every stock picture in IMAGE_CREDITS.md looks right, or swap it for your own (`src/images.json`)
 - [ ] Verify legal company details: AMIRI BUILDING SERVICES LTD, company no. 17472711, registered office (check against Companies House)
 - [ ] **Verify registered jurisdiction (England and Wales)**, then set `jurisdictionVerified: true` in site.config.json
-- [ ] Verify service areas (`areas` in site.config.json) and the local text on /areas/
+- [ ] Verify service areas (`areas` in site.config.json) and the local text on /areas/ and the five local pages (/areas/west-drayton/, /hayes/, /uxbridge/, /southall/, /hillingdon/)
 - [ ] Verify phone number 07438 635942
 - [ ] Verify email info@amiribuildingservices.com receives mail
 - [ ] Confirm business hours (or leave `hours.confirmed: false`)

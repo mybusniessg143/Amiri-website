@@ -1,0 +1,114 @@
+<!--page
+{
+  "path": "/areas/hayes/",
+  "title": "Electrician & Plumber in Hayes (UB3, UB4) | Amiri",
+  "description": "Electrician and non-gas plumber covering Hayes, Harlington, Hayes End and Yeading. Electrical faults, leaks, repairs and emergency call-outs.",
+  "breadcrumb": "Hayes",
+  "breadcrumbParent": {
+    "name": "Areas we cover",
+    "path": "/areas/"
+  },
+  "priority": 0.7,
+  "waText": "Hello Amiri Building Services, I am in Hayes and need help with a job. The problem is:   My postcode is: ",
+  "service": {
+    "name": "Electrical, plumbing and property maintenance in Hayes",
+    "serviceType": "Electrician, non-gas plumbing and property maintenance",
+    "description": "Electrical installation and repairs, emergency electrical call-outs, non-gas plumbing and emergency plumbing, and property maintenance in Hayes and Harlington (UB3 and UB4).",
+    "areaServed": [
+      "Hayes"
+    ]
+  },
+  "faq": [
+    {
+      "q": "Do you cover Harlington, Hayes End and Yeading?",
+      "a": "Yes. We cover all of Hayes, including Harlington, Hayes End, Yeading and the streets around Hayes and Harlington station."
+    },
+    {
+      "q": "Can you work with my letting agent in Hayes?",
+      "a": "Yes. We regularly take instructions from landlords and letting agents, arrange access with tenants and send photos of the completed work."
+    },
+    {
+      "q": "Are quotes free?",
+      "a": "Yes, initial quotes are free. Site visits, diagnostics and emergency call-outs may be chargeable. We will explain any charge before we start."
+    },
+    {
+      "q": "Do you do gas or boiler work?",
+      "a": "No. We do not carry out any gas work. For boilers and gas appliances contact a Gas Safe registered engineer. If you smell gas, call the National Gas Emergency Service on 0800 111 999."
+    }
+  ]
+}
+-->
+<section class="hero hero--page" aria-labelledby="page-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">{{icon pin}} Hayes and Harlington · UB3 and UB4</p>
+      <h1 id="page-title">Electrician and plumber in Hayes</h1>
+      <p class="hero__lead">A short drive from our West Drayton base, Hayes is one of the areas we work in most. We handle electrical faults and installations, non-gas plumbing repairs and general maintenance across Hayes, Harlington, Hayes End and Yeading.</p>
+      {{> contact-strip}}
+    </div>
+    <aside class="callcard" aria-labelledby="callcard-title">
+      <h2 id="callcard-title">Emergency in Hayes?</h2>
+      <p class="muted mb-0">{{availability.emergencyText}}</p>
+      <a class="callcard__phone" href="tel:{{phone.tel}}">{{icon phone}}{{phone.display}}</a>
+      <a class="btn btn--wa btn--lg" href="{{wa:URGENT – Hello Amiri Building Services, I am in Hayes and have an emergency. The problem is:   My postcode is: }}" rel="noopener">{{icon whatsapp}}WhatsApp urgent job</a>
+      <p class="callcard__note">{{icon alert}}<span>No power, sparking or water near electrics? See <a href="/emergency-electrician/">emergency electrician</a>. Leak or overflow? See <a href="/emergency-plumbing/">emergency plumbing</a>.</span></p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="services-title">What we do in Hayes</h2>
+      <p>One local team for electrical work, non-gas plumbing and general repairs, so many jobs that would need two or three tradespeople can be done in one visit.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon bolt}}</span><h3>Electrical work</h3><p>Fault finding, tripping circuits, consumer units, sockets, switches, lighting and appliance circuits.</p><a class="link-arrow" href="/electrical/">Electrical services {{icon arrow}}</a></article>
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon drop}}</span><h3>Plumbing (non-gas)</h3><p>Leaks and burst pipes, taps, toilets and cisterns, blockages, isolation valves and appliance connections.</p><a class="link-arrow" href="/plumbing/">Plumbing services {{icon arrow}}</a></article>
+      <article class="card"><span class="icon-chip icon-chip--blue">{{icon wrench}}</span><h3>Property maintenance</h3><p>General building maintenance and repairs for homes, landlords, letting agents and commercial premises.</p><a class="link-arrow" href="/property-maintenance/">Property maintenance {{icon arrow}}</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="local-title">
+  <div class="container split">
+    <div>
+      <h2 id="local-title">Working in Hayes and Harlington</h2>
+      <p>Hayes has a large stock of family homes, rented houses and flats, alongside the shops on Station Road and Coldharbour Lane and business units around the canal and the old industrial estates. A lot of our work here is for landlords and letting agents: tenant-reported faults, leaks and repairs between tenancies, with photos sent back once the job is done.</p>
+      <p>For shops and small businesses we carry out lighting, socket and fault-finding work, and plan it where possible so that it does not disrupt trading. For homeowners, the usual calls are tripping electrics, extra sockets and lighting, dripping taps, running toilets and leaking wastes.</p>
+    </div>
+    <div class="note-box">
+      <h3>Typical jobs in Hayes</h3>
+      <ul class="ticks">
+        <li>{{icon check}}Tenant-reported electrical and plumbing faults for landlords and agents</li>
+        <li>{{icon check}}Lighting and socket work for shops and small business units</li>
+        <li>{{icon check}}Extra sockets, new lighting and replacement fittings in family homes</li>
+        <li>{{icon check}}Leaking taps, running toilets and blocked or leaking wastes</li>
+      </ul>
+      <p class="mb-0">We visit you at your property. We do not have a shop or office for customers to visit.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="enquiry" aria-labelledby="enquiry-title">
+  <div class="container split">
+    <div>
+      <h2 id="enquiry-title">Get a quote in Hayes</h2>
+      <p class="lead">Tell us what the problem is and your postcode. A photo helps us give you a clearer answer.</p>
+      <p>{{icon camera}} <a href="{{page.waUrl}}" rel="noopener">Send photos on WhatsApp</a></p>
+      {{> pricing-note}}
+    </div>
+    {{> enquiry-form}}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section-head"><h2 id="faq-title">Questions from Hayes customers</h2></div>
+    {{html.faq}}
+    <h3 class="mt-2" id="nearby-title">Nearby areas we cover</h3>
+    <ul class="nearby" aria-labelledby="nearby-title"><li><a class="link-arrow" href="/areas/west-drayton/">West Drayton {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/southall/">Southall {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/uxbridge/">Uxbridge {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/hillingdon/">Hillingdon {{icon arrow}}</a></li> <li><a class="link-arrow" href="/areas/">All areas {{icon arrow}}</a></li></ul>
+  </div>
+</section>
+
+{{> cta-final}}

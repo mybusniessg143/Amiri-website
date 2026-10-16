@@ -406,6 +406,8 @@ main:focus { outline: none; }
 .hero a:not(.btn) { color: #fff; font-weight: 650; }
 .hero .callcard .callcard__phone { color: var(--ink-900); }
 .hero .callcard .callcard__phone:hover { color: var(--gold-deep); }
+.hero .callcard__note a { color: var(--ink-900); text-decoration: underline; text-underline-offset: 2px; }
+.hero .callcard__note a:hover { color: var(--gold-deep); }
 .hero .eyebrow .icon { vertical-align: -.25em; margin-right: .2rem; }
 .hero__grid { display: grid; gap: 2.5rem; align-items: center; }
 .hero__points { list-style: none; padding: 0; margin: 1.75rem 0 0; display: grid; gap: .6rem; }
@@ -752,6 +754,11 @@ main:focus { outline: none; }
 .area-block { border-top: 1px solid var(--line); padding-top: 2rem; margin-top: 2rem; }
 .area-block h3 { display: flex; gap: .5rem; align-items: center; font-size: 1.4rem; }
 .area-block h3 .icon { color: var(--gold-deep); }
+.area-list a, .area-chips a { display: inline-flex; align-items: center; gap: inherit; color: inherit; text-decoration: none; }
+.area-list a:hover, .area-chips a:hover { color: var(--gold-deep); }
+.area-chips li:has(a):hover { border-color: var(--gold); }
+.area-block__more { margin-top: .25rem; }
+.nearby { display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; list-style: none; padding: 0; margin: 1rem 0 0; }
 
 /* ---------- Home: how it works ---------- */
 .process { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; counter-reset: step; }

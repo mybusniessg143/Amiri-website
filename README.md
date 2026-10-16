@@ -30,6 +30,7 @@ amiri-website/
 │       ├── property-maintenance.html   → /property-maintenance/
 │       ├── landlords-commercial.html   → /landlords-commercial/
 │       ├── areas.html                  → /areas/
+│       ├── area-*.html                 → /areas/west-drayton/, /areas/hayes/ … (local area pages)
 │       ├── about.html                  → /about/
 │       ├── contact.html                → /contact/
 │       ├── privacy.html                → /privacy/
@@ -64,7 +65,7 @@ Open `site.config.json`. Change the value, save, rebuild. It updates every page,
 |---|---|
 | Phone number | `phone.display`, `phone.international`, `phone.tel` |
 | WhatsApp number (e.g. a new WhatsApp Business number) | `whatsapp.number` (digits only, starting 44) |
-| Public email | `email.public` |
+| Areas | `areas.core`, `areas.secondary`, `areas.pages` (areas with their own local page) |
 | Areas | `areas.core`, `areas.secondary` |
 | Emergency/availability wording | `availability.emergencyText`, `availability.generalText` |
 | Opening hours | set `hours.confirmed` to `true`, fill `hours.displayText` and `hours.openingHoursSpecification` |
@@ -137,7 +138,7 @@ Colours are at the top of `assets/css/styles.css` under `:root` (charcoal, warm 
 Full step-by-step instructions: **[CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md)**. In short:
 
 1. Put this folder in a GitHub repository.
-2. Cloudflare Pages → connect the repository → build command `node build.js`, output directory `dist`.
+2. Cloudflare Workers & Pages → import the repository as the `amiri-website` Worker → build command `node build.js`, deploy command `npx wrangler deploy` (details in CLOUDFLARE_DEPLOYMENT.md).
 3. Add the custom domain. **Read [DNS_MIGRATION_CHECKLIST.md](DNS_MIGRATION_CHECKLIST.md) first – your Google Workspace email records must be preserved.**
 
 ## 9. Updating the site later
@@ -168,7 +169,7 @@ Run `node build.js` and upload the contents of `dist/` to any static host. Every
 
 | Document | What it is for |
 |---|---|
-| [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md) | Hosting on Cloudflare Pages, custom domain, headers, analytics, rollbacks |
+| [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md) | Hosting on Cloudflare (Worker with static assets), custom domain, headers, analytics, rollbacks |
 | [DNS_MIGRATION_CHECKLIST.md](DNS_MIGRATION_CHECKLIST.md) | Moving DNS without breaking Google Workspace email |
 | [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md) | Everything to verify before going live |
 | [PRIVACY_REVIEW_CHECKLIST.md](PRIVACY_REVIEW_CHECKLIST.md) | Points to check in the privacy notice and terms |
