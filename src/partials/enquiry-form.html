@@ -16,6 +16,12 @@
     </div>
   </div>
 
+  <div class="field">
+    <label for="eq-phone">Phone number <span aria-hidden="true">*</span></label>
+    <input id="eq-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" aria-describedby="eq-phone-hint">
+    <p class="hint" id="eq-phone-hint">So we can call you back, for example 07700 900123</p>
+  </div>
+
   <fieldset class="field">
     <legend>Type of work <span aria-hidden="true">*</span></legend>
     <div class="choice-group">
@@ -64,6 +70,7 @@
     <legend>How urgent is it? <span aria-hidden="true">*</span></legend>
     <div class="choice-group">
       <label class="choice"><input type="radio" name="urgency" value="Emergency – needs attention as soon as possible" required><span>Emergency</span></label>
+      <label class="choice"><input type="radio" name="urgency" value="Urgent – within the next few days"><span>Within a few days</span></label>
       <label class="choice"><input type="radio" name="urgency" value="Planned work – flexible on timing"><span>Planned work</span></label>
     </div>
   </fieldset>
@@ -78,7 +85,7 @@
     <button class="btn btn--wa btn--lg" type="submit">{{icon whatsapp}}Send enquiry on WhatsApp</button>
     <button class="btn btn--outline" type="button" data-send-email>{{icon mail}}Send by email instead</button>
   </div>
-  <p class="enquiry__photos">{{icon camera}}<a href="{{wa:Hello Amiri Building Services, I would like to send some photos of a job. My name is:   My postcode is: }}" rel="noopener">Send photos on WhatsApp</a> <span class="muted">Photos help us understand the job before we visit.</span></p>
+  <p class="enquiry__photos">{{icon camera}}<span><strong>Photos (optional):</strong> once WhatsApp or your email opens, attach photos or a short video of the problem before sending. Or <a href="{{wa:Hello Amiri Building Services, I would like to send some photos of a job. My name is:   My postcode is: }}" rel="noopener">send photos on WhatsApp</a> separately.</span></p>
   <p class="form-privacy">Nothing you type here is stored on this website. Your message only goes to us when you press send in WhatsApp or your email app. See our <a href="/privacy/">privacy notice</a>.</p>
   <noscript><p class="form-privacy"><strong>This form needs JavaScript.</strong> Please call <a href="tel:{{phone.tel}}">{{phone.display}}</a>, <a href="{{wa:Hello Amiri Building Services}}">WhatsApp us</a> or email <a href="mailto:{{email.public}}">{{email.public}}</a>.</p></noscript>
 </form>

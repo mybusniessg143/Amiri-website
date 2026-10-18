@@ -4,7 +4,7 @@
   "tradingName": "Amiri Building Services",
   "companyNumber": "17472711",
   "jurisdiction": "England and Wales",
-  "jurisdictionVerified": false,
+  "jurisdictionVerified": true,
   "domain": "https://amiribuildingservices.com",
   "tagline": "Electrical | Plumbing | Property Maintenance",
   "regionLabel": "West London",
@@ -122,10 +122,13 @@
   "googleSiteVerification": "",
   "_googleSiteVerificationNote": "Optional. Only the content value of the HTML tag Google Search Console gives you for a URL-prefix property (the long code inside content=\"...\"). Adds <meta name=\"google-site-verification\"> to every page. Not needed if you verify with a DNS TXT record instead.",
   "social": {
-    "instagram": "",
+    "instagram": "https://www.instagram.com/amiribuildingservices/",
     "facebook": "",
-    "tiktok": "",
-    "youtube": ""
+    "tiktok": "https://www.tiktok.com/@amiribuildingservices",
+    "x": "https://x.com/Amiribuilduk",
+    "linkedin": "",
+    "youtube": "",
+    "_note": "Official accounts only, confirmed by the owner. Empty = not shown. Facebook: paste the page's own link (facebook.com/... or facebook.com/profile.php?id=...). YouTube is pending until YouTube is enabled for the Workspace account. LinkedIn page not yet created."
   },
   "logo": {
     "src": "/assets/images/logo/amiri-logo-320.png",
