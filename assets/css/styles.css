@@ -935,8 +935,8 @@ main:focus { outline: none; }
 .enquiry__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
 .enquiry__actions .btn { flex: 1 1 100%; }
 @media (min-width: 600px) { .enquiry__actions .btn { flex: 0 1 auto; } }
-.enquiry__photos { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; margin: 1.25rem 0 0; }
-.enquiry__photos .icon { color: var(--gold-deep); }
+.enquiry__photos { display: flex; align-items: flex-start; gap: .6rem; margin: 1.25rem 0 0; font-size: .92rem; }
+.enquiry__photos .icon { color: var(--gold-deep); flex-shrink: 0; margin-top: .2em; }
 .enquiry__photos a { font-weight: 650; }
 .form-privacy { font-size: .87rem; color: var(--muted); margin: 1rem 0 0; }
 
@@ -1041,8 +1041,12 @@ table.simple th { background: var(--paper-2); color: var(--ink-900); }
 .footer-contact a { display: inline-flex; align-items: center; gap: .6rem; font-weight: 550; min-height: 32px; word-break: break-word; }
 .footer-contact .icon { color: var(--gold); }
 .footer-small { font-size: .87rem; color: #948e84; }
-.social { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; }
-.social a { display: inline-flex; align-items: center; gap: .4rem; }
+.social { display: flex; gap: .5rem; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 1rem; }
+.social a { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .45rem .9rem; border: 1px solid var(--gold); border-radius: 999px; font-weight: 550; font-size: .9rem; text-decoration: none; }
+.social a:hover, .social a:focus-visible { background: var(--gold); color: #111; }
+.social .icon { width: 1.1em; height: 1.1em; }
+.footer-col .social li > a { display: inline-flex; padding: .45rem .9rem; color: var(--on-dark); }
+.footer-col .social li > a:hover, .footer-col .social li > a:focus-visible { color: #111; }
 .legal { border-top: 1px solid var(--line-dark); margin-top: 2rem; padding-top: 1.5rem; font-size: .83rem; color: #948e84; }
 .legal p { margin: 0 0 .4rem; }
 .legal strong { color: var(--on-dark); }

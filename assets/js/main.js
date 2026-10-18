@@ -48,7 +48,7 @@
       toggle.setAttribute('aria-expanded', String(open));
       if (label) label.textContent = open ? 'Close menu' : 'Open menu';
       var use = toggle.querySelector('use');
-      if (use) use.setAttribute('href', '/assets/icons/sprite.svg#' + (open ? 'close' : 'menu'));
+      if (use) use.setAttribute('href', use.getAttribute('href').split('#')[0] + '#' + (open ? 'close' : 'menu'));
     };
     toggle.addEventListener('click', function () {
       setOpen(toggle.getAttribute('aria-expanded') !== 'true');
@@ -85,6 +85,7 @@
   var errorBox = document.getElementById('enquiry-errors');
   var service = form.querySelector('#eq-service');
   var POSTCODE = /^[A-Z]{1,2}[0-9][A-Z0-9]?(\s*[0-9][A-Z]{2})?$/i;
+  var PHONE = /^(\+44|0044|0)\d{9,10}$/;
 
   // Pre-select the type of work on service pages (e.g. Plumbing page -> Plumbing).
   var preset = form.getAttribute('data-default-category');
@@ -147,6 +148,9 @@
     var pc = value('postcode');
     if (!pc) add('eq-postcode', 'Enter your postcode');
     else if (!POSTCODE.test(pc)) add('eq-postcode', 'Enter a valid UK postcode, for example UB7 9AA');
+    var tel = value('phone').replace(/[\s()\-.]/g, '');
+    if (!tel) add('eq-phone', 'Enter your phone number');
+    else if (!PHONE.test(tel)) add('eq-phone', 'Enter a valid UK phone number, for example 07700 900123');
     if (!value('category')) {
       var first = form.querySelector('input[name="category"]');
       first.id = first.id || 'eq-category';
@@ -180,17 +184,20 @@
     return true;
   }
 
-  function buildMessage() {
+  function buildMessage(viaEmail) {
     var svc = value('category');
     if (value('service')) svc += ' – ' + value('service');
     return [
       'Hello ' + (CFG.tradingName || 'Amiri Building Services') + ',',
       '',
       'Name: ' + value('name'),
+      'Phone: ' + value('phone'),
       'Postcode: ' + value('postcode').toUpperCase(),
       'Service: ' + svc,
       'Urgency: ' + value('urgency'),
       'Problem: ' + value('description'),
+      '',
+      viaEmail ? 'Photos: attached if I have any.' : 'Photos: I will send any photos of the problem in this chat.',
       '',
       'Please contact me regarding this job.'
     ].join('\n');
@@ -205,7 +212,7 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!validate()) return;
-    open('https://wa.me/' + CFG.whatsappNumber + '?text=' + encodeURIComponent(buildMessage()));
+    open('https://wa.me/' + CFG.whatsappNumber + '?text=' + encodeURIComponent(buildMessage(false)));
   });
 
   var emailBtn = form.querySelector('[data-send-email]');
@@ -213,7 +220,7 @@
     emailBtn.addEventListener('click', function () {
       if (!validate()) return;
       var subject = 'Enquiry: ' + value('category') + ' – ' + value('postcode').toUpperCase();
-      window.location.href = 'mailto:' + CFG.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildMessage());
+      window.location.href = 'mailto:' + CFG.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildMessage(true));
     });
   }
 })();

@@ -65,12 +65,15 @@ function listToSentence(items) {
   return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
 }
 
-function icon(name, extraClass = '') {
-  return `<svg class="icon${extraClass ? ' ' + extraClass : ''}" aria-hidden="true" focusable="false"><use href="/assets/icons/sprite.svg#${name}"></use></svg>`;
-}
-
 function hashFile(p) {
   return crypto.createHash('sha1').update(fs.readFileSync(p)).digest('hex').slice(0, 10);
+}
+
+// Versioned so visitors get new icons straight away (icons are cached for a week).
+const SPRITE = `/assets/icons/sprite.svg?v=${hashFile(path.join(ROOT, 'assets/icons/sprite.svg'))}`;
+
+function icon(name, extraClass = '') {
+  return `<svg class="icon${extraClass ? ' ' + extraClass : ''}" aria-hidden="true" focusable="false"><use href="${SPRITE}#${name}"></use></svg>`;
 }
 
 function copyDir(from, to) {
@@ -238,11 +241,11 @@ function reviewCtaHtml() {
 }
 
 function socialHtml() {
-  const names = { instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
+  const names = { facebook: 'Facebook', instagram: 'Instagram', tiktok: 'TikTok', x: 'X', linkedin: 'LinkedIn', youtube: 'YouTube' };
   const links = Object.entries(cfg.social)
     .filter(([k, v]) => v && names[k])
     .map(([k, v]) => `<li><a href="${esc(v)}" rel="noopener" target="_blank">${icon(k)}<span>${names[k]}</span><span class="visually-hidden"> (opens in a new tab)</span></a></li>`);
-  if (links.length) return `<ul class="social">${links.join('')}</ul>`;
+  if (links.length) return `<ul class="social" aria-label="${esc(cfg.tradingName)} on social media">${links.join('')}</ul>`;
   if (!cfg.showPlaceholders) return '';
   return `<p class="placeholder-note">Social links (Instagram, Facebook, TikTok, YouTube) will be added once the accounts are set up.</p>`;
 }
@@ -296,7 +299,7 @@ const SERVICES = {
 };
 
 function businessJsonLd() {
-  const sameAs = Object.values(cfg.social).filter(Boolean);
+  const sameAs = Object.entries(cfg.social).filter(([k, v]) => !k.startsWith('_') && v).map(([, v]) => v);
   if (cfg.googleBusinessProfileUrl) sameAs.push(cfg.googleBusinessProfileUrl);
   const catalog = (name, list) => ({
     '@type': 'OfferCatalog',
@@ -475,6 +478,10 @@ function build() {
     reviews: reviewsHtml(),
     reviewCta: reviewCtaHtml(),
     social: socialHtml(),
+    socialFooter: socialHtml() ? `<h2 class="footer-title footer-title--sub">Follow us</h2>${socialHtml()}` : '',
+    socialContact: socialHtml()
+      ? `<section class="section section--tight" aria-labelledby="social-title"><div class="container"><h2 id="social-title">Follow our work</h2><p class="muted">See recent jobs and updates on our official accounts. For enquiries, calling or WhatsApp is quickest.</p>${socialHtml()}</div></section>`
+      : '',
     gbp: gbpHtml(),
     hours: hoursHtml(),
     registeredOffice: cfg.registeredOffice.lines.map(esc).join('<br>'),
