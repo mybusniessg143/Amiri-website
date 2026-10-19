@@ -13,7 +13,7 @@
  */
 import {
   LIMITS, validateFields, validateFiles, makeReference, safeFileName,
-  signFileUrl, hashIp, buildEmail, whatsappAlertParams
+  signFileUrl, hashIp, buildEmail, whatsappAlertParams, sniffMatches
 } from '../../lib/enquiry.js';
 
 const json = (status, body) =>
@@ -48,11 +48,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
   }
 
   const checked = validateFields(get);
-  if (!checked.ok) {
-    // A filled honeypot gets a normal-looking reply so bots learn nothing.
-    if (checked.errors.includes('spam')) return json(200, { ok: true, reference: makeReference() });
-    return json(400, { ok: false, error: 'invalid', fields: checked.errors });
-  }
+  // Bots fill the hidden honeypot or post within a second or two of the page loading
+  // ("elapsed" is set by the website form). They get a normal-looking reply and nothing is stored.
+  const elapsed = Number(get('elapsed'));
+  const tooFast = get('elapsed') != null && Number.isFinite(elapsed) && elapsed < 2500;
+  if ((!checked.ok && checked.errors.includes('spam')) || tooFast) return json(200, { ok: true, reference: makeReference() });
+  if (!checked.ok) return json(400, { ok: false, error: 'invalid', fields: checked.errors });
 
   const ipHash = await hashIp(ip, env.FILE_LINK_SECRET);
   const recent = await env.DB.prepare(
@@ -61,7 +62,20 @@ export async function onRequestPost({ request, env, waitUntil }) {
   if (recent && recent.n >= LIMITS.perIpPerHour) return json(429, { ok: false, error: 'too_many' });
 
   const e = checked.enquiry;
-  e.reference = makeReference();
+
+  // Same enquiry sent twice (double tap, retry after a slow connection): answer with the
+  // first reference instead of storing and emailing it again.
+  const dup = await env.DB.prepare(
+    "SELECT reference FROM enquiries WHERE phone = ?1 AND description = ?2 AND created_at > datetime('now', '-30 minutes') LIMIT 1"
+  ).bind(e.phone, e.description).first().catch(() => null);
+  if (dup && dup.reference) return json(200, { ok: true, reference: dup.reference, duplicate: true, filesReceived: 0, filesRejected: 0 });
+
+  // References are random within the day; make sure this one is not already taken.
+  for (let i = 0; i < 5; i++) {
+    e.reference = makeReference();
+    const taken = await env.DB.prepare('SELECT 1 AS t FROM enquiries WHERE reference = ?1').bind(e.reference).first().catch(() => null);
+    if (!taken) break;
+  }
   e.createdAt = new Date().toISOString();
 
   // 1. Files → R2 (private bucket).
@@ -71,7 +85,12 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const name = safeFileName(a.file.name, i, a.type);
     const key = `enquiries/${e.reference}/${name}`;
     try {
-      await env.ENQUIRY_FILES.put(key, await a.file.arrayBuffer(), {
+      const bytes = await a.file.arrayBuffer();
+      if (!sniffMatches(a.type, new Uint8Array(bytes.slice(0, 16)))) {
+        problems.push(`${a.file.name}: not a real photo or video`);
+        continue;
+      }
+      await env.ENQUIRY_FILES.put(key, bytes, {
         httpMetadata: { contentType: a.type },
         customMetadata: { reference: e.reference, kind: a.kind, originalName: String(a.file.name).slice(0, 120) }
       });
@@ -83,19 +102,37 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
   // 2. Enquiry → D1. This is the record of truth.
   let saved = false;
+  const filesJson = JSON.stringify(stored.map(({ file, ...rest }) => rest));
+  const ua = (request.headers.get('User-Agent') || '').slice(0, 200);
   try {
     await env.DB.prepare(
       `INSERT INTO enquiries (reference, created_at, service, urgency, postcode, description, name, phone,
-         when_needed, availability, page, files_json, file_problems, consent_at, ip_hash, user_agent)
-       VALUES (?1, datetime('now'), ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, datetime('now'), ?13, ?14)`
+         when_needed, availability, page, files_json, file_problems, consent_at, ip_hash, user_agent, email, address)
+       VALUES (?1, datetime('now'), ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, datetime('now'), ?13, ?14, ?15, ?16)`
     ).bind(
       e.reference, e.service, e.urgency, e.postcode, e.description, e.name, e.phone,
-      e.when, e.availability, e.page, JSON.stringify(stored.map(({ file, ...rest }) => rest)), problems.join('; '), ipHash,
-      (request.headers.get('User-Agent') || '').slice(0, 200)
+      e.when, e.availability, e.page, filesJson, problems.join('; '), ipHash, ua, e.email || null, e.address || null
     ).run();
     saved = true;
   } catch (err) {
-    console.error('enquiry: D1 insert failed', e.reference, err && err.message);
+    // Database without the email/address columns (migration 0003 not applied): store the rest.
+    if (/no column|has no column/i.test(String(err && err.message))) {
+      try {
+        await env.DB.prepare(
+          `INSERT INTO enquiries (reference, created_at, service, urgency, postcode, description, name, phone,
+             when_needed, availability, page, files_json, file_problems, consent_at, ip_hash, user_agent)
+           VALUES (?1, datetime('now'), ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, datetime('now'), ?13, ?14)`
+        ).bind(
+          e.reference, e.service, e.urgency, e.postcode, e.description, e.name, e.phone,
+          e.when, e.availability, e.page, filesJson, problems.join('; '), ipHash, ua
+        ).run();
+        saved = true;
+      } catch (err2) {
+        console.error('enquiry: D1 insert failed', e.reference, err2 && err2.message);
+      }
+    } else {
+      console.error('enquiry: D1 insert failed', e.reference, err && err.message);
+    }
   }
 
   // 3 + 4. Notify the business.
@@ -112,6 +149,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
   // Housekeeping: enquiries older than 12 months are deleted with their files (privacy notice).
   if (waitUntil) waitUntil(deleteExpired(env).catch(() => {}));
 
+  if (email !== 'sent' && email !== 'not_configured') console.error('enquiry: email not sent', e.reference, email);
   if (!saved && email !== 'sent') {
     console.error('enquiry: not stored and not emailed', e.reference, email);
     return json(502, { ok: false, error: 'not_delivered' });
@@ -164,6 +202,7 @@ async function sendEmail(env, e, files) {
       from: env.EMAIL_FROM,
       to: env.EMAIL_TO.split(',').map((s) => s.trim()).filter(Boolean),
       subject, text, html, attachments,
+      reply_to: e.email || undefined,
       headers: e.urgency === 'Emergency' ? { 'X-Priority': '1', Importance: 'high' } : undefined,
       tags: [{ name: 'type', value: 'website_enquiry' }]
     })

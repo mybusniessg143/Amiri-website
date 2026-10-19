@@ -5,7 +5,11 @@
  * preview build is made with AI_CHAT_PREVIEW=1). While it is off, no chat
  * code or styles are sent to visitors.
  *
- * Guided mode runs entirely in the visitor's browser: it asks a fixed set of
+ * It answers common questions from fixed, approved answers (FAQ below), and
+ * can optionally pass free-typed questions to an AI endpoint (aiChat.aiEndpoint,
+ * functions/api/chat.js) with the fixed answers as the fallback.
+ *
+ * The quote flow runs in the visitor's browser: it asks a fixed set of
  * questions, then builds an enquiry summary the customer sends to us by
  * WhatsApp or email. Nothing leaves the device until they press send.
  * If aiChat.submitEndpoint is set (functions/api/enquiry.js, see
@@ -85,7 +89,7 @@
   /* ------------------------------------------------------------- state */
 
   var state = {
-    step: 'service',
+    step: 'start',
     answers: {},
     transcript: [],   // [{who, text}] replayed if the visitor changes page
     notices: {},      // fixed safety notices already shown
@@ -97,13 +101,13 @@
 
   var launcher = el('button', { type: 'button', class: 'abs-chat-launcher', 'aria-expanded': 'false', 'aria-controls': 'abs-chat' });
   launcher.appendChild(icon('chat'));
-  launcher.appendChild(el('span', null, 'Get help'));
+  launcher.appendChild(el('span', null, 'Ask us'));
 
   var panel = el('section', { id: 'abs-chat', class: 'abs-chat', role: 'dialog', 'aria-modal': 'false', 'aria-labelledby': 'abs-chat-title', hidden: true });
   var head = el('header', { class: 'abs-chat__head' });
   var titleWrap = el('div', { class: 'abs-chat__title' });
   titleWrap.appendChild(el('h2', { id: 'abs-chat-title' }, CFG.tradingName || 'Amiri Building Services'));
-  titleWrap.appendChild(el('p', null, 'Enquiry assistant'));
+  titleWrap.appendChild(el('p', null, 'Receptionist'));
   var restartBtn = el('button', { type: 'button', class: 'abs-chat__restart' }, 'Start again');
   var closeBtn = el('button', { type: 'button', class: 'abs-chat__close', 'aria-label': 'Close chat' });
   closeBtn.appendChild(icon('close'));
@@ -224,6 +228,48 @@
   }
   function showUrgent() { urgentBar.hidden = false; }
 
+  /* ------------------------------------------------- common questions */
+
+  var PHONE_TXT = CFG.phoneDisplay || 'us';
+  var PRICE_TXT = [PRICING.quoteFree, PRICING.maybeCharged, PRICING.explain].filter(Boolean).join(' ');
+  var FAQ = [
+    { id: 'services', label: 'What do you do?', test: /what (do|can) you|services?|do you (do|fix|repair|install)|help with/i,
+      text: 'We do electrical work, non-gas plumbing and property maintenance for homes, landlords, letting agents and businesses.\n\nElectrical: fault finding, tripping circuits, sockets and switches, lighting and downlights, emergency lighting, consumer units, first and second fix, and commercial electrical work.\nPlumbing (non-gas): leaks, burst pipes, blockages, taps, toilets and cisterns, isolation valves, waste pipes, and washing machine or dishwasher connections.\nProperty maintenance: general repairs, minor installations, and landlord and commercial maintenance.' },
+    { id: 'electrical', label: 'Electrical work', test: /electric|socket|switch|light|fuse|trip|consumer unit|wiring|rewire|power/i,
+      text: 'Our electrical work includes fault finding and power faults, tripping circuits, sockets and switches, lighting and downlights, emergency lighting, consumer units, first and second fix, and commercial electrical work. If anything is sparking, smoking or burning, keep away and call us; call 999 if there is fire or someone is hurt.' },
+    { id: 'plumbing', label: 'Plumbing', test: /plumb|leak|pipe|block|drain|tap|toilet|cistern|sink|basin|bath|washing machine|dishwasher|valve|water/i,
+      text: 'We do non-gas plumbing: water leaks, burst pipes, blocked sinks, basins, baths and toilets, tap repairs and replacements, toilet and cistern problems, isolation valves, waste pipes and traps, and washing machine or dishwasher connections. If water is leaking near electrics, keep away from them and turn the water off at the stopcock if it is safe to do so.' },
+    { id: 'maintenance', label: 'Property maintenance', test: /maintenance|repair|handyman|odd job|install|landlord|letting|agent|tenant|commercial|business|office|shop/i,
+      text: 'We handle general repairs and minor installations, and we support landlords, letting agents and businesses with repairs and maintenance across their properties. Tell us about the job and we\'ll come back to you.' },
+    { id: 'areas', label: 'Areas you cover', test: /area|cover|where|location|postcode|near|travel|hayes|uxbridge|southall|drayton|hillingdon|heathrow|ruislip|iver|slough|ealing|langley|london/i,
+      text: 'We are based in West Drayton and cover Hayes, Uxbridge, Southall, Hillingdon and Heathrow, plus Ruislip, Iver, Langley, Slough, Ealing and surrounding West London. If you are a little further out, send your postcode and we\'ll let you know if we can help.' },
+    { id: 'prices', label: 'Prices and quotes', test: /how much|price|cost|quote|£|charge|fee|cheap|expensive|rate/i,
+      text: 'We can\'t give prices in chat because every job needs to be assessed first. ' + PRICE_TXT },
+    { id: 'emergency', label: 'Emergencies', test: /emergenc|urgent|asap|right now|tonight|out of hours|weekend|same day/i,
+      text: (CFG.emergencyText || 'Emergency call-outs may be available: call to confirm.') + ' For the fastest help, call or WhatsApp ' + PHONE_TXT + '. If there is fire, smoke, an electric shock or danger to life, call 999. If you smell gas, call the National Gas Emergency Service on 0800 111 999.' },
+    { id: 'gas', label: 'Gas and boilers', test: /\b(gas|boiler|combi|heating|radiator)\b/i,
+      text: 'We don\'t work on gas, boilers or gas appliances; those need a Gas Safe registered engineer. We can help with non-gas plumbing and electrics. If you smell gas, leave the property and call 0800 111 999 straight away.' },
+    { id: 'hours', label: 'Availability', test: /open|hours|available|availability|when can|book|appointment|today|tomorrow|time/i,
+      text: 'We can\'t confirm availability or book appointments in chat. Send us your enquiry, or call or WhatsApp ' + PHONE_TXT + ', and we\'ll let you know when we can help.' },
+    { id: 'how', label: 'How it works', test: /how (does it|do you) work|process|next step|what happens|photos?|video/i,
+      text: 'Tell us what the problem is and your postcode, and add photos or a short video if you can, as it helps us understand the job. We\'ll get back to you to talk it through, and if a visit is needed we\'ll explain any charge before we start.' },
+    { id: 'contact', label: 'Contact details', test: /contact|phone|call|number|whatsapp|email|reach|speak|talk/i,
+      text: 'You can call or WhatsApp ' + PHONE_TXT + ', email ' + (CFG.email || 'us') + ', or send a quote request here with photos.' }
+  ];
+  function faqById(id) {
+    for (var i = 0; i < FAQ.length; i++) if (FAQ[i].id === id) return FAQ[i];
+    return null;
+  }
+  // Most specific topics first: "how much to fix a socket" is a price question.
+  var FAQ_ORDER = ['prices', 'gas', 'emergency', 'hours', 'areas', 'contact', 'how', 'electrical', 'plumbing', 'maintenance', 'services'];
+  function faqAnswer(text) {
+    for (var i = 0; i < FAQ_ORDER.length; i++) {
+      var f = faqById(FAQ_ORDER[i]);
+      if (f.test.test(text)) return f;
+    }
+    return null;
+  }
+
   /* ------------------------------------------------------------ validation */
 
   function normPostcode(v) {
@@ -241,8 +287,15 @@
   /* ------------------------------------------------------------- steps */
 
   var STEPS = {
+    start: function () {
+      say('Hello, welcome to ' + (CFG.tradingName || 'us') + '. I can answer questions about our electrical, plumbing and property maintenance work, or take your details for a free quote. What would you like to do?');
+      menu();
+    },
+    faq: function () {
+      menu(true);
+    },
     service: function () {
-      say('Hello, thanks for getting in touch with ' + (CFG.tradingName || 'us') + '. I\'ll ask a few quick questions so we can get back to you with the right help. What service do you need?');
+      say('I\'ll ask a few quick questions so we can get back to you with the right help. What service do you need?');
       chips(SERVICES, function (v) {
         say(v, 'user');
         state.answers.service = v;
@@ -326,6 +379,16 @@
       }, function (v) {
         say(v, 'user');
         state.answers.phone = normPhone(v);
+        go('email');
+      });
+    },
+    email: function () {
+      say('What\'s your email address? We\'ll use it if we can\'t reach you by phone.');
+      textInput({ label: 'Email address', type: 'email', inputmode: 'email', autocomplete: 'email', max: 120, placeholder: 'e.g. name@example.com', skip: 'Skip',
+        validate: function (v) { return /^[^\s@<>()",;:]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i.test(v) ? '' : 'Please enter a valid email address, or press Skip.'; }
+      }, function (v) {
+        if (v) say(v, 'user');
+        state.answers.email = v;
         go('when');
       });
     },
@@ -354,6 +417,80 @@
       renderConfirmation(state.result || {});
     }
   };
+
+  // Main menu: quote, emergency, or questions (topic chips plus a free-text box).
+  function menu(topicsOnly) {
+    clearDock();
+    var wrap = el('div', { class: 'abs-chat__chips', role: 'group', 'aria-label': 'Choose an option' });
+    function chip(label, cls, fn) {
+      var b = el('button', { type: 'button', class: 'abs-chat__chip' + (cls ? ' ' + cls : '') }, label);
+      b.addEventListener('click', fn);
+      wrap.appendChild(b);
+    }
+    chip('Get a free quote', 'abs-chat__chip--primary', function () { say('Get a free quote', 'user'); go('service'); });
+    chip('Emergency help', null, function () { say('Emergency help', 'user'); answer(faqById('emergency')); showUrgent(); go('service'); });
+    FAQ.filter(function (f) { return ['services', 'areas', 'prices', 'gas', 'how'].indexOf(f.id) !== -1 || topicsOnly && f.id === 'hours'; }).forEach(function (f) {
+      chip(f.label, null, function () { say(f.label, 'user'); answer(f); go('faq'); });
+    });
+    dock.appendChild(wrap);
+    var form = el('form', { class: 'abs-chat__form', novalidate: true });
+    form.appendChild(el('label', { for: 'abs-chat-ask', class: 'visually-hidden' }, 'Type your question'));
+    var row = el('div', { class: 'abs-chat__row' });
+    var field = el('input', { id: 'abs-chat-ask', type: 'text', maxlength: '300', placeholder: 'Or type your question…', autocomplete: 'off', enterkeyhint: 'send' });
+    var send = el('button', { type: 'submit', class: 'abs-chat__send', 'aria-label': 'Send' });
+    send.appendChild(icon('arrow'));
+    row.appendChild(field);
+    row.appendChild(send);
+    form.appendChild(row);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var q = field.value.trim();
+      if (!q) return;
+      say(q, 'user');
+      field.value = '';
+      ask(q);
+    });
+    dock.appendChild(form);
+    var first = wrap.querySelector('button');
+    if (first && !panel.hidden) first.focus();
+  }
+
+  function answer(f) {
+    say(f.text);
+    if (f.id === 'emergency') showUrgent();
+  }
+
+  var aiHistory = [];
+  function ask(q) {
+    // Only the safety warnings here; prices and gas work have their own answers.
+    state.notices.price = state.notices.gasWork = true;
+    safetyCheck(q);
+    if (/\b(quote|book|come out|send someone|get someone|need (an? )?(electrician|plumber))\b/i.test(q)) {
+      say('I can take your details for a free quote now.');
+      return go('service');
+    }
+    var known = faqAnswer(q);
+    var fallback = function () {
+      if (known) answer(known);
+      else say('I\'m not sure about that one. The quickest way to get an answer is to call or WhatsApp ' + PHONE_TXT + ', or I can take your details for a free quote.');
+      go('faq');
+    };
+    if (!AI.aiEndpoint) return fallback();
+    aiHistory.push({ role: 'user', content: q });
+    var typing = say('…', 'bot', { replay: true });
+    fetch(AI.aiEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: aiHistory.slice(-8) }) })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (body) {
+        if (typing) typing.parentNode.removeChild(typing);
+        if (!body || !body.ok || !body.reply) return fallback();
+        aiHistory.push({ role: 'assistant', content: body.reply });
+        say(body.reply);
+        go('faq');
+      }, function () {
+        if (typing) typing.parentNode.removeChild(typing);
+        fallback();
+      });
+  }
 
   function go(step) {
     state.step = step;
@@ -452,6 +589,7 @@
       ['Photos/video', AUTO ? filesLabel() : (a.photos ? a.photos + ' to follow' : 'None yet')],
       ['Name', a.name],
       ['Phone', a.phone],
+      ['Email', a.email || 'Not given'],
       ['When', when]
     ];
     // In automatic mode the reference comes from the server after submitting.
@@ -611,7 +749,9 @@
       submitLabel.textContent = files.length ? 'Preparing photos…' : 'Sending…';
       prepareFiles(files).then(function (prepared) {
         var fd = new FormData();
-        ['service', 'urgency', 'postcode', 'description', 'name', 'phone', 'when', 'availability'].forEach(function (k) { fd.append(k, a[k] || ''); });
+        ['service', 'urgency', 'postcode', 'name', 'phone', 'when', 'availability', 'email'].forEach(function (k) { fd.append(k, a[k] || ''); });
+        // Email also goes in the description so it reaches us whichever version of the back end runs.
+        fd.append('description', (a.email ? 'Email: ' + a.email + '\n\n' : '') + (a.description || ''));
         fd.append('consent', 'yes');
         fd.append('page', location.pathname);
         fd.append('website', '');   // honeypot: always empty for real visitors
@@ -774,7 +914,7 @@
       state.transcript.forEach(function (m) { say(m.text, m.who, { tone: m.tone, replay: true }); });
       if (state.answers.urgency === 'Emergency' || state.notices.gasLeak || state.notices.danger) showUrgent();
       // Photos can't survive a page change; ask again rather than lose them silently.
-      if (state.step !== 'service' && state.step !== 'done' && state.answers.photos && !files.length && state.step !== 'photos') {
+      if (['start', 'faq', 'service', 'done'].indexOf(state.step) === -1 && state.answers.photos && !files.length && state.step !== 'photos') {
         say(AUTO
           ? 'Welcome back. Your photos weren\'t kept when you changed page, so please add them again before you submit.'
           : 'Welcome back. Your photos weren\'t kept when you changed page, so please attach them when you send your message.', 'bot', { tone: 'info' });
@@ -785,16 +925,17 @@
       muted = false;
       return;
     }
-    go('service');
+    go('start');
   }
 
   function restart() {
     forget();
     files = [];
-    state = { step: 'service', answers: {}, transcript: [], notices: {}, ref: newRef(), result: null };
+    state = { step: 'start', answers: {}, transcript: [], notices: {}, ref: newRef(), result: null };
     while (log.firstChild) log.removeChild(log.firstChild);
     urgentBar.hidden = true;
-    go('service');
+    aiHistory = [];
+    go('start');
   }
 
   launcher.addEventListener('click', function () { setOpen(panel.hidden); });

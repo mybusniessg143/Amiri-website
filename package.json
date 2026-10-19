@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.js",
     "serve": "node build.js --serve",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test --no-warnings test/*.test.mjs"
   },
   "engines": {
     "node": ">=18"

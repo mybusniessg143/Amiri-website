@@ -260,7 +260,7 @@
     <div class="quote__aside reveal">
       <p class="eyebrow"><span class="eyebrow__num">08</span>Request a quote</p>
       <h2 id="enquiry-title">Get a free quote</h2>
-      <p class="lead">Fill in the short form and it opens WhatsApp with your details ready to send. Prefer to talk? Call us.</p>
+{{#enquiryApi}}      <p class="lead">Fill in the short form, add photos if you can, and it comes straight to us with a reference number. Prefer to talk? Call us.</p>{{/enquiryApi}}{{#noEnquiryApi}}      <p class="lead">Fill in the short form and it opens WhatsApp with your details ready to send. Prefer to talk? Call us.</p>{{/noEnquiryApi}}
       {{> pricing-note}}
       <ul class="quote__methods">
         <li><a href="tel:{{phone.tel}}">{{icon phone}}<span><small>Call</small><strong>{{phone.display}}</strong></span></a></li>

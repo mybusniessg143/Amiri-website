@@ -42,13 +42,16 @@ The privacy notice switches automatically: while the chat is on, section 6 descr
 
 ### Setup
 
-> **Current setup (2026-10-07).** The website runs as the Cloudflare Worker `amiri-website` (static assets only, deployed from `main`) and is left untouched. The enquiry back end is a **separate Worker, `amiri-receptionist-api`**, built from `receptionist-api/` (Workers Builds, root directory `receptionist-api`, build command `cd .. && AI_CHAT_PREVIEW=1 node build.js`).
-> - Endpoints: `POST /api/enquiry`, signed `GET /api/enquiry-file`. Other paths serve a noindex test copy of the site with the chat on, for testing before go-live.
-> - Cross-origin submissions only from `ALLOWED_ORIGINS` (the amiribuildingservices.com domains).
-> - D1 `amiri-enquiries` (id `617c2a60-cc4f-48c9-af22-bdadb401d611`, `0001` + `0002` applied). R2 `amiri-ai-receptionist-uploads` (private, Western Europe).
-> - `FILE_LINK_SECRET` is generated on first use and kept in D1. Files are deleted with their enquiry after 12 months by the endpoint itself.
-> - Secret to add on `amiri-receptionist-api`: `RESEND_API_KEY`. Until the domain is verified in Resend, emails come from `onboarding@resend.dev` and only reach the Resend account owner.
-> - Go-live later: set `aiChat.submitEndpoint` to `https://<api worker host>/api/enquiry`, add that host to `connect-src` in `static/_headers`, add the live site's origin to `ALLOWED_ORIGINS`, verify the domain in Resend and switch `EMAIL_FROM` to `enquiries@amiribuildingservices.com`.
+> **Current setup (2026-10-19).** The website runs as the Cloudflare Worker `amiri-website` (static assets only, deployed from `main` by Workers Builds). The quote form and the "Ask us" receptionist chat both submit to a **separate Worker, `amiri-receptionist-api`** (`receptionist-api/`, Workers Builds root directory `receptionist-api`, build command `cd .. && AI_CHAT_PREVIEW=1 node build.js`). The endpoint is `enquiryForm.endpoint` in `site.config.json`.
+> - Endpoints: `POST /api/enquiry`, signed `GET /api/enquiry-file`, optional `POST /api/chat` (AI answers, off). Other paths serve a noindex test copy of the site.
+> - Cross-origin submissions only from `ALLOWED_ORIGINS` (amiribuildingservices.com and www).
+> - D1 `amiri-enquiries` (id `617c2a60-cc4f-48c9-af22-bdadb401d611`; migrations `0001`, `0002` and `0003` applied). R2 `amiri-ai-receptionist-uploads` (private).
+> - Protection: required consent, honeypot field, minimum fill time, 5 enquiries per connection per hour, duplicate enquiries within 30 minutes answered with the first reference, photo/video type checked from the file's own bytes, size limits, optional Turnstile (`aiChat.turnstileSiteKey` + `TURNSTILE_SECRET_KEY`).
+> - Retention: enquiries and their files are deleted automatically after 12 months.
+> - Email: Resend (`RESEND_API_KEY` secret on the Worker). Until the domain is verified in Resend, emails come from `onboarding@resend.dev`, which only delivers to the Resend account owner (waris@, which is also `EMAIL_TO`). After verifying, change `EMAIL_FROM` in `receptionist-api/wrangler.jsonc`.
+> - The website writes the customer's email and address into the description as well as their own fields, so older back-end versions still pass them on; the current back end removes those duplicate lines.
+> - AI answers (`functions/api/chat.js`): Cloudflare Workers AI, off. To switch on (after approval): uncomment the `ai` binding and set `AI_CHAT_ENABLED` to `"true"` in `receptionist-api/wrangler.jsonc`, deploy, then set `aiChat.aiEndpoint` in `site.config.json`. Without it the chat answers from fixed, approved answers in `assets/js/chat.js`.
+> - Checks: `npm test` (handlers end to end with in-memory D1/R2), and the **Live site check** GitHub Action (`scripts/live-check.mjs`: DNS, SSL, pages, API; optionally real test enquiries).
 >
 > The Pages-based steps below and `scripts/cloudflare-setup.sh` are kept for reference if the site ever moves to Pages.
 

@@ -36,6 +36,11 @@ const cfg = JSON.parse(read('site.config.json'));
 // (AI_CHAT_PREVIEW=1, or a Workers Builds build of any branch other than main).
 const PREVIEW_BUILD = Boolean(process.env.WORKERS_CI_BRANCH) && process.env.WORKERS_CI_BRANCH !== 'main';
 const CHAT_ON = Boolean(cfg.aiChat.enabled) || process.env.AI_CHAT_PREVIEW === '1' || PREVIEW_BUILD;
+// Quote form + chat submit to the receptionist API. ENQUIRY_ENDPOINT overrides it for local testing.
+const ENQUIRY_ENDPOINT = process.env.ENQUIRY_ENDPOINT != null
+  ? process.env.ENQUIRY_ENDPOINT
+  : (cfg.enquiryForm && cfg.enquiryForm.endpoint) || '';
+const AI_ENDPOINT = process.env.AI_CHAT_ENDPOINT != null ? process.env.AI_CHAT_ENDPOINT : cfg.aiChat.aiEndpoint || '';
 const photos = JSON.parse(read('src/photos.json'));
 const images = JSON.parse(read('src/images.json'));
 const DOMAIN = cfg.domain.replace(/\/+$/, '');
@@ -407,6 +412,9 @@ function render(tpl, ctx, file) {
     // {{#aiChat}}...{{/aiChat}} only while the AI receptionist chat is on; {{#noAiChat}} the opposite.
     .replace(/\{\{#aiChat\}\}([\s\S]*?)\{\{\/aiChat\}\}/g, (_, inner) => (CHAT_ON ? inner : ''))
     .replace(/\{\{#noAiChat\}\}([\s\S]*?)\{\{\/noAiChat\}\}/g, (_, inner) => (CHAT_ON ? '' : inner))
+    // {{#enquiryApi}}...{{/enquiryApi}} only while the quote form submits to the receptionist API; {{#noEnquiryApi}} the opposite.
+    .replace(/\{\{#enquiryApi\}\}([\s\S]*?)\{\{\/enquiryApi\}\}/g, (_, inner) => (ENQUIRY_ENDPOINT ? inner : ''))
+    .replace(/\{\{#noEnquiryApi\}\}([\s\S]*?)\{\{\/noEnquiryApi\}\}/g, (_, inner) => (ENQUIRY_ENDPOINT ? '' : inner))
     .replace(/\{\{photo\s+([\w-]+)\s*\}\}/g, (_, k) => renderPhoto(k))
     .replace(/\{\{img(!?)\s+([\w-]+)(?:\s+(\w+))?\s*\}\}/g, (_, eager, k, size) => renderImg(k, Boolean(eager), size))
     .replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, k) => icon(k))
@@ -450,11 +458,13 @@ function build() {
     whatsappNumber: cfg.whatsapp.number,
     email: cfg.email.public,
     AI_CHAT_ENABLED: CHAT_ON,
+    enquiryEndpoint: ENQUIRY_ENDPOINT,
     aiChatEndpoint: cfg.aiChat.endpoint,
     legalName: cfg.legalName,
     aiChat: {
       mode: cfg.aiChat.mode || 'guided',
-      submitEndpoint: cfg.aiChat.submitEndpoint || '',
+      submitEndpoint: ENQUIRY_ENDPOINT,
+      aiEndpoint: AI_ENDPOINT,
       turnstileSiteKey: cfg.aiChat.turnstileSiteKey || '',
       coveredPostcodeAreas: (cfg.aiChat.coveredPostcodeAreas || []).map((s) => String(s).toUpperCase())
     },

@@ -73,8 +73,9 @@
   <div class="container split">
     <div>
       <h2 id="enquiry-title">Send an enquiry</h2>
-      <p class="lead">Fill in the form and press send. It opens WhatsApp, or your email app, with the message written for you.</p>
-      <p class="muted">Nothing is stored on this website. See our <a href="/privacy/">privacy notice</a>.</p>
+{{#enquiryApi}}      <p class="lead">Fill in the form, add photos if you can, and press send. Your enquiry comes straight to us and you get a reference number.</p>
+      <p class="muted">Your details are sent securely and used only to reply to you. See our <a href="/privacy/">privacy notice</a>.</p>{{/enquiryApi}}{{#noEnquiryApi}}      <p class="lead">Fill in the form and press send. It opens WhatsApp, or your email app, with the message written for you.</p>
+      <p class="muted">Nothing is stored on this website. See our <a href="/privacy/">privacy notice</a>.</p>{{/noEnquiryApi}}
     </div>
     {{> enquiry-form}}
   </div>

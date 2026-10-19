@@ -4,6 +4,7 @@
  *
  *   POST /api/enquiry       – receive an enquiry with photos/video (functions/api/enquiry.js)
  *   GET  /api/enquiry-file  – open one stored photo via a signed, expiring link
+ *   POST /api/chat          – optional AI answers for the chat (off unless AI_CHAT_ENABLED and an AI binding)
  *   everything else         – a test copy of the website with the chat switched on
  *                             (noindex), so the whole flow can be tried before go-live
  *
@@ -11,10 +12,12 @@
  */
 import * as enquiry from '../functions/api/enquiry.js';
 import * as enquiryFile from '../functions/api/enquiry-file.js';
+import * as chat from '../functions/api/chat.js';
 
 const routes = {
   '/api/enquiry': { POST: enquiry.onRequestPost, '*': enquiry.onRequest },
-  '/api/enquiry-file': { GET: enquiryFile.onRequestGet }
+  '/api/enquiry-file': { GET: enquiryFile.onRequestGet },
+  '/api/chat': { POST: chat.onRequestPost, '*': chat.onRequest }
 };
 
 export default {

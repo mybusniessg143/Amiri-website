@@ -1,6 +1,6 @@
-<form class="enquiry card" id="enquiry-form" method="dialog" novalidate data-default-category="{{page.formCategory}}" aria-describedby="enquiry-intro">
+<form class="enquiry card" id="enquiry-form" method="dialog" novalidate data-default-category="{{page.formCategory}}" aria-describedby="enquiry-intro"{{#enquiryApi}} data-api="1"{{/enquiryApi}}>
   <div class="enquiry__head">{{> brand-icon}}<div><h3 class="enquiry__title">Quick enquiry</h3><p class="enquiry__brand">{{tradingName}}</p></div></div>
-  <p id="enquiry-intro" class="muted">Fill this in and press send. It opens WhatsApp with your details already written, ready for you to send. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+{{#enquiryApi}}  <p id="enquiry-intro" class="muted">Tell us about the job and add photos if you can. Press send and your enquiry comes straight to us, and you get a reference number. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>{{/enquiryApi}}{{#noEnquiryApi}}  <p id="enquiry-intro" class="muted">Fill this in and press send. It opens WhatsApp with your details already written, ready for you to send. Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>{{/noEnquiryApi}}
   <p class="form-pricing">{{icon receipt}}<span>{{pricing.quoteFree}} {{pricing.maybeCharged}}</span></p>
   <div class="form-errors" id="enquiry-errors" role="alert" aria-live="assertive" hidden></div>
 
@@ -21,7 +21,20 @@
     <input id="eq-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="20" aria-describedby="eq-phone-hint">
     <p class="hint" id="eq-phone-hint">So we can call you back, for example 07700 900123</p>
   </div>
-
+{{#enquiryApi}}
+  <div class="form-row form-row--2">
+    <div class="field">
+      <label for="eq-email">Email address <span aria-hidden="true">*</span></label>
+      <input id="eq-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120" aria-describedby="eq-email-hint">
+      <p class="hint" id="eq-email-hint">We'll reply by email if we can't reach you by phone</p>
+    </div>
+    <div class="field">
+      <label for="eq-address">Address of the job <span class="optional">(optional)</span></label>
+      <input id="eq-address" name="address" type="text" autocomplete="street-address" maxlength="150" aria-describedby="eq-address-hint">
+      <p class="hint" id="eq-address-hint">House number and street, if you're happy to share it now</p>
+    </div>
+  </div>
+{{/enquiryApi}}
   <fieldset class="field">
     <legend>Type of work <span aria-hidden="true">*</span></legend>
     <div class="choice-group">
@@ -77,15 +90,41 @@
 
   <div class="field">
     <label for="eq-desc">Short description of the problem <span aria-hidden="true">*</span></label>
-    <textarea id="eq-desc" name="description" rows="4" required maxlength="1000" aria-describedby="eq-desc-hint"></textarea>
+    <textarea id="eq-desc" name="description" rows="4" required maxlength="800" aria-describedby="eq-desc-hint"></textarea>
     <p class="hint" id="eq-desc-hint">What is happening, where in the property, and anything you have already tried.</p>
   </div>
 
+{{#enquiryApi}}
+  <div class="field">
+    <span class="label" id="eq-files-label">Photos or a short video <span class="optional">(optional)</span></span>
+    <div class="file-pick">
+      <input id="eq-files" name="files" type="file" accept="image/*,video/*" multiple class="visually-hidden" aria-describedby="eq-files-hint">
+      <label for="eq-files" class="btn btn--outline btn--sm file-pick__btn">{{icon camera}}<span>Add photos or video</span></label>
+      <ul class="file-pick__list" id="eq-files-list" aria-label="Selected files"></ul>
+    </div>
+    <p class="hint" id="eq-files-hint">Up to 6 files. Photos are resized before sending; videos up to 60 MB (about 30 seconds).</p>
+  </div>
+
+  <div class="field field--consent">
+    <label class="consent"><input type="checkbox" name="consent" value="yes" id="eq-consent" required><span>I agree that {{tradingName}} can use these details and photos to reply to my enquiry. They are stored securely and deleted after 12 months if they don't lead to work. <a href="/privacy/">Privacy notice</a> <span aria-hidden="true">*</span></span></label>
+  </div>
+  <div class="hp" aria-hidden="true"><label for="eq-website">Leave this empty</label><input id="eq-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+  <div class="eq-turnstile" hidden></div>
+
+  <div class="enquiry__actions">
+    <button class="btn btn--gold btn--lg" type="submit" data-submit>{{icon check}}<span>Send enquiry</span></button>
+  </div>
+  <div class="eq-progress" role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" hidden><span></span></div>
+  <div class="eq-result" id="eq-result" role="status" aria-live="polite" tabindex="-1" hidden></div>
+  <p class="enquiry__alt">Prefer to message? <a href="#" data-send-wa>Send on WhatsApp</a> or <a href="#" data-send-email>send by email</a> with these details instead.</p>
+  <p class="form-privacy">Your details are sent securely to us and used only to reply to your enquiry. See our <a href="/privacy/">privacy notice</a>.</p>
+{{/enquiryApi}}{{#noEnquiryApi}}
   <div class="enquiry__actions">
     <button class="btn btn--wa btn--lg" type="submit">{{icon whatsapp}}Send enquiry on WhatsApp</button>
     <button class="btn btn--outline" type="button" data-send-email>{{icon mail}}Send by email instead</button>
   </div>
   <p class="enquiry__photos">{{icon camera}}<span><strong>Photos (optional):</strong> once WhatsApp or your email opens, attach photos or a short video of the problem before sending. Or <a href="{{wa:Hello Amiri Building Services, I would like to send some photos of a job. My name is:   My postcode is: }}" rel="noopener">send photos on WhatsApp</a> separately.</span></p>
   <p class="form-privacy">Nothing you type here is stored on this website. Your message only goes to us when you press send in WhatsApp or your email app. See our <a href="/privacy/">privacy notice</a>.</p>
+{{/noEnquiryApi}}
   <noscript><p class="form-privacy"><strong>This form needs JavaScript.</strong> Please call <a href="tel:{{phone.tel}}">{{phone.display}}</a>, <a href="{{wa:Hello Amiri Building Services}}">WhatsApp us</a> or email <a href="mailto:{{email.public}}">{{email.public}}</a>.</p></noscript>
 </form>

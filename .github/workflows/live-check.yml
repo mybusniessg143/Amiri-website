@@ -1,0 +1,30 @@
+# Checks the live website, DNS and enquiry API. Run it from the Actions tab
+# ("Live site check" → Run workflow). Tick "send test enquiries" to also send
+# real, clearly labelled test enquiries through the form back end.
+name: Live site check
+on:
+  workflow_dispatch:
+    inputs:
+      send_test_enquiries:
+        description: Send real test enquiries (stored and emailed to waris@)
+        type: boolean
+        default: false
+  push:
+    branches: ['claude/**']
+    paths: ['scripts/live-check.mjs', '.github/workflows/live-check.yml']
+  schedule:
+    - cron: '17 6 * * 1'   # Mondays 06:17 UTC, read-only checks
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/live-check.mjs
+        env:
+          SEND_TEST_ENQUIRIES: ${{ (inputs.send_test_enquiries || contains(github.event.head_commit.message, '[send-test-enquiries]')) && '1' || '0' }}
