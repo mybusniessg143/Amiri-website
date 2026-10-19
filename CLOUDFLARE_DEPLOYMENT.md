@@ -50,6 +50,8 @@ Every push to `main` deploys automatically. Pushes to other branches upload a **
 | Referrer-Policy: strict-origin-when-cross-origin | Doesn't leak full page addresses to other sites. |
 | Permissions-Policy | Turns off camera, microphone, location etc. – the site doesn't need them. |
 
+`_headers` covers the static pages. The two Worker routes set their own headers in code: `/admin` (strict CSP with no scripts, `noindex`, no caching) and `/api/chat` (JSON, no caching). See `worker/index.js`.
+
 Check them after launch at securityheaders.com.
 
 If you later add something from another domain (a map, YouTube video, a chat API on another domain), add that domain to the matching CSP directive in `static/_headers`, or it will be blocked.

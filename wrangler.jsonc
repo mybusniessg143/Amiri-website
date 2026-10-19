@@ -1,9 +1,35 @@
-// Cloudflare Worker "amiri-website": the website, static assets only (no Worker code, no bindings).
-// Production deploys use the dashboard deploy command; branch previews (npx wrangler preview) need this file.
-// The AI Receptionist back end is a separate Worker: see receptionist-api/wrangler.jsonc.
+// Cloudflare Worker "amiri-website": the website (static files in dist/) plus two small routes
+// in worker/index.js: POST /api/chat (AI answers for the chat) and /admin (private enquiry tracker).
+// Production deploys use the dashboard deploy command (npx wrangler deploy); branch previews need this file.
+// Enquiries are still received by the separate receptionist API Worker: see receptionist-api/wrangler.jsonc.
+// Secrets are set in the dashboard, never here: ADMIN_PASSWORD (turns on /admin).
 {
   "name": "amiri-website",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-06",
-  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Only these paths run the Worker code; everything else is served straight from dist/.
+    "run_worker_first": ["/api/*", "/admin", "/admin/*"]
+  },
+  // The same database and private photo bucket the receptionist API uses.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "amiri-enquiries", "database_id": "617c2a60-cc4f-48c9-af22-bdadb401d611", "migrations_dir": "migrations" }
+  ],
+  "r2_buckets": [
+    { "binding": "ENQUIRY_FILES", "bucket_name": "amiri-ai-receptionist-uploads" }
+  ],
+  // Workers AI for the chat answers. functions/api/chat.js caps use at AI_DAILY_LIMIT answers a day
+  // so it stays inside the free daily allowance (10,000 neurons) and never costs anything.
+  "ai": { "binding": "AI" },
+  "vars": {
+    "AI_CHAT_ENABLED": "true",
+    "AI_DAILY_LIMIT": "60",
+    "AI_IP_DAILY_LIMIT": "15",
+    "ALLOWED_ORIGINS": "https://amiribuildingservices.com,https://www.amiribuildingservices.com"
+  },
+  "observability": { "enabled": true },
   "previews": {}
 }

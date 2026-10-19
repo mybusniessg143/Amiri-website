@@ -148,7 +148,7 @@
     "iconOnDarkWebp": "/assets/images/logo/amiri-icon-on-dark-64.webp 1x, /assets/images/logo/amiri-icon-on-dark-128.webp 2x",
     "_note": "Owner's logo. icon = ABS monogram only, for small spaces. src = for light backgrounds (header). OnDark = same logo with the black lettering lightened, for the dark footer. Original file and monograms: brand/. Favicons and app icons in static/ are made from the AB monogram."
   },
-  "ogImage": "/assets/images/og-image.png",
+  "ogImage": "/assets/images/og-image.jpg",
   "enquiryForm": {
     "endpoint": "https://amiri-receptionist-api.waris-ac2.workers.dev/api/enquiry",
     "_note": "Where the quote form and the receptionist chat send enquiries: the amiri-receptionist-api Worker, which saves them (D1), stores photos privately (R2) and emails waris@. Empty = the form opens WhatsApp or email instead, as before. If you change this host, also change connect-src in static/_headers."
@@ -157,8 +157,8 @@
     "enabled": true,
     "mode": "guided",
     "endpoint": "/api/chat",
-    "aiEndpoint": "",
-    "_aiEndpointNote": "Optional AI answers for free-typed questions: https://amiri-receptionist-api.waris-ac2.workers.dev/api/chat once Workers AI is approved and switched on for that Worker. Empty = the chat uses its built-in answers only (no AI service, no cost).",
+    "aiEndpoint": "/api/chat",
+    "_aiEndpointNote": "AI answers for free-typed questions, served by the website Worker itself (worker/index.js, Cloudflare Workers AI, capped inside the free daily allowance). Questions about prices, gas, emergencies and availability always get the fixed answers. Empty = built-in answers only.",
     "turnstileSiteKey": "",
     "coveredPostcodeAreas": ["UB7", "UB3", "UB4", "UB8", "UB10", "UB11", "TW6", "UB1", "UB2", "HA4", "SL0", "SL3", "SL1", "SL2", "W5", "W7", "W13"],
     "_note": "AI_CHAT_ENABLED. false = no chat code or styles are loaded at all. The chat answers common questions from fixed, approved answers (no AI service, no running cost), takes the customer through a quote request and submits it to enquiryForm.endpoint (or, if that is empty, lets them send it by WhatsApp or email). aiEndpoint: optional AI answers, see its note. turnstileSiteKey: optional Cloudflare Turnstile spam check (public site key; the secret key goes on the API Worker only). coveredPostcodeAreas: postcode districts treated as your usual area (others get 'we'll check and let you know')."

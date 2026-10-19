@@ -6,6 +6,8 @@
  *  - DNS: Google Workspace mail (MX, SPF, DKIM, DMARC), Resend records, root and www
  *  - HTTPS: both domains, http -> https redirect, security headers, robots.txt, sitemap
  *  - Every page in the sitemap answers 200 and has a title, description and canonical
+ *  - Website Worker: /admin closed without the password, chat answers refuse other sites,
+ *    one real chat question (uses one of the day's free AI answers)
  *  - Receptionist API: CORS for the live site, other sites refused
  *  - SEND_TEST_ENQUIRIES=1: real test enquiries through the API (stored in D1, photos in R2,
  *    emailed to the business), each clearly labelled as a test.
@@ -48,6 +50,7 @@ info('Resend DKIM (resend._domainkey)', rdkim.length ? 'present' : 'not set (dom
 info('Resend return path (send.)', [...dig('send.amiribuildingservices.com', 'MX'), ...dig('send.amiribuildingservices.com', 'TXT')].join(' | ') || 'not set');
 info('root A/AAAA', [...dig('amiribuildingservices.com', 'A'), ...dig('amiribuildingservices.com', 'AAAA')].join(' '));
 info('www', [...dig('www.amiribuildingservices.com', 'CNAME'), ...dig('www.amiribuildingservices.com', 'A')].join(' '));
+info('Google Search Console verification (DNS)', txt.some((t) => /google-site-verification/i.test(t)) ? 'present' : 'not found');
 
 console.log('\n== HTTPS and headers');
 const get = (url, opts = {}) => fetch(url, { redirect: 'manual', headers: { 'User-Agent': 'AmiriLiveCheck/1.0' }, ...opts });
@@ -83,6 +86,20 @@ for (const loc of locs) {
 }
 const nf = await get(SITE + '/this-page-does-not-exist/');
 ok(nf.status === 404, 'unknown address gives 404', String(nf.status));
+
+console.log('\n== Website Worker (chat answers and enquiry tracker)');
+const adm = await get(SITE + '/admin');
+ok(adm.status === 401 || adm.status === 503, '/admin is closed without the password', `${adm.status}${adm.status === 503 ? ' (ADMIN_PASSWORD not set yet)' : ''}`);
+ok(/noindex/.test(adm.headers.get('x-robots-tag') || ''), '/admin is never indexed');
+ok(/Disallow: \/admin/.test(robots), 'robots.txt keeps search engines out of /admin');
+const chatEvil = await fetch(SITE + '/api/chat', { method: 'POST', headers: { Origin: 'https://evil.example', 'Content-Type': 'application/json' }, body: '{"messages":[{"role":"user","content":"hi"}]}' });
+ok(chatEvil.status === 403 || chatEvil.status === 404, 'chat answers refuse other websites', String(chatEvil.status));
+const chatQ = await fetch(SITE + '/api/chat', { method: 'POST', headers: { Origin: SITE, 'Content-Type': 'application/json', 'User-Agent': 'AmiriLiveCheck/1.0' }, body: JSON.stringify({ messages: [{ role: 'user', content: 'Do you install outdoor security lights?' }] }) });
+const chatBody = await chatQ.json().catch(() => ({}));
+ok([200, 429, 503].includes(chatQ.status), 'chat answers endpoint is live', String(chatQ.status));
+info('AI answer', chatBody.reply ? JSON.stringify(chatBody.reply) : JSON.stringify(chatBody));
+const og = await get(SITE + '/assets/images/og-image.jpg');
+ok(og.status === 200, 'social sharing image', `${og.status} ${og.headers.get('content-length') || ''} bytes`);
 
 console.log('\n== Receptionist API');
 const pre = await fetch(API, { method: 'OPTIONS', headers: { Origin: SITE, 'Access-Control-Request-Method': 'POST' } });
