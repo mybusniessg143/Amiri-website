@@ -11,7 +11,7 @@
 <section class="section">
   <div class="container prose">
     <h1>Privacy notice</h1>
-    <p class="muted">Last updated: <!-- OWNER: update this date whenever you change the notice -->6 October 2026</p>
+    <p class="muted">Last updated: <!-- OWNER: update this date whenever you change the notice -->19 October 2026</p>
     {{#placeholders}}<div class="owner-review"><strong>Draft for owner review – not legal advice.</strong> This notice has been written as a plain-English starting point for a small UK service business. Highlighted notes like this one mark details only the business owner can confirm. Check every section against how you actually work (see PRIVACY_REVIEW_CHECKLIST.md) and consider professional advice before relying on it. These notes disappear when <code>showPlaceholders</code> is set to <code>false</code> in site.config.json.</div>{{/placeholders}}
 
     <h2>1. Who we are</h2>
@@ -36,7 +36,7 @@
       <li><strong>Phone calls</strong> to {{phone.display}}.</li>
       <li><strong>WhatsApp</strong> messages, photos and videos.</li>
       <li><strong>Email</strong> to {{email.public}}.</li>
-      <li><strong>The enquiry form on this website.</strong> The form does not send or store anything on our website. When you press send, it opens WhatsApp or your own email app with your message pre-filled. Nothing reaches us until you choose to send it from that app.</li>
+{{#enquiryApi}}      <li><strong>The quote form and enquiry assistant on this website.</strong> When you press send, your details and any photos or video come to us securely and are stored as described in section 6. You can also choose to send the same details by WhatsApp or email instead.</li>{{/enquiryApi}}{{#noEnquiryApi}}      <li><strong>The enquiry form on this website.</strong> The form does not send or store anything on our website. When you press send, it opens WhatsApp or your own email app with your message pre-filled. Nothing reaches us until you choose to send it from that app.</li>{{/noEnquiryApi}}
       <li><strong>From third parties</strong>, for example a letting agent or landlord who gives us a tenant's contact details so we can arrange access for a repair.</li>
     </ul>
 
@@ -63,6 +63,7 @@
     <p><strong>Phone:</strong> our phone provider processes call information such as numbers and call times.</p>
     {{#placeholders}}<div class="owner-review"><strong>Owner to confirm:</strong> whether calls are ever recorded (if so, say so here and tell callers), whether you use WhatsApp Business, and which phone provider and any accounting or job-management software you use.</div>{{/placeholders}}
 
+{{#noAiChat}}
     <h2>6. Future website chat and automated assistant</h2>
     <p>We may in future introduce a website chat and an automated assistant ("AI receptionist") to help answer basic questions and take job details by chat, WhatsApp and email. If we do:</p>
     <ul>
@@ -71,7 +72,18 @@
       <li>the assistant will not make decisions with legal or similarly significant effects about you. Prices, complaints and anything unusual will be handled by a person;</li>
       <li>we will keep a log of what the assistant does so that we can check it is working properly.</li>
     </ul>
-
+{{/noAiChat}}{{#aiChat}}
+    <h2>6. Website quote form and enquiry assistant</h2>
+    <p>Our website has a quote form and an automated enquiry assistant (the "Ask us" chat). The assistant answers common questions with fixed answers we have written, and can take your enquiry step by step. It does not make decisions about you and cannot give prices or confirm bookings. A person reads every enquiry.</p>
+    <ul>
+      <li><strong>What we collect:</strong> your name, phone number, email address, postcode, the address of the job if you give it, the type of work, how urgent it is, your description of the problem, and any photos or video you add.</li>
+      <li><strong>What happens when you press send:</strong> your details, photos and video are sent securely to our website hosting provider, Cloudflare, and stored in a private database and private file storage that only we can access. A job summary is emailed to us through our email delivery provider, Resend, with your photos attached and secure links to your files that expire after 30 days.</li>
+      <li><strong>Why:</strong> to reply to your enquiry and, if you ask us to, to quote for and carry out the work (steps at your request before a contract, and our legitimate interests in running the business). We ask you to agree before you send.</li>
+      <li><strong>How long:</strong> enquiries and their photos and video are deleted automatically after 12 months if they do not lead to work. If they do, they become part of the job record (see section 8).</li>
+      <li><strong>Before you send:</strong> nothing leaves your device. If you change page while using the chat, your answers are kept in your browser for that visit only, so you can carry on.</li>
+      <li><strong>Security and misuse:</strong> we keep a scrambled (hashed) version of your internet address to limit repeated submissions, and we only accept photo and video files.</li>
+    </ul>
+{{/aiChat}}
     <h2>7. Who we share information with</h2>
     <p>We share personal information only where needed. This may include the following service providers ("processors"), who act on our instructions:</p>
     <div class="table-wrap">
@@ -80,9 +92,11 @@
         <tbody>
           <tr><td>Google (Google Workspace)</td><td>Email, calendar and document storage</td></tr>
           <tr><td>WhatsApp / Meta</td><td>WhatsApp messaging when you contact us that way</td></tr>
-          <tr><td>Cloudflare</td><td>Website hosting, security and privacy-friendly visitor statistics</td></tr>
+          <tr><td>Cloudflare</td><td>Website hosting, security and privacy-friendly visitor statistics{{#aiChat}}; storing website enquiries, photos and video{{/aiChat}}</td></tr>
           <tr><td>Accounting / invoicing software</td><td>Invoices and bookkeeping {{#placeholders}}<span class="placeholder-note">Owner to name provider</span>{{/placeholders}}</td></tr>
-          <tr><td>AI service provider (future)</td><td>Only if and when an AI receptionist is introduced (see section 6)</td></tr>
+{{#noAiChat}}          <tr><td>AI service provider (future)</td><td>Only if and when an AI receptionist is introduced (see section 6)</td></tr>
+{{/noAiChat}}{{#aiChat}}          <tr><td>Resend</td><td>Delivering website enquiry emails to us (see section 6)</td></tr>
+{{/aiChat}}
         </tbody>
       </table>
     </div>

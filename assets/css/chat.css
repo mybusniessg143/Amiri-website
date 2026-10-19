@@ -1,0 +1,212 @@
+/*
+ * Amiri AI Receptionist – website chat assistant.
+ * Loaded only when aiChat.enabled = true (or a preview build). Uses the site's
+ * colour tokens from styles.css; adds nothing to pages while the chat is off.
+ */
+
+/* ---------- Launcher ---------- */
+.abs-chat-launcher {
+  position: fixed; right: 1rem; z-index: 70;
+  bottom: calc(var(--mobile-bar-h) + .9rem + env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: .55rem;
+  min-height: 52px; padding: .75rem 1.15rem .75rem 1rem; border: 1px solid rgba(201, 161, 79, .55); border-radius: 999px;
+  background: var(--ink-900); color: #fff; font: inherit; font-weight: 650; font-size: .95rem; cursor: pointer;
+  box-shadow: 0 14px 30px -12px rgba(14, 16, 19, .6);
+  transition: transform .2s var(--ease, ease), box-shadow .2s;
+}
+.abs-chat-launcher .icon { width: 1.3rem; height: 1.3rem; color: var(--gold-light); }
+.abs-chat-launcher:hover { transform: translateY(-2px); }
+.abs-chat-launcher:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.abs-chat-launcher[aria-expanded="true"] { display: none; }
+/* On phones the launcher follows the sticky contact bar: hidden while the hero
+   buttons are on screen (so it never covers them), shown above the bar after. */
+@media (max-width: 959.98px) {
+  .mobile-bar.is-hidden ~ .abs-chat-launcher { opacity: 0; visibility: hidden; transform: translateY(1rem); }
+  .abs-chat-launcher { transition: opacity .3s, transform .3s, visibility .3s; }
+}
+@media (min-width: 960px) { .abs-chat-launcher { bottom: 1.5rem; right: 1.5rem; } }
+
+/* ---------- Panel ---------- */
+.abs-chat {
+  position: fixed; inset: 0; z-index: 80;
+  display: flex; flex-direction: column;
+  height: 100%; height: 100dvh;
+  background: var(--paper); color: var(--text);
+}
+.abs-chat[hidden] { display: none; }
+@media (min-width: 640px) {
+  .abs-chat {
+    inset: auto 1.5rem 1.5rem auto; width: 24.5rem; height: min(40rem, calc(100vh - 3rem));
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+}
+@media (max-width: 639.98px) {
+  .abs-chat-open, .abs-chat-open body { overflow: hidden; }
+}
+
+.abs-chat__head {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .8rem .6rem .8rem 1rem; padding-top: calc(.8rem + env(safe-area-inset-top, 0px));
+  background: var(--ink-900); color: #fff; border-bottom: 2px solid var(--gold);
+}
+.abs-chat__title { flex: 1; min-width: 0; }
+.abs-chat__title h2 { margin: 0; color: #fff; font-size: 1rem; line-height: 1.25; }
+.abs-chat__title p { margin: 0; color: var(--on-dark-muted); font-size: .8rem; }
+.abs-chat__restart {
+  background: none; border: 1px solid var(--line-dark); color: var(--on-dark); border-radius: 999px;
+  font: inherit; font-size: .8rem; padding: .35rem .7rem; cursor: pointer; min-height: 36px;
+}
+.abs-chat__close {
+  display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: none; color: #fff; cursor: pointer;
+}
+.abs-chat__close .icon { width: 1.2rem; height: 1.2rem; }
+.abs-chat__restart:hover, .abs-chat__close:hover { background: rgba(255, 255, 255, .08); }
+.abs-chat__restart:focus-visible, .abs-chat__close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Emergency strip – stays at the top once the job is marked urgent */
+.abs-chat__urgent { display: flex; align-items: center; gap: .6rem; padding: .55rem 1rem; background: var(--ink-800); border-bottom: 1px solid rgba(201, 161, 79, .45); }
+.abs-chat__urgent[hidden] { display: none; }
+.abs-chat__urgent p { flex: 1; margin: 0; font-size: .82rem; font-weight: 700; line-height: 1.3; color: var(--gold-light); }
+.abs-chat__urgent-actions { display: flex; gap: .4rem; }
+.abs-chat__urgent .abs-chat-btn { min-height: 40px; padding: .4rem .75rem; font-size: .85rem; border-radius: 10px; }
+
+/* ---------- Conversation ---------- */
+.abs-chat__log {
+  flex: 1; overflow-y: auto; overscroll-behavior: contain;
+  padding: 1rem; display: flex; flex-direction: column; gap: .6rem;
+}
+.abs-chat__log:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.abs-chat__msg {
+  max-width: 88%; margin: 0; padding: .65rem .9rem; border-radius: 16px;
+  font-size: .95rem; line-height: 1.45; white-space: pre-line; overflow-wrap: anywhere;
+}
+.abs-chat__msg--bot { align-self: flex-start; background: var(--white); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+.abs-chat__msg--user { align-self: flex-end; background: var(--ink-900); color: #fff; border-bottom-right-radius: 6px; }
+.abs-chat__msg--info { background: var(--paper-2); border-color: var(--paper-3); border-left: 4px solid var(--gold); }
+.abs-chat__msg--alert { background: var(--white); border: 1.5px solid var(--gold); border-left-width: 6px; color: var(--ink-950); font-weight: 650; }
+
+.abs-chat__card {
+  align-self: stretch; padding: .9rem 1rem; border-radius: 16px;
+  background: var(--white); border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+}
+.abs-chat__card p { margin: 0 0 .6rem; font-size: .9rem; }
+.abs-chat__card-title { font-family: var(--font-head); font-weight: 700; font-size: 1rem !important; }
+.abs-chat__card--urgent { border: 1.5px solid var(--gold); background: var(--ink-900); color: var(--on-dark); }
+.abs-chat__card--urgent .abs-chat__small { color: var(--on-dark-muted); }
+.abs-chat__card--urgent .abs-chat__card-title { color: var(--gold-light); }
+
+.abs-chat__send-box { align-self: stretch; padding: .25rem 0 .5rem; }
+.abs-chat__summary dl { margin: 0; display: grid; gap: .1rem; }
+.abs-chat__summary dl > div { display: grid; grid-template-columns: 6.5rem 1fr; gap: .5rem; padding: .4rem 0; border-top: 1px solid var(--paper-3); }
+.abs-chat__summary dt { color: var(--muted); font-size: .8rem; }
+.abs-chat__summary dd { margin: 0; font-size: .9rem; font-weight: 600; overflow-wrap: anywhere; white-space: pre-line; }
+.abs-chat__summary .is-urgent dd { color: var(--gold-deep); text-transform: uppercase; letter-spacing: .04em; }
+
+/* ---------- Answer area ---------- */
+.abs-chat__dock {
+  padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
+  background: var(--white); border-top: 1px solid var(--line);
+  max-height: 55%; overflow-y: auto;
+}
+.abs-chat__dock:empty { display: none; }
+.abs-chat__chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.abs-chat__chip {
+  flex: 1 1 auto; min-height: 44px; padding: .55rem 1rem; border-radius: 999px;
+  border: 1.5px solid var(--ink-900); background: var(--white); color: var(--ink-900);
+  font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer;
+}
+.abs-chat__chip:hover { background: var(--paper-2); }
+.abs-chat__chip--primary { width: 100%; margin-top: .6rem; background: var(--ink-900); color: #fff; }
+.abs-chat__chip--primary:hover { background: var(--ink-700); }
+.abs-chat__chip:focus-visible, .abs-chat__skip:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.abs-chat__row { display: flex; gap: .5rem; align-items: flex-end; }
+.abs-chat__row input, .abs-chat__row textarea {
+  flex: 1; min-width: 0; min-height: 48px; padding: .7rem .85rem;
+  font: inherit; font-size: 16px; /* 16px stops iOS zooming in */
+  border: 1.5px solid #cfc6b6; border-radius: var(--radius-sm); background: var(--white); color: var(--text); resize: none;
+}
+.abs-chat__row input:focus, .abs-chat__row textarea:focus { outline: none; border-color: var(--ink-900); box-shadow: 0 0 0 3px rgba(201, 161, 79, .35); }
+.abs-chat__send {
+  display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border: 0; border-radius: 50%;
+  background: var(--gold-grad); color: var(--ink-950); cursor: pointer;
+}
+.abs-chat__send .icon { width: 1.2rem; height: 1.2rem; }
+.abs-chat__send:focus-visible { outline: 3px solid var(--ink-900); outline-offset: 2px; }
+.abs-chat__error { margin: .45rem 0 0; color: var(--text); font-size: .85rem; font-weight: 600; }
+.abs-chat__error[hidden] { display: none; }
+.abs-chat__skip {
+  display: inline-block; margin-top: .5rem; padding: .4rem .2rem; background: none; border: 0;
+  color: var(--muted); font: inherit; font-size: .88rem; text-decoration: underline; cursor: pointer;
+}
+.abs-chat__small { margin: .55rem 0 0; font-size: .8rem; color: var(--muted); line-height: 1.45; }
+.abs-chat__small a { color: var(--gold-deep); }
+
+/* Photos */
+
+.abs-chat__file-input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
+.abs-chat__thumbs { list-style: none; margin: .6rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.abs-chat__thumbs:empty { display: none; }
+.abs-chat__thumbs li { position: relative; width: 64px; height: 64px; border-radius: 10px; overflow: hidden; background: var(--ink-800); }
+.abs-chat__thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.abs-chat__vid { display: grid; place-items: center; height: 100%; color: #fff; font-size: .75rem; font-weight: 600; }
+.abs-chat__thumbs button {
+  position: absolute; top: 2px; right: 2px; width: 26px; height: 26px; border: 0; border-radius: 50%;
+  background: rgba(14, 16, 19, .8); color: #fff; font-size: 1rem; line-height: 1; cursor: pointer;
+}
+
+/* ---------- Buttons ---------- */
+.abs-chat__actions { display: grid; gap: .5rem; }
+.abs-chat__actions--stack { grid-template-columns: 1fr; }
+.abs-chat__actions--pair { grid-template-columns: 1fr 1fr; align-self: stretch; }
+.abs-chat-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: .6rem 1rem; border-radius: 12px; border: 0;
+  font: inherit; font-weight: 650; font-size: .93rem; text-decoration: none; cursor: pointer; text-align: center;
+}
+.abs-chat-btn .icon { width: 1.15rem; height: 1.15rem; flex: none; }
+.abs-chat-btn--lg { min-height: 52px; font-size: 1rem; }
+.abs-chat-btn--call, .abs-chat-btn--gold { background: var(--gold-grad); color: var(--ink-950); }
+.abs-chat-btn--wa { background: var(--wa); color: #fff; }
+.abs-chat-btn--wa:hover { background: var(--wa-dark); color: #fff; }
+.abs-chat-btn--dark { background: var(--ink-700); color: #fff; }
+.abs-chat-btn--dark .icon { color: var(--gold-light); }
+.abs-chat-btn--outline { background: var(--white); color: var(--ink-900); border: 1.5px solid var(--ink-900); width: 100%; }
+.abs-chat-btn:hover { filter: brightness(1.05); }
+.abs-chat-btn--call:hover, .abs-chat-btn--gold:hover { color: var(--ink-950); }
+.abs-chat-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.abs-chat-btn[disabled] { opacity: .6; cursor: wait; }
+
+@media (prefers-reduced-motion: reduce) { .abs-chat-launcher { transition: none; } }
+@media print { .abs-chat-launcher, .abs-chat { display: none !important; } }
+
+/* ---------- Automatic submission ---------- */
+.abs-chat__photos--compact { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--paper-3); }
+.abs-chat-btn--sm { min-height: 42px; font-size: .88rem; }
+.abs-chat-btn--block { width: 100%; }
+.abs-chat__send-box { display: grid; gap: .6rem; }
+.abs-chat__consent {
+  display: grid; grid-template-columns: auto 1fr; gap: .65rem; align-items: start;
+  padding: .8rem .9rem; border-radius: 12px; background: var(--white); border: 1px solid var(--line);
+  font-size: .85rem; line-height: 1.45; color: var(--text);
+}
+.abs-chat__consent input { width: 22px; height: 22px; margin: .05rem 0 0; accent-color: var(--ink-900); }
+.abs-chat__consent a { color: var(--gold-deep); font-weight: 600; }
+.abs-chat__small--strong { color: var(--ink-900); font-weight: 650; }
+.abs-chat__progress { height: 6px; border-radius: 999px; background: var(--paper-3); overflow: hidden; }
+.abs-chat__progress[hidden] { display: none; }
+.abs-chat__progress span { display: block; height: 100%; width: 0; background: var(--gold-grad); transition: width .2s; }
+.abs-chat__fallback { margin-top: .25rem; }
+.abs-chat__confirm { text-align: center; border: 1.5px solid var(--gold); padding: 1.25rem 1.1rem; }
+.abs-chat__confirm .abs-chat__card-title { font-size: 1.05rem !important; line-height: 1.4; }
+.abs-chat__confirm-icon {
+  display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto .75rem; border-radius: 50%;
+  background: var(--ink-900); color: var(--gold-light);
+}
+.abs-chat__confirm-icon .icon { width: 1.5rem; height: 1.5rem; }
+.abs-chat__ref { font-size: .95rem !important; }
+.abs-chat__ref strong { letter-spacing: .03em; }
+.abs-chat__confirm .abs-chat__actions { text-align: left; }
+.abs-chat__turnstile { min-height: 0; }
