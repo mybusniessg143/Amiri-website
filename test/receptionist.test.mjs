@@ -2,9 +2,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { guardReply, cleanHistory, SYSTEM_PROMPT } from '../lib/receptionist.js';
-import { onRequestPost } from '../functions/api/chat.js';
+import { onRequestPost, MODEL } from '../functions/api/chat.js';
 import { normEmail, sniffMatches } from '../lib/enquiry.js';
-import { JPEG } from './fakes.mjs';
+import { JPEG, fakeD1 } from './fakes.mjs';
 
 test('replies with prices, promises or unverified credentials are replaced', () => {
   assert.match(guardReply('A socket swap is usually £80.'), /can't give prices/);
@@ -28,23 +28,53 @@ test('chat history is limited and cleaned', () => {
   assert.ok(h.every((m) => m.role === 'user' && m.content.length === 500));
 });
 
-const req = (body) => new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } });
+const req = (body, origin = 'https://x') => new Request('https://x/api/chat', {
+  method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json', Origin: origin, 'CF-Connecting-IP': '203.0.113.9' }
+});
+const hi = { messages: [{ role: 'user', content: 'hi' }] };
 
-test('AI answers are off unless switched on with a binding', async () => {
-  assert.equal((await onRequestPost({ request: req({ messages: [{ role: 'user', content: 'hi' }] }), env: {} })).status, 404);
-  assert.equal((await onRequestPost({ request: req({ messages: [{ role: 'user', content: 'hi' }] }), env: { AI_CHAT_ENABLED: 'true' } })).status, 404);
+test('AI answers are off unless switched on with a binding and a database', async () => {
+  assert.equal((await onRequestPost({ request: req(hi), env: {} })).status, 404);
+  assert.equal((await onRequestPost({ request: req(hi), env: { AI_CHAT_ENABLED: 'true' } })).status, 404);
+  assert.equal((await onRequestPost({ request: req(hi), env: { AI_CHAT_ENABLED: 'true', AI: { run: async () => ({}) } } })).status, 503);
 });
 
 test('AI answer passes through the safety check; model errors fall back', async () => {
   let seen;
-  const env = { AI_CHAT_ENABLED: 'true', AI: { run: async (model, input) => { seen = input; return { response: 'It costs £50.' }; } } };
+  const env = { AI_CHAT_ENABLED: 'true', DB: fakeD1(), AI: { run: async (model, input) => { seen = { model, ...input }; return { response: 'It costs £50.' }; } } };
   const res = await onRequestPost({ request: req({ messages: [{ role: 'user', content: 'How much for a tap?' }] }), env });
   const body = await res.json();
   assert.equal(res.status, 200);
   assert.match(body.reply, /can't give prices/);
   assert.equal(seen.messages[0].role, 'system');
-  const down = { AI_CHAT_ENABLED: 'true', AI: { run: async () => { throw new Error('quota'); } } };
-  assert.equal((await onRequestPost({ request: req({ messages: [{ role: 'user', content: 'hi' }] }), env: down })).status, 503);
+  assert.equal(seen.model, MODEL);
+  assert.ok(seen.max_tokens <= 220);
+  const down = { AI_CHAT_ENABLED: 'true', DB: fakeD1(), AI: { run: async () => { throw new Error('quota'); } } };
+  assert.equal((await onRequestPost({ request: req(hi), env: down })).status, 503);
+});
+
+test('only the website itself may use the AI answers', async () => {
+  const env = { AI_CHAT_ENABLED: 'true', DB: fakeD1(), AI: { run: async () => ({ response: 'Hello' }) } };
+  assert.equal((await onRequestPost({ request: req(hi, 'https://evil.example'), env })).status, 403);
+  const noOrigin = new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify(hi) });
+  assert.equal((await onRequestPost({ request: noOrigin, env })).status, 403);
+  assert.equal((await onRequestPost({ request: req({ messages: [{ role: 'user', content: 'x'.repeat(9000) }] }), env })).status, 413);
+});
+
+test('daily limits keep AI use inside the free allowance', async () => {
+  let calls = 0;
+  const env = { AI_CHAT_ENABLED: 'true', DB: fakeD1(), AI_IP_DAILY_LIMIT: '3', AI_DAILY_LIMIT: '5', AI: { run: async () => { calls++; return { response: 'Hello' }; } } };
+  const statuses = [];
+  for (let i = 0; i < 4; i++) statuses.push((await onRequestPost({ request: req(hi), env })).status);
+  assert.deepEqual(statuses, [200, 200, 200, 429]);
+  const other = (ip) => new Request('https://x/api/chat', { method: 'POST', body: JSON.stringify(hi), headers: { Origin: 'https://x', 'CF-Connecting-IP': ip } });
+  statuses.length = 0;
+  for (const ip of ['198.51.100.1', '198.51.100.2', '198.51.100.3']) statuses.push((await onRequestPost({ request: other(ip), env })).status);
+  assert.deepEqual(statuses, [200, 200, 429]);
+  assert.equal(calls, 5);
+  // Worst case per answer is about 100 neurons, so the default 60 a day stays under 10,000.
+  const neurons = 2100 * 26668 / 1e6 + 220 * 204805 / 1e6;
+  assert.ok(neurons * 60 < 10000, String(neurons));
 });
 
 test('email addresses and file contents are checked', () => {

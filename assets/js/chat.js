@@ -6,8 +6,9 @@
  * code or styles are sent to visitors.
  *
  * It answers common questions from fixed, approved answers (FAQ below), and
- * can optionally pass free-typed questions to an AI endpoint (aiChat.aiEndpoint,
- * functions/api/chat.js) with the fixed answers as the fallback.
+ * passes other free-typed questions to the AI endpoint (aiChat.aiEndpoint,
+ * functions/api/chat.js on the website Worker) with the fixed answers as the
+ * fallback. Prices, gas, emergencies and availability always get the fixed answer.
  *
  * The quote flow runs in the visitor's browser: it asks a fixed set of
  * questions, then builds an enquiry summary the customer sends to us by
@@ -107,7 +108,7 @@
   var head = el('header', { class: 'abs-chat__head' });
   var titleWrap = el('div', { class: 'abs-chat__title' });
   titleWrap.appendChild(el('h2', { id: 'abs-chat-title' }, CFG.tradingName || 'Amiri Building Services'));
-  titleWrap.appendChild(el('p', null, 'Receptionist'));
+  titleWrap.appendChild(el('p', null, 'Automated receptionist'));
   var restartBtn = el('button', { type: 'button', class: 'abs-chat__restart' }, 'Start again');
   var closeBtn = el('button', { type: 'button', class: 'abs-chat__close', 'aria-label': 'Close chat' });
   closeBtn.appendChild(icon('close'));
@@ -288,7 +289,7 @@
 
   var STEPS = {
     start: function () {
-      say('Hello, welcome to ' + (CFG.tradingName || 'us') + '. I can answer questions about our electrical, plumbing and property maintenance work, or take your details for a free quote. What would you like to do?');
+      say('Hello, welcome to ' + (CFG.tradingName || 'us') + '. I\'m an automated assistant, and a person reads every enquiry. I can answer questions about our electrical, plumbing and property maintenance work, or take your details for a free quote. What would you like to do?');
       menu();
     },
     faq: function () {
@@ -460,7 +461,10 @@
     if (f.id === 'emergency') showUrgent();
   }
 
+  // Topics that always get the fixed, approved answer, never an AI one.
+  var FIXED = ['prices', 'gas', 'emergency', 'hours'];
   var aiHistory = [];
+  var aiOff = false;
   function ask(q) {
     // Only the safety warnings here; prices and gas work have their own answers.
     state.notices.price = state.notices.gasWork = true;
@@ -475,21 +479,34 @@
       else say('I\'m not sure about that one. The quickest way to get an answer is to call or WhatsApp ' + PHONE_TXT + ', or I can take your details for a free quote.');
       go('faq');
     };
-    if (!AI.aiEndpoint) return fallback();
+    if (!AI.aiEndpoint || aiOff || !window.fetch || known && FIXED.indexOf(known.id) !== -1) return fallback();
     aiHistory.push({ role: 'user', content: q });
-    var typing = say('…', 'bot', { replay: true });
-    fetch(AI.aiEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: aiHistory.slice(-8) }) })
-      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-      .then(function (body) {
-        if (typing) typing.parentNode.removeChild(typing);
-        if (!body || !body.ok || !body.reply) return fallback();
-        aiHistory.push({ role: 'assistant', content: body.reply });
-        say(body.reply);
-        go('faq');
-      }, function () {
-        if (typing) typing.parentNode.removeChild(typing);
-        fallback();
-      });
+    var typing = say('Typing…', 'bot', { replay: true });
+    var done = false;
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); finish(null); }, 12000);
+    function finish(reply) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      if (typing && typing.parentNode) typing.parentNode.removeChild(typing);
+      if (!reply) { aiHistory.pop(); return fallback(); }
+      aiHistory.push({ role: 'assistant', content: reply });
+      say(reply);
+      go('faq');
+    }
+    fetch(AI.aiEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: aiHistory.slice(-8) }),
+      signal: ctrl ? ctrl.signal : undefined
+    })
+      .then(function (r) {
+        // Daily limit reached or AI switched off: use the built-in answers for the rest of the visit.
+        if (r.status === 404 || r.status === 429) aiOff = true;
+        return r.ok ? r.json() : null;
+      })
+      .then(function (body) { finish(body && body.ok && body.reply ? body.reply : null); }, function () { finish(null); });
   }
 
   function go(step) {

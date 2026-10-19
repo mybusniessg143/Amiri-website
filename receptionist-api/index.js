@@ -13,6 +13,7 @@
 import * as enquiry from '../functions/api/enquiry.js';
 import * as enquiryFile from '../functions/api/enquiry-file.js';
 import * as chat from '../functions/api/chat.js';
+import { linkSecret } from '../lib/limits.js';
 
 const routes = {
   '/api/enquiry': { POST: enquiry.onRequestPost, '*': enquiry.onRequest },
@@ -40,7 +41,7 @@ export default {
     if (env.ENQUIRY_API_ENABLED !== 'true') return new Response('Not found', { status: 404 });
 
     const handler = route[request.method] || route['*'];
-    const secret = await fileLinkSecret(env);
+    const secret = await linkSecret(env);
     const res = await handler({ request, env: { ...env, FILE_LINK_SECRET: secret }, waitUntil: (p) => ctx.waitUntil(p) });
     if (!cors) return res;
     const out = new Response(res.body, res);
@@ -61,17 +62,4 @@ function corsHeaders(request, env) {
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin'
   };
-}
-
-// FILE_LINK_SECRET signs photo links and the rate-limit hash. A Worker secret wins;
-// otherwise one random value is generated once and kept in D1 (private).
-let cached;
-async function fileLinkSecret(env) {
-  if (env.FILE_LINK_SECRET) return env.FILE_LINK_SECRET;
-  if (cached || !env.DB) return cached;
-  const fresh = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32))));
-  await env.DB.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES ('FILE_LINK_SECRET', ?1)").bind(fresh).run();
-  const row = await env.DB.prepare("SELECT value FROM settings WHERE key = 'FILE_LINK_SECRET'").first();
-  cached = row && row.value;
-  return cached;
 }

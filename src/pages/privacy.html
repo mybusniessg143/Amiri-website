@@ -75,13 +75,15 @@
 {{/noAiChat}}{{#aiChat}}
     <h2>6. Website quote form and enquiry assistant</h2>
     <p>Our website has a quote form and an automated enquiry assistant (the "Ask us" chat). The assistant answers common questions with fixed answers we have written, and can take your enquiry step by step. It does not make decisions about you and cannot give prices or confirm bookings. A person reads every enquiry.</p>
+    <p><strong>Questions you type into the chat:</strong> if you type a question that our fixed answers do not cover, it is answered by an AI model (Cloudflare Workers AI) running on Cloudflare's own systems, on our instructions. The chat says when an answer is automated. What you type is used only to answer you: it is not stored by us and is not used to train AI models. Please don't type personal details into the question box; the quote steps ask for what we need.</p>
     <ul>
       <li><strong>What we collect:</strong> your name, phone number, email address, postcode, the address of the job if you give it, the type of work, how urgent it is, your description of the problem, and any photos or video you add.</li>
       <li><strong>What happens when you press send:</strong> your details, photos and video are sent securely to our website hosting provider, Cloudflare, and stored in a private database and private file storage that only we can access. A job summary is emailed to us through our email delivery provider, Resend, with your photos attached and secure links to your files that expire after 30 days.</li>
       <li><strong>Why:</strong> to reply to your enquiry and, if you ask us to, to quote for and carry out the work (steps at your request before a contract, and our legitimate interests in running the business). We ask you to agree before you send.</li>
       <li><strong>How long:</strong> enquiries and their photos and video are deleted automatically after 12 months if they do not lead to work. If they do, they become part of the job record (see section 8).</li>
       <li><strong>Before you send:</strong> nothing leaves your device. If you change page while using the chat, your answers are kept in your browser for that visit only, so you can carry on.</li>
-      <li><strong>Security and misuse:</strong> we keep a scrambled (hashed) version of your internet address to limit repeated submissions, and we only accept photo and video files.</li>
+      <li><strong>Security and misuse:</strong> we keep a scrambled (hashed) version of your internet address to limit repeated submissions and chat questions (for up to 7 days for chat questions), and we only accept photo and video files.</li>
+      <li><strong>Keeping track of your enquiry:</strong> we record the progress of your enquiry (for example contacted, quote sent, booked) and our own notes in the same private database, so we can follow it up.</li>
     </ul>
 {{/aiChat}}
     <h2>7. Who we share information with</h2>
@@ -92,7 +94,7 @@
         <tbody>
           <tr><td>Google (Google Workspace)</td><td>Email, calendar and document storage</td></tr>
           <tr><td>WhatsApp / Meta</td><td>WhatsApp messaging when you contact us that way</td></tr>
-          <tr><td>Cloudflare</td><td>Website hosting, security and privacy-friendly visitor statistics{{#aiChat}}; storing website enquiries, photos and video{{/aiChat}}</td></tr>
+          <tr><td>Cloudflare</td><td>Website hosting, security and privacy-friendly visitor statistics{{#aiChat}}; storing website enquiries, photos and video; answering typed chat questions (Workers AI){{/aiChat}}</td></tr>
           <tr><td>Accounting / invoicing software</td><td>Invoices and bookkeeping {{#placeholders}}<span class="placeholder-note">Owner to name provider</span>{{/placeholders}}</td></tr>
 {{#noAiChat}}          <tr><td>AI service provider (future)</td><td>Only if and when an AI receptionist is introduced (see section 6)</td></tr>
 {{/noAiChat}}{{#aiChat}}          <tr><td>Resend</td><td>Delivering website enquiry emails to us (see section 6)</td></tr>

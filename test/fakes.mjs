@@ -3,7 +3,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 
-export function fakeD1(migrations = ['0001_enquiries.sql', '0002_settings.sql', '0003_contact_fields.sql']) {
+export function fakeD1(migrations = ['0001_enquiries.sql', '0002_settings.sql', '0003_contact_fields.sql', '0004_tracking_and_usage.sql']) {
   const db = new DatabaseSync(':memory:');
   for (const m of migrations) db.exec(fs.readFileSync(new URL(`../migrations/${m}`, import.meta.url), 'utf8'));
   const stmt = (sql, args = []) => ({

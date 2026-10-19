@@ -32,10 +32,8 @@
     // EMAIL_TO). Switch to "Amiri Building Services <enquiries@amiribuildingservices.com>" only
     // after the domain shows "Verified" in Resend; until then that address is refused.
     "EMAIL_FROM": "Amiri Website <onboarding@resend.dev>",
-    // Optional AI answers in the chat (functions/api/chat.js). Needs the "ai" binding below too.
+    // AI answers for the live chat run on the website Worker (see ../wrangler.jsonc); off here.
     "AI_CHAT_ENABLED": "false"
   },
-  // Uncomment only after the owner approves Workers AI (free daily allowance; see AI_RECEPTIONIST_PLAN.md):
-  // "ai": { "binding": "AI" },
   "observability": { "enabled": true }
 }

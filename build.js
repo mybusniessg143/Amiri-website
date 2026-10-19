@@ -577,7 +577,7 @@ function build() {
       .map((s) => `  <url>\n    <loc>${s.loc}</loc>\n    <lastmod>${BUILD_DATE}</lastmod>\n    <changefreq>${s.changefreq}</changefreq>\n    <priority>${s.priority.toFixed(1)}</priority>\n  </url>`)
       .join('\n')}\n</urlset>\n`
   );
-  fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${DOMAIN}/sitemap.xml\n`);
+  fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\n\nSitemap: ${DOMAIN}/sitemap.xml\n`);
   fs.writeFileSync(
     path.join(OUT, 'site.webmanifest'),
     JSON.stringify(
