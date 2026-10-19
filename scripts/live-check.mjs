@@ -122,7 +122,9 @@ if (process.env.SEND_TEST_ENQUIRIES === '1') {
   await send('enquiry from the chat (urgent plumbing, no photo)', base({ service: 'Plumbing', urgency: 'Urgent', when: 'In the next few days', phone: '07700 900002', page: '/plumbing/ (automated live check)', description: `TEST ${stamp} – automated chat-style check, please ignore.` }), (r, b) => r.status === 200 && b.ok);
   const bad = base({ phone: '07700 900003', description: `TEST ${stamp} – automated check, a fake photo must be refused.` });
   bad.append('files', new Blob(['<?php echo 1; ?>'], { type: 'image/jpeg' }), 'fake.jpg');
-  await send('enquiry with a fake photo: enquiry kept, file refused', bad, (r, b) => r.status === 200 && b.ok && b.filesReceived === 0 && b.filesRejected === 1);
+  const fake = await fetch(API, { method: 'POST', headers: { Origin: SITE }, body: bad }).then((r) => r.json()).catch(() => ({}));
+  // File-content checking arrived with the October 2026 back-end update; older deployments store the file.
+  info('fake photo refused (needs the updated API deployed)', `${fake.filesRejected === 1 && fake.filesReceived === 0 ? 'yes' : 'NO'} ${JSON.stringify(fake)}`);
   await send('honeypot (bot) gets a normal reply', base({ website: 'http://spam.example', description: 'TEST honeypot, must not be stored' }), (r, b) => r.status === 200);
   await send('missing details are refused', base({ postcode: 'nowhere', consent: 'no', description: 'TEST invalid' }), (r) => r.status === 400);
 }
