@@ -2,10 +2,13 @@
   "name": "amiri-building-services-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Static website for Amiri Building Services Ltd. No dependencies.",
+  "description": "Static website for Amiri Building Services Ltd, plus the enquiry back end (Cloudflare Pages Functions). No dependencies.",
   "scripts": {
     "build": "node build.js",
-    "serve": "node build.js --serve"
+    "serve": "node build.js --serve",
+    "test": "node --test test/*.test.mjs"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }
