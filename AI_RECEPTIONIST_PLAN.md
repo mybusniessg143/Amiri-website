@@ -1,8 +1,16 @@
 # AI receptionist – technical plan
 
-Status: **Phase 1 (guided chat) and automatic submission built, switched off.** `assets/js/chat.js` + `assets/css/chat.css` are a step-by-step enquiry assistant that runs in the visitor's browser. It is off (`aiChat.enabled: false`) and loads nothing until it is turned on. The full AI back end below is **not built**. Nothing on the site claims an AI receptionist exists.
+## Current status (20 October 2026)
 
-## Phase 1 – guided website chat (built, off)
+| Channel | Status | How it works |
+|---|---|---|
+| Website chat ("Ask us") | **Live** on every page | Fixed, approved answers plus Cloudflare Workers AI for other questions (`worker/index.js`, capped at `AI_DAILY_LIMIT` a day so it stays free). Takes quote requests with photos and submits them to the receptionist API, which saves them (D1), stores photos (R2) and emails waris@. Says it is automated. |
+| WhatsApp | **Hand-off only** | The chat and every page link to wa.me/447942333994, so the owner answers in WhatsApp. An automatic WhatsApp reply needs the Meta WhatsApp Cloud API on a number that is *not* in the WhatsApp app (moving 07942 333994 would take it off the owner's phone). Free alternative: greeting, away message and quick replies in the free WhatsApp Business app. Enquiry alerts by WhatsApp (`sendWhatsApp` in `functions/api/enquiry.js`) are coded and off. |
+| Phone calls | **Not built** | Needs a telephony provider (a new number or call forwarding, per-minute charges) plus speech AI. Calls go straight to 07942 333994. |
+
+The sections below are the original plan, kept for reference; Phase 1 and automatic submission are now on.
+
+## Phase 1 – guided website chat
 
 No AI model, no server, no running cost. The assistant asks, in order:
 
