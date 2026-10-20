@@ -332,9 +332,9 @@ main:focus { outline: none; }
 
 /* ---------- Breadcrumbs ---------- */
 .breadcrumbs { padding-top: 1rem; font-size: .88rem; }
-.breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem; color: var(--muted); }
+.breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem; align-items: center; color: var(--muted); }
 .breadcrumbs li + li::before { content: "/"; margin-right: .3rem; color: #b1a998; }
-.breadcrumbs a { color: var(--muted); }
+.breadcrumbs a { color: var(--muted); display: inline-flex; align-items: center; min-height: 24px; padding: 0 .1rem; } /* 24px tap target (WCAG 2.2) */
 
 /* ---------- Sections ---------- */
 .section { padding: 4rem 0; }
