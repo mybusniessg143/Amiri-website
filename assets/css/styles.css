@@ -814,7 +814,7 @@ main:focus { outline: none; }
   font-family: Georgia, "Times New Roman", serif; font-size: 5rem; line-height: 1; color: var(--paper-3);
 }
 .t-card blockquote { margin: 1rem 0 1.5rem; font-size: 1.04rem; line-height: 1.6; color: var(--text); }
-.t-card blockquote p { margin: 0; }
+.t-card blockquote p { margin: 0; white-space: pre-line; } /* keep the customer's own line breaks */
 .t-card--placeholder { border-style: dashed; background: #fdfbf7; }
 .t-card--placeholder blockquote { color: var(--muted); font-style: italic; }
 .t-card__who { display: flex; align-items: center; gap: .8rem; margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--line); }

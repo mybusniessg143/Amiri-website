@@ -115,7 +115,15 @@
       "verified": false
     }
   ],
-  "reviews": [],
+  "reviews": [
+    {
+      "author": "Khesraw B.",
+      "text": "Very much satisfied with your job\nThanks for being so honest person beside being professional",
+      "rating": 5,
+      "date": "2026-10-20",
+      "source": "Google"
+    }
+  ],
   "_reviewsNote": "Add ONLY genuine reviews, copied word for word with permission or from your Google Business Profile. Format: { \"author\": \"First name + initial\", \"text\": \"...\", \"rating\": 5, \"date\": \"2026-11-01\", \"source\": \"Google\" }",
   "googleReviewUrl": "",
   "googleBusinessProfileUrl": "",
