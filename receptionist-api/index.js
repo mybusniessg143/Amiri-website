@@ -9,6 +9,7 @@
  *                             (noindex), so the whole flow can be tried before go-live
  *
  * Only pages on this Worker and the origins in ALLOWED_ORIGINS may submit enquiries.
+ * Workers Builds deploys this Worker automatically from main (see wrangler.jsonc).
  */
 import * as enquiry from '../functions/api/enquiry.js';
 import * as enquiryFile from '../functions/api/enquiry-file.js';
