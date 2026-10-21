@@ -1,5 +1,5 @@
 // Cloudflare Worker "amiri-receptionist-api" – the AI Receptionist back end.
-// Deployed by Workers Builds with Root directory = receptionist-api.
+// Deployed by Workers Builds from the main branch, with Root directory = receptionist-api.
 // Build command (builds a test copy of the site with the chat on):
 //   cd .. && AI_CHAT_PREVIEW=1 node build.js
 // Secrets are set in the dashboard, never here: RESEND_API_KEY (required for email),
@@ -12,6 +12,9 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "preview_urls": false,
+  // Keep any variable set in the dashboard but not listed below (for example a key saved as
+  // plain text instead of a secret), so an automatic deploy can never wipe it.
+  "keep_vars": true,
   "assets": {
     "directory": "../dist",
     "binding": "ASSETS",
